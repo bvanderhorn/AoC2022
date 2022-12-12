@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/node": "^18.11.13"
+  },
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  }
+}
