@@ -31,7 +31,7 @@ function visible(row: number, col:number) : boolean {
 
 function directionScore(size:number, directionSizes:number[]) : number {
     var score = directionSizes.findIndex(el => el >= size);
-    return score === -1 ? directionSizes.length : score;
+    return score === -1 ? directionSizes.length : score+1;
 }
 
 function scenicScore(row:number, col:number) : number {

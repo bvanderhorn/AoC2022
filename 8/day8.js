@@ -34,7 +34,7 @@ function visible(row, col) {
 ;
 function directionScore(size, directionSizes) {
     var score = directionSizes.findIndex(el => el >= size);
-    return score === -1 ? directionSizes.length : score;
+    return score === -1 ? directionSizes.length : score + 1;
 }
 function scenicScore(row, col) {
     var tree = lines[row][col];
