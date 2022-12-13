@@ -1,8 +1,8 @@
 // npm install --save-dev typescript @types/node fs
+// copy tsconfig.json
 // Ctrl + Shift + B -> watch
 // >> node day7.js
 
-import { dir } from "console";
 import * as fs from "fs";
 
 enum Type {
@@ -133,6 +133,3 @@ var neededExtra = neededSize - availableSize;
 console.log("needed extra: " + neededExtra);
 var smallestFittingDir = elements.filter(el => el.type === Type.dir && el.size >= neededExtra).sort((a, b) => (a.size > b.size) ? 1 : -1)[0];
 console.log(smallestFittingDir);
-
-
-
