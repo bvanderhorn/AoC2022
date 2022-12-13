@@ -61,7 +61,6 @@ console.log(nofVisible);
 // console.log(visible(row,col));
 // console.log(lines.length);
 // console.log(lines[0].length);
-console.log(49 * 49 * 49 * 49);
 var maxScenicScore = 0;
 for (let i = 0; i < lines.length; i++) {
     for (let j = 0; j < lines[0].length; j++) {
@@ -70,13 +69,14 @@ for (let i = 0; i < lines.length; i++) {
     }
 }
 console.log(maxScenicScore);
-var row = 13;
-var col = 10;
-console.log(lines[row][col]);
-console.log(left(row, col).toString());
-console.log(right(row, col).toString());
-console.log(up(row, col).toString());
-console.log(down(row, col).toString());
-console.log(scenicScore(13, 10));
-console.log([].findIndex(el => el === 1));
+// console.log(49*49*49*49);
+// var row = 13;
+// var col = 10;
+// console.log(lines[row][col]);
+// console.log(left(row,col).toString());
+// console.log(right(row,col).toString());
+// console.log(up(row,col).toString());
+// console.log(down(row,col).toString());
+// console.log(scenicScore(13,10));
+// console.log([].findIndex(el => el === 1));
 //# sourceMappingURL=day8.js.map
