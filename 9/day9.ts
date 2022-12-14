@@ -2,6 +2,7 @@ import { equal } from "assert";
 import * as fs from "fs";
 
 function uniqueArray(array: number[][]) {
+    // from https://stackoverflow.com/a/66420296/1716283
     return Array.from(
         new Map(array.map((p) => [JSON.stringify(p), p])).values()
       )

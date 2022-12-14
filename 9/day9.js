@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
 function uniqueArray(array) {
+    // from https://stackoverflow.com/a/66420296/1716283
     return Array.from(new Map(array.map((p) => [JSON.stringify(p), p])).values());
 }
 function log(test, print) {
