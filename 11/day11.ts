@@ -18,16 +18,9 @@ function log(test:boolean, print:any) {
 function stringify(object: any) : string {
     return JSON.stringify(object, null, 4);
 }
-var emptyMonkey: Monkey = {
-    items: [],
-    operation: null,
-    inspections: 0,
-    evaluation: {
-        divisible: null,
-        trueMonkey: null,
-        falseMonkey: null
-    }
-};
+function isDivisible(num:number, div:number){
+    return num/div === Math.floor(num/div);
+}
 
 const test = true;
 
@@ -38,7 +31,16 @@ const instructions = input.split('\r\n\r\n').map(el => el.split('\r\n'));
 var monkeys: Monkey[] = [];
 
 instructions.forEach(instruction => {
-    var monkey: Monkey = emptyMonkey;
+    var monkey: Monkey = {
+        items: [],
+        operation: null,
+        inspections: 0,
+        evaluation: {
+            divisible: null,
+            trueMonkey: null,
+            falseMonkey: null
+        }
+    };
     for (const line of instruction) {
         var itemsMatch = line.match(/^\s+Starting\s+items:\s+([\s\S]+)\s*$/);
         var operationMatch = line.match(/^\s+Operation:\s+([\s\S]+)\s*$/);
@@ -52,45 +54,40 @@ instructions.forEach(instruction => {
         else if (ifTrueMatch != null)       monkey.evaluation.trueMonkey = +ifTrueMatch[1].trim();
         else if (ifFalseMatch != null)      monkey.evaluation.falseMonkey = +ifFalseMatch[1].trim();
     }
-    monkeys.push({
-        items: monkey.items,
-        operation: monkey.operation,
-        inspections: 0,
-        evaluation: {
-            divisible: monkey.evaluation.divisible,
-            trueMonkey: monkey.evaluation.trueMonkey,
-            falseMonkey: monkey.evaluation.falseMonkey
-        }
-    });
+    monkeys.push(monkey);
     //log(test, stringify(monkey));
 });
 
 log(test, stringify(monkeys));
 
 // execute
-const rounds = 20;
+const maxDiv = monkeys.map(m => m.evaluation.divisible).reduce((a,b) => a*b);
+const rounds = 10000;
 for (var i=0;i<rounds;i++){
-    log(test, "Round " + (i+1));
+    //log(test, "Round " + (i+1));
     for (var j=0;j<monkeys.length;j++){
         var m = monkeys[j];
         m.items.map(old => {
             var newer = 0;
             eval(m.operation);
+            newer = newer%maxDiv;
             //log(test," operation: (old = " + old + ") -> " + m.operation + " -> newer = " + newer + " -> return " + Math.floor(newer/3.));
-            return Math.floor(newer/3.);
+            //return Math.floor(newer/3.);
+            return newer;
         }).forEach(item => {
             //log(test, "  item: "+item + ", divisible: " + m.evaluation.divisible + ", isDivisible: " + (div === Math.floor(div)).toString());
-            var div = item/m.evaluation.divisible;
-            monkeys[(div === Math.floor(div)) ? m.evaluation.trueMonkey : m.evaluation.falseMonkey].items.push(item);
+            monkeys[ isDivisible(item,m.evaluation.divisible) ? m.evaluation.trueMonkey : m.evaluation.falseMonkey].items.push(item);
         });
         monkeys[j].inspections += monkeys[j].items.length;
         monkeys[j].items = [];
     }
-    log(test, "Items:");
-    monkeys.forEach((monkey,index) => log(test, " Monkey " + index + ": " + monkey.items.join(", ")));
+    //log(test, "Items:");
+    //monkeys.forEach((monkey,index) => log(test, " Monkey " + index + ": " + monkey.items.join(", ")));
 }
 
 log(test, "Inspections: ");
 monkeys.forEach((monkey,index) => log(test, " Monkey " + index + ": " + monkey.inspections));
 var sum = monkeys.map(el => el.inspections).sort((a,b)=>b-a).slice(0,2);
 log(test, "Monkey business: " + [sum[0]*sum[1]]);
+
+//log(test, maxDiv.toString());
