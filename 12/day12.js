@@ -21,7 +21,7 @@ function getNeighbours(pos) {
         [pos[0], pos[1] + 1]
     ];
     for (const n of nb) {
-        if (n[0] > 0 && n[0] < xLength && n[1] > 0 && n[1] < yLength && isReachable(pos, n))
+        if (n[0] >= 0 && n[0] < xLength && n[1] >= 0 && n[1] < yLength && isReachable(pos, n))
             neighbours.push(n);
     }
     return neighbours;
@@ -75,7 +75,7 @@ for (let i = 0; i < xLength * yLength; i++) {
     }
     visited.push(current);
     if (i % yLength === 0)
-        console.log(" line " + i / yLength + " of " + xLength + " done");
+        console.log((i / yLength / xLength * 100).toPrecision(3) + "% done");
 }
 console.log(dist[endPos[0]][endPos[1]]);
 //console.log(dist);
