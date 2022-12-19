@@ -1,5 +1,5 @@
 import * as fs from "fs";
-\function isReachable(fromPos: number[], toPos: number[]) : boolean {
+function isReachable(fromPos: number[], toPos: number[]) : boolean {
     return map[toPos[0]][toPos[1]] - map[fromPos[0]][fromPos[1]] > -2;
 }
 function getNeighbours(pos:number[]): number[][] {
