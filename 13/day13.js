@@ -81,5 +81,18 @@ for (let i = 0; i < pairs.length; i++) {
     if (isCorrect != 'false')
         count += i + 1;
 }
-console.log(count);
+console.log("Sum of indices of correctly ordered pairs: " + count);
+// part 2
+// params
+const div1 = '[[2]]';
+const div2 = '[[6]]';
+var packets = input.replace(/\r\n\r\n/g, '\r\n').split('\r\n');
+packets.push(div1);
+packets.push(div2);
+// console.log(packets.slice(packets.length-10, packets.length));
+var sortedPackets = packets.map(el => parse(el)).sort((a, b) => isOrderCorrect([a, b]) === 'true' ? -1 : 1);
+console.log(sortedPackets.slice(0, 10).map(el => JSON.stringify(el)));
+var dividerIndices = sortedPackets.map(el => JSON.stringify(el)).map((el, index) => [div1, div2].includes(el) ? index + 1 : -1).filter(el => el >= 0);
+console.log(dividerIndices);
+console.log("decoder key: " + dividerIndices[0] * dividerIndices[1]);
 //# sourceMappingURL=day13.js.map
