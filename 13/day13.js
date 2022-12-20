@@ -13,7 +13,7 @@ function getNextBlock(str) {
             ls++;
         if (cur === r)
             rs++;
-        if (ls == rs && cur === ',')
+        if (ls == rs && cur === sep)
             return str.slice(0, i);
         ;
     }
@@ -42,13 +42,45 @@ function parse(str) {
         return +str;
     }
 }
+function isOrderCorrect(pair) {
+    let left = pair[0];
+    let right = pair[1];
+    for (let i = 0; i < left.length; i++) {
+        if (i >= right.length)
+            return 'false';
+        if (typeof (left[i]) === 'number' && typeof (right[i]) === 'number') {
+            if (left[i] === right[i])
+                continue;
+            return (left[i] < right[i]).toString();
+        }
+        let leftI = typeof (left[i]) === 'number' ? [left[i]] : left[i];
+        let rightI = typeof (right[i]) === 'number' ? [right[i]] : right[i];
+        let sub = isOrderCorrect([leftI, rightI]);
+        if (sub != 'equal')
+            return sub;
+    }
+    if (left.length < right.length)
+        return 'true';
+    return 'equal';
+}
 // params
 const l = '[';
 const r = ']';
+const sep = ',';
 // parse
 const input = fs.readFileSync('packets.txt', 'utf8');
 const pairs = input.split('\r\n\r\n').map(el => el.split('\r\n'));
 console.log(pairs.slice(0, 3));
-console.log(getNextBlock('8,1,[2,3,3,[6,7,7,2,6]],[[8,10,1]],[9]],[1,7,[7,[3,6],7,7,10]]]'));
 console.log(stringify(parse(pairs[0][0])));
+// compare
+var count = 0;
+for (let i = 0; i < pairs.length; i++) {
+    let left = parse(pairs[i][0]);
+    let right = parse(pairs[i][1]);
+    let isCorrect = isOrderCorrect([left, right]);
+    console.log(" pair " + i + ": " + isCorrect);
+    if (isCorrect != 'false')
+        count += i + 1;
+}
+console.log(count);
 //# sourceMappingURL=day13.js.map
