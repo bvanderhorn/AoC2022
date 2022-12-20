@@ -27,7 +27,6 @@ function splitInBlocks(str) {
         out.push(nextBlock);
         rem = rem.slice(nextBlock.length + 1, rem.length);
     }
-    //console.log(out);
     return out;
 }
 function parse(str) {

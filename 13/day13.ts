@@ -25,7 +25,6 @@ function splitInBlocks(str:string) : string[] {
         out.push(nextBlock);
         rem = rem.slice(nextBlock.length+1,rem.length);
     }
-    //console.log(out);
     return out;
 }
 
@@ -65,7 +64,6 @@ const r = ']';
 const sep = ',';
 
 // parse
-
 const input: string = fs.readFileSync('packets.txt', 'utf8');
 const pairs = input.split('\r\n\r\n').map(el => el.split('\r\n'));
 console.log(pairs.slice(0,3));
