@@ -18,25 +18,25 @@ function expand(coor1: number[], coor2: number[]) : number[][] {
     var expanded = (coor1[0] === coor2[0]) ? varIndices.map(el => [coor1[0], el]) : varIndices.map(el => [el, coor1[1]]);
     return start === coor1[varIndex] ? expanded : expanded.reverse();
 }
-
 function expandTrace(trace:number[][]) : number[][] {
     var expTrace : number[][] = [trace[0]];
     for (let i=1;i<trace.length;i++) expTrace = expTrace.concat(expand(trace[i-1],trace[i]).slice(1));
     return expTrace;
 }
-
-function draw() {
+function draw() : string[] {
     var xMin = Math.min(...rock.map(el => el[0]));
     var xMax = Math.max(...rock.map(el => el[0]));
     var yMin = 0;
     var yMax = Math.max(...rock.map(el => el[1]));
+    var rockString: string[] = [];
     for (let i=yMin;i<=yMax;i++){
-        console.log(Array(xMax-xMin+1).fill(1).map((_,index) => {
+        rockString.push(Array(xMax-xMin+1).fill(1).map((_,index) => {
             if ((index+xMin) === dropPos[0] && i===dropPos[1]) return '+';
             if(contains(rock,[index+xMin,i])) return '#';
             return '.';
         }).join(''));
     }
+    return rockString;
 }
 
 // params
@@ -57,4 +57,4 @@ traces.forEach(trace => expandTrace(trace).forEach(co => {
 // console.log(expandTrace(traces[0]));
 
 // draw rock
-draw();
+fs.writeFileSync('rock.txt',draw().join('\r\n'));

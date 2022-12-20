@@ -33,8 +33,9 @@ function draw() {
     var xMax = Math.max(...rock.map(el => el[0]));
     var yMin = 0;
     var yMax = Math.max(...rock.map(el => el[1]));
+    var rockString = [];
     for (let i = yMin; i <= yMax; i++) {
-        console.log(Array(xMax - xMin + 1).fill(1).map((_, index) => {
+        rockString.push(Array(xMax - xMin + 1).fill(1).map((_, index) => {
             if ((index + xMin) === dropPos[0] && i === dropPos[1])
                 return '+';
             if (contains(rock, [index + xMin, i]))
@@ -42,6 +43,7 @@ function draw() {
             return '.';
         }).join(''));
     }
+    return rockString;
 }
 // params
 const dropPos = [500, 0];
@@ -59,5 +61,5 @@ traces.forEach(trace => expandTrace(trace).forEach(co => {
 // console.log(expand(traces[0][0],traces[0][1]))
 // console.log(expandTrace(traces[0]));
 // draw rock
-draw();
+fs.writeFileSync('rock.txt', draw().join('\r\n'));
 //# sourceMappingURL=day14.js.map
