@@ -28,25 +28,35 @@ function expandTrace(trace) {
         expTrace = expTrace.concat(expand(trace[i - 1], trace[i]).slice(1));
     return expTrace;
 }
-function draw() {
-    var xMin = Math.min(...rock.map(el => el[0]));
-    var xMax = Math.max(...rock.map(el => el[0]));
-    var yMin = 0;
-    var yMax = Math.max(...rock.map(el => el[1]));
-    var rockString = [];
-    for (let i = yMin; i <= yMax; i++) {
-        rockString.push(Array(xMax - xMin + 1).fill(1).map((_, index) => {
-            if ((index + xMin) === dropPos[0] && i === dropPos[1])
-                return '+';
-            if (contains(rock, [index + xMin, i]))
-                return '#';
-            return '.';
-        }).join(''));
-    }
-    return rockString;
+function rockCoor(pos) {
+    return [pos[0] - xMin, pos[1] - yMin];
+}
+function inRock(pos) {
+    return pos[0] >= xMin && pos[0] <= xMax && pos[1] >= yMin && pos[1] <= yMax;
+}
+function isFree(pos) {
+    return (!inRock(pos)) || rockString[rockCoor(pos)[1]][rockCoor(pos)[0]] === a;
+}
+function finish(down, left, right) {
+    return (!inRock(down)) ||
+        ((!isFree(down)) && (!inRock(left))) ||
+        ((!isFree(down)) && (!isFree(left)) && (!inRock(right)));
+}
+function next(down, left, right) {
+    if (inRock(down) && isFree(down))
+        return down;
+    if (inRock(left) && isFree(left))
+        return left;
+    if (inRock(right) && isFree(right))
+        return right;
+    return null;
 }
 // params
 const dropPos = [500, 0];
+const d = '+';
+const r = '#';
+const a = '.';
+const s = 'o';
 // parse
 const input = fs.readFileSync('traces.txt', 'utf8');
 const traces = input.split('\r\n').map(el => el.split('->').map(co => co.trim().split(',').map(num => +num)));
@@ -60,6 +70,47 @@ traces.forEach(trace => expandTrace(trace).forEach(co => {
 // console.log(traces[0]);
 // console.log(expand(traces[0][0],traces[0][1]))
 // console.log(expandTrace(traces[0]));
-// draw rock
-fs.writeFileSync('rock.txt', draw().join('\r\n'));
+// convert to string array
+var xMin = Math.min(...rock.map(el => el[0]));
+var xMax = Math.max(...rock.map(el => el[0]));
+var yMin = 0;
+var yMax = Math.max(...rock.map(el => el[1]));
+var rockString = [];
+for (let i = yMin; i <= yMax; i++) {
+    rockString.push(Array(xMax - xMin + 1).fill(1).map((_, index) => {
+        if ((index + xMin) === dropPos[0] && i === dropPos[1])
+            return d;
+        if (contains(rock, [index + xMin, i]))
+            return r;
+        return a;
+    }));
+}
+fs.writeFileSync('rock.txt', rockString.map(el => el.join('')).join('\r\n'));
+// drop sands
+var finished = false;
+var sands = 0;
+while (!finished) {
+    var curPos = dropPos;
+    while (true) {
+        let down = [curPos[0], curPos[1] + 1];
+        let left = [curPos[0] - 1, curPos[1] + 1];
+        let right = [curPos[0] + 1, curPos[1] + 1];
+        let nextPos = next(down, left, right);
+        finished = finish(down, left, right);
+        if (finished)
+            break;
+        if (nextPos === null) {
+            rockString[rockCoor(curPos)[1]][rockCoor(curPos)[0]] = s;
+            break;
+        }
+        curPos = nextPos;
+    }
+    if (!finished) {
+        sands++;
+        if (sands % 100 === 0)
+            console.log(" " + sands + " sands");
+    }
+}
+console.log(" " + sands + " sands");
+fs.writeFileSync("rock_" + sands + ".txt", rockString.map(el => el.join('')).join('\r\n'));
 //# sourceMappingURL=day14.js.map
