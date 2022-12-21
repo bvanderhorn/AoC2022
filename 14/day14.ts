@@ -51,7 +51,7 @@ const d = '+';
 const r = '#';
 const a = '.';
 const s = 'o';
-const part: number = 2;
+const part: number = 1;
 
 // parse
 const input: string = fs.readFileSync('traces.txt', 'utf8');
@@ -69,7 +69,6 @@ var xMin = Math.min(...rock.map(el => el[0]));
 var xMax = Math.max(...rock.map(el => el[0]));
 var yMin = 0;
 var yMax = Math.max(...rock.map(el => el[1]));
-
 
 // add floor for part 2
 if (part === 2) {
@@ -111,7 +110,7 @@ while (!finished){
     }
     if (!finished){
         sands++
-        if (sands%100 === 0) console.log(" " + sands + " sands");
+        if (sands%(part===2 ? 1000 : 100) === 0) console.log(" " + sands + " sands");
     }
     
 }

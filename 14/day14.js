@@ -58,7 +58,7 @@ const d = '+';
 const r = '#';
 const a = '.';
 const s = 'o';
-const part = 2;
+const part = 1;
 // parse
 const input = fs.readFileSync('traces.txt', 'utf8');
 const traces = input.split('\r\n').map(el => el.split('->').map(co => co.trim().split(',').map(num => +num)));
@@ -116,7 +116,7 @@ while (!finished) {
     }
     if (!finished) {
         sands++;
-        if (sands % 100 === 0)
+        if (sands % (part === 2 ? 1000 : 100) === 0)
             console.log(" " + sands + " sands");
     }
 }
