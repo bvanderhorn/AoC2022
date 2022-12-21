@@ -30,12 +30,13 @@ function inRock(pos:number[]) : boolean {
     return pos[0] >= xMin && pos[0] <= xMax && pos[1] >= yMin && pos[1]<=yMax;
 }
 function isFree(pos:number[]) : boolean {
-    return (!inRock(pos)) || rockString[rockCoor(pos)[1]][rockCoor(pos)[0]] === a;
+    return (!inRock(pos)) || [a,d].includes(rockString[rockCoor(pos)[1]][rockCoor(pos)[0]]);
 }
 function finish(down:number[],left:number[],right:number[]) : boolean {
     return  (!inRock(down)) ||
             ((!isFree(down)) && (!inRock(left))) ||
-            ((!isFree(down)) && (!isFree(left)) && (!inRock(right)));
+            ((!isFree(down)) && (!isFree(left)) && (!inRock(right))) ||
+            (!isFree(dropPos));
 }
 function next(down:number[],left:number[],right:number[]) : number[] {
     if (inRock(down) && isFree(down)) return down;
@@ -50,6 +51,7 @@ const d = '+';
 const r = '#';
 const a = '.';
 const s = 'o';
+const part: number = 2;
 
 // parse
 const input: string = fs.readFileSync('traces.txt', 'utf8');
@@ -61,15 +63,24 @@ var rock : number[][] = [];
 traces.forEach(trace => expandTrace(trace).forEach(co => {
     if (!contains(rock, co)) rock.push(co);
 }));
-// console.log(traces[0]);
-// console.log(expand(traces[0][0],traces[0][1]))
-// console.log(expandTrace(traces[0]));
 
 // convert to string array
 var xMin = Math.min(...rock.map(el => el[0]));
 var xMax = Math.max(...rock.map(el => el[0]));
 var yMin = 0;
 var yMax = Math.max(...rock.map(el => el[1]));
+
+
+// add floor for part 2
+if (part === 2) {
+    var add = (yMax+2);
+    for (let i=-add;i<=add;i++) rock.push([dropPos[0]+i,yMax+2]);
+    yMax += 2;
+    xMin = Math.min(xMin, dropPos[0]-add);
+    xMax = Math.max(xMax, dropPos[0]+add);
+}
+/////
+
 var rockString: string[][] = [];
 for (let i=yMin;i<=yMax;i++){
     rockString.push(Array(xMax-xMin+1).fill(1).map((_,index) => {
@@ -78,7 +89,7 @@ for (let i=yMin;i<=yMax;i++){
         return a;
     }));
 }
-fs.writeFileSync('rock.txt',rockString.map(el => el.join('')).join('\r\n'));
+fs.writeFileSync('rock'+ (part === 2 ? '_part2': '') + '.txt',rockString.map(el => el.join('')).join('\r\n'));
 
 // drop sands
 var finished = false;
@@ -105,4 +116,4 @@ while (!finished){
     
 }
 console.log(" " + sands + " sands");
-fs.writeFileSync("rock_" + sands + ".txt",rockString.map(el => el.join('')).join('\r\n'));
+fs.writeFileSync("rock_" + sands + (part === 2 ? '_part2': '') + ".txt",rockString.map(el => el.join('')).join('\r\n'));
