@@ -6,12 +6,6 @@ type Valve = {
     to: string[]
     pathmap:Distance[]
 }
-type Flow = {
-    name: string, 
-    minute: number,
-    rate: number,
-    flow: number
-}
 type Distance = {
     name:string,
     distance:number,
@@ -19,7 +13,6 @@ type Distance = {
     to: string[],
     path:string[]
 }
-
 type Score = {
     flow: number,
     path: string[]
@@ -38,7 +31,7 @@ function getValveIndex(valve:string) : number {
     return valves.map((v,index)=> v.name==valve ? index : -1).filter(i=>i>=0)[0];
 }
 function shortestPathMap(valve:string): Distance[] {
-    // returns a list of shortest paths from given valve to valves on matching 'valves' indices
+    // returns a list of shortest paths from given valve to all other valves using Dijkstra
     function getNearestUnvisited() : Distance {
         return dist.filter(d=> !vstd.includes(d.name)).sort((a,b)=> a.distance < b.distance ? -1 : 1)[0];
     }
@@ -76,14 +69,14 @@ function shortestPathMap(valve:string): Distance[] {
         }
         vstd.push(current.name);
     }
-    // add each distance name to path and update potential
+    // add each distance name to path
     dist.forEach(d=>{
         d.path.push(d.name);
     });
     return dist;
 }
 
-function getMaxWithRemaining(curValve:string,rem:string[],remMin:number,prevPath: string[]) : Score[] {
+function getMaxWithRemaining(curValve:string,rem:string[],remMin:number, depth:number) : Score[] {
     // recursive function trying each remaining valve as next to see which one will return the highest total flow
     var scores : Score[] = [];
     var cur = getValve(curValve);
@@ -92,7 +85,7 @@ function getMaxWithRemaining(curValve:string,rem:string[],remMin:number,prevPath
         let dist = cur.pathmap.filter(p=>p.name===vi.name)[0].distance;
         if (remMin-dist-1 <= 0) continue;
         else {
-            let sc = getMaxWithRemaining(rem[i], rem.filter(v=>v!=vi.name), remMin - dist-1,[...prevPath,rem[i]]);
+            let sc = getMaxWithRemaining(rem[i], rem.filter(v=>v!=vi.name), remMin - dist-1,depth+1);
             let fl = (remMin - dist-1)*vi.rate;
             let path = [];
             if (sc.length >0) {
@@ -105,11 +98,7 @@ function getMaxWithRemaining(curValve:string,rem:string[],remMin:number,prevPath
                 path: path
             });
         }
-        if (prevPath.length===1) {
-            var totalCount = (valves.length-1)*(valves.length-2);
-            var curCount = (getValveIndex(prevPath[0])-1)*(valves.length-2) + i + 1;
-            console.log(" " + (curCount/totalCount*100).toPrecision(2) + "% done");
-        }
+        if (depth===0) console.log(" " + Math.round((i+1)/rem.length*100) + "% done");
     }
     return scores.sort((a,b)=> a.flow > b.flow ? -1 : 1);
 }
@@ -142,5 +131,5 @@ var longestDistance = valves.map(v=> v.pathmap.sort((a,b)=>a.distance > b.distan
 console.log(" longest distance: " + stringify(longestDistance));
 
 // permutator
-var maxScore = getMaxWithRemaining(start, valves.map(v=>v.name).filter(v=>v!=start),minutes,[])[0];
+var maxScore = getMaxWithRemaining(start, valves.map(v=>v.name).filter(v=>v!=start),minutes,0)[0];
 console.log(stringify(maxScore));
