@@ -24,21 +24,21 @@
         "flow": 135
     },
     {
-        "name": "CG",
-        "minute": 22,
-        "rate": 10,
-        "flow": 80
+        "name": "PI",
+        "minute": 21,
+        "rate": 4,
+        "flow": 36
+    },
+    {
+        "name": "GJ",
+        "minute": 24,
+        "rate": 21,
+        "flow": 126
     },
     {
         "name": "WI",
-        "minute": 26,
+        "minute": 27,
         "rate": 13,
-        "flow": 52
-    },
-    {
-        "name": "ZR",
-        "minute": 29,
-        "rate": 11,
-        "flow": 11
+        "flow": 39
     }
 ]

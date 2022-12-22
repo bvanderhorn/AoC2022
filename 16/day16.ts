@@ -4,6 +4,7 @@ type Valve = {
     name: string,
     rate: number,
     to: string[]
+    pathmap:Distance[]
 }
 type Flow = {
     name: string, 
@@ -14,6 +15,8 @@ type Flow = {
 type Distance = {
     name:string,
     distance:number,
+    rate: number,
+    potential:number,
     to: string[],
     path:string[]
 }
@@ -26,7 +29,9 @@ function getValve(valve:string) : Valve {
 function unvisited(valves:string[],visited:string[]) : string[] {
     return valves.filter(v=> !visited.includes(v));
 }
-
+function isOpen(valve:string) : boolean {
+    return flow.map(f=>f.name).includes(valve);
+}
 function shortestPathMap(valve:string): Distance[] {
     // returns a list of shortest paths from given valve to valves on matching 'valves' indices
     function getNearestUnvisited() : Distance {
@@ -45,6 +50,8 @@ function shortestPathMap(valve:string): Distance[] {
         return {
             name: v.name,
             distance: v.name === valve ? 0 : inf,
+            rate: v.rate,
+            potential: 0,
             to: v.to,
             path: []
         }
@@ -64,24 +71,17 @@ function shortestPathMap(valve:string): Distance[] {
         }
         vstd.push(current.name);
     }
-
-    return dist;
+    // add each distance name to path and update potential
+    dist.forEach(d=>{
+        d.path.push(d.name);
+        d.potential = (minutes-d.distance)*d.rate;
+    });
+    return dist.sort((a,b)=> a.potential > b.potential ? -1 : 1);
 }
-function nextValve(current:Valve, visited:string[]) : Valve {
-    // if not all tunnel valves (TV) visited: sort unvisited TV on rate desc, return first
-    // else: sort TV on amount of unvisited TV desc, return first
-    var unv = unvisited(current.to,visited);
-    if (unv.length > 0) {
-        let unvisitedOnRateDesc = unv.map(v=>getValve(v)).sort((a,b) => a.rate > b.rate ? -1 : 1);
-        console.log("   not all visited, sort on rate desc: " + JSON.stringify(unvisitedOnRateDesc.map(v=>{return {n:v.name,r:v.rate}})));
-
-        return unvisitedOnRateDesc[0];
-    }
-    else {
-        let sortedOnUnvisitedTVDesc = current.to.map(v=>getValve(v)).sort((a,b) => unvisited(a.to,visited).length > unvisited(b.to,visited).length ? -1 : 1);
-        console.log("   all visited, sort on unvisited TV desc: " + JSON.stringify(sortedOnUnvisitedTVDesc.map(v=>{return {n:v.name,unv:unvisited(v.to,visited).length}})));
-        return sortedOnUnvisitedTVDesc[0];
-    }
+function highestPotential(valve:string,minute:number) : Distance {
+    var distances = getValve(valve).pathmap.filter(d=>d.rate > 0 && !isOpen(d.name));
+    distances.forEach(d=>d.potential = (minutes-minute-d.distance)*d.rate);
+    return distances.sort((a,b) => a.potential > b.potential ? -1 : 1)[0];
 }
 
 // params
@@ -95,24 +95,39 @@ const valves: Valve[] = input.split('\r\n').map(v => {
     return {
         name: vMatch[1],
         rate: +vMatch[2],
-        to: vMatch[3].split(',').map(n => n.trim()).sort()
+        to: vMatch[3].split(',').map(n => n.trim()).sort(),
+        pathmap: []
     }
 }).sort((a,b) => a.name < b.name ? -1 : 1);
-// console.log(valves.map(v=>JSON.stringify(v)).slice(0,3).join('\r\n'));
-fs.writeFileSync('valves_sorted.txt',valves.map(v=>JSON.stringify(v)).join('\r\n'));
+
+// add shortest path maps
+valves.forEach(v=> v.pathmap = shortestPathMap(v.name));
+fs.writeFileSync('valves_sorted.json',stringify(valves));
+fs.writeFileSync("valve_AA.json",stringify(valves[0]));
+var longestDistance = valves.map(v=> v.pathmap.sort((a,b)=>a.distance > b.distance ? -1 : 1)[0]).sort((a,b)=>a.distance > b.distance ? -1 : 1)[0];
+// console.log(" longest distance: " + stringify(longestDistance));
 
 var visited: string[] = [start];
 var flow: Flow[] = [];
 var cur = getValve(start);
-for (let m=1;m<=minutes;m++) {
-    console.log(" minute " + m + ", at " + cur.name + " (r " + cur.rate + "): ");
-    if (cur.rate === 0 || flow.map(f=>f.name).includes(cur.name)) {
-        // if rate is 0 or valve already opened: move to next valve
-        cur = nextValve(cur,visited);
-        if (!visited.includes(cur.name)) visited.push(cur.name);
-        console.log("   move to " + cur.name);
-    } else {
-        // else: open valve and count future flow
+for (let m=1;m<minutes;m++) {
+    // Instead:
+    // 1. for the current valve and the current minute, find out the path to which yet-unopened valve has the highest flow potential
+    // 2. If current valve is unopened and rate > 0:
+    //     a. calculate the flow potential of opening the current valve
+    //     b. calculate the path with the highest flow potential if the path would continue another minute from now
+    //     c. add (a) and (b) 
+    //     d. if higher than (1.): open valve and continue
+    //        else: move to next valve on path from (1.) and continue
+    var comment = "minute " + m + ", at " + cur.name + " (r " + cur.rate + "): ";
+    var hp = highestPotential(cur.name, m);
+    var hpPot = hp.potential;
+    // calculate current potential, add future path potential on m+1
+    var hpplus = highestPotential(cur.name, m+1);
+    var hppPot = hpplus.potential;
+    var cp = (minutes-m)*cur.rate;
+    var openBasedOnPotential : boolean = (cp+hppPot) > hpPot;
+    if (cur.rate > 0 && (!isOpen(cur.name)) && openBasedOnPotential) {
         let fl = (minutes-m)*cur.rate;
         flow.push({
             name:cur.name,
@@ -120,9 +135,14 @@ for (let m=1;m<=minutes;m++) {
             rate: cur.rate,
             flow: fl
         });
-        console.log("   open and count flow " + (minutes-m) + "*"+cur.rate+" = " + fl );
+        console.log(comment +"open and count flow " + (minutes-m) + "*"+cur.rate+" = " + fl );
+    } else {
+        // if rate is 0 or valve already opened or not worth opening valve: move to next valve on the highest-potential track
+        cur = getValve(hp.path[1]);
+        if (!visited.includes(cur.name)) visited.push(cur.name);
+        console.log(comment +"move to " + cur.name + " (towards " + hp.name + ": dist. " + hp.distance + ", potential " + hpPot + ")");
     }
 }
 console.log("total flow: " + flow.map(f=>f.flow).reduce((a,b)=> a+b,0));
-fs.writeFileSync("flow.txt",stringify(flow));
-fs.writeFileSync("shortest_path_map_AA.txt",stringify(shortestPathMap("AA")));
+fs.writeFileSync("flow.json",stringify(flow));
+
