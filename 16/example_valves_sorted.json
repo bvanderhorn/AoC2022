@@ -9,96 +9,6 @@
         ],
         "pathmap": [
             {
-                "name": "JJ",
-                "distance": 2,
-                "rate": 21,
-                "potential": 588,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "AA",
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
-                "name": "DD",
-                "distance": 1,
-                "rate": 20,
-                "potential": 580,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "AA",
-                    "DD"
-                ]
-            },
-            {
-                "name": "HH",
-                "distance": 5,
-                "rate": 22,
-                "potential": 550,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 1,
-                "rate": 13,
-                "potential": 377,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 2,
-                "rate": 3,
-                "potential": 84,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "AA",
-                    "DD",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 2,
-                "rate": 2,
-                "potential": 56,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "AA",
-                    "BB",
-                    "CC"
-                ]
-            },
-            {
                 "name": "AA",
                 "distance": 0,
                 "rate": 0,
@@ -113,50 +23,93 @@
                 ]
             },
             {
-                "name": "FF",
-                "distance": 3,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 4,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
+                "name": "BB",
                 "distance": 1,
-                "rate": 0,
+                "rate": 13,
                 "potential": 0,
                 "to": [
                     "AA",
-                    "JJ"
+                    "CC"
                 ],
                 "path": [
                     "AA",
+                    "BB"
+                ]
+            },
+            {
+                "name": "CC",
+                "distance": 2,
+                "rate": 2,
+                "potential": 0,
+                "to": [
+                    "BB",
+                    "DD"
+                ],
+                "path": [
+                    "AA",
+                    "BB",
+                    "CC"
+                ]
+            },
+            {
+                "name": "DD",
+                "distance": 1,
+                "rate": 20,
+                "potential": 0,
+                "to": [
+                    "AA",
+                    "CC",
+                    "EE"
+                ],
+                "path": [
+                    "AA",
+                    "DD"
+                ]
+            },
+            {
+                "name": "EE",
+                "distance": 2,
+                "rate": 3,
+                "potential": 0,
+                "to": [
+                    "DD",
+                    "FF"
+                ],
+                "path": [
+                    "AA",
+                    "DD",
+                    "EE"
+                ]
+            },
+            {
+                "name": "HH",
+                "distance": 5,
+                "rate": 22,
+                "potential": 0,
+                "to": [
+                    "GG"
+                ],
+                "path": [
+                    "AA",
+                    "DD",
+                    "EE",
+                    "FF",
+                    "GG",
+                    "HH"
+                ]
+            },
+            {
+                "name": "JJ",
+                "distance": 2,
+                "rate": 21,
+                "potential": 0,
+                "to": [
                     "II"
+                ],
+                "path": [
+                    "AA",
+                    "II",
+                    "JJ"
                 ]
             }
         ]
@@ -170,98 +123,6 @@
         ],
         "pathmap": [
             {
-                "name": "JJ",
-                "distance": 3,
-                "rate": 21,
-                "potential": 567,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "BB",
-                    "AA",
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
-                "name": "DD",
-                "distance": 2,
-                "rate": 20,
-                "potential": 560,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "BB",
-                    "AA",
-                    "DD"
-                ]
-            },
-            {
-                "name": "HH",
-                "distance": 6,
-                "rate": 22,
-                "potential": 528,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "BB",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 0,
-                "rate": 13,
-                "potential": 390,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 3,
-                "rate": 3,
-                "potential": 81,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "BB",
-                    "AA",
-                    "DD",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 1,
-                "rate": 2,
-                "potential": 58,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "BB",
-                    "CC"
-                ]
-            },
-            {
                 "name": "AA",
                 "distance": 1,
                 "rate": 0,
@@ -277,53 +138,95 @@
                 ]
             },
             {
-                "name": "FF",
-                "distance": 4,
-                "rate": 0,
+                "name": "BB",
+                "distance": 0,
+                "rate": 13,
                 "potential": 0,
                 "to": [
-                    "EE",
-                    "GG"
+                    "AA",
+                    "CC"
                 ],
                 "path": [
-                    "BB",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF"
+                    "BB"
                 ]
             },
             {
-                "name": "GG",
-                "distance": 5,
-                "rate": 0,
+                "name": "CC",
+                "distance": 1,
+                "rate": 2,
                 "potential": 0,
                 "to": [
-                    "FF",
-                    "HH"
+                    "BB",
+                    "DD"
                 ],
                 "path": [
                     "BB",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG"
+                    "CC"
                 ]
             },
             {
-                "name": "II",
+                "name": "DD",
                 "distance": 2,
-                "rate": 0,
+                "rate": 20,
                 "potential": 0,
                 "to": [
                     "AA",
-                    "JJ"
+                    "CC",
+                    "EE"
                 ],
                 "path": [
                     "BB",
                     "AA",
+                    "DD"
+                ]
+            },
+            {
+                "name": "EE",
+                "distance": 3,
+                "rate": 3,
+                "potential": 0,
+                "to": [
+                    "DD",
+                    "FF"
+                ],
+                "path": [
+                    "BB",
+                    "AA",
+                    "DD",
+                    "EE"
+                ]
+            },
+            {
+                "name": "HH",
+                "distance": 6,
+                "rate": 22,
+                "potential": 0,
+                "to": [
+                    "GG"
+                ],
+                "path": [
+                    "BB",
+                    "AA",
+                    "DD",
+                    "EE",
+                    "FF",
+                    "GG",
+                    "HH"
+                ]
+            },
+            {
+                "name": "JJ",
+                "distance": 3,
+                "rate": 21,
+                "potential": 0,
+                "to": [
                     "II"
+                ],
+                "path": [
+                    "BB",
+                    "AA",
+                    "II",
+                    "JJ"
                 ]
             }
         ]
@@ -337,96 +240,6 @@
         ],
         "pathmap": [
             {
-                "name": "DD",
-                "distance": 1,
-                "rate": 20,
-                "potential": 580,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "CC",
-                    "DD"
-                ]
-            },
-            {
-                "name": "HH",
-                "distance": 5,
-                "rate": 22,
-                "potential": 550,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "CC",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "JJ",
-                "distance": 4,
-                "rate": 21,
-                "potential": 546,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "CC",
-                    "BB",
-                    "AA",
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 1,
-                "rate": 13,
-                "potential": 377,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "CC",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 2,
-                "rate": 3,
-                "potential": 84,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "CC",
-                    "DD",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 0,
-                "rate": 2,
-                "potential": 60,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "CC"
-                ]
-            },
-            {
                 "name": "AA",
                 "distance": 2,
                 "rate": 0,
@@ -443,52 +256,93 @@
                 ]
             },
             {
-                "name": "FF",
-                "distance": 3,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "CC",
-                    "DD",
-                    "EE",
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 4,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "CC",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
-                "distance": 3,
-                "rate": 0,
+                "name": "BB",
+                "distance": 1,
+                "rate": 13,
                 "potential": 0,
                 "to": [
                     "AA",
-                    "JJ"
+                    "CC"
+                ],
+                "path": [
+                    "CC",
+                    "BB"
+                ]
+            },
+            {
+                "name": "CC",
+                "distance": 0,
+                "rate": 2,
+                "potential": 0,
+                "to": [
+                    "BB",
+                    "DD"
+                ],
+                "path": [
+                    "CC"
+                ]
+            },
+            {
+                "name": "DD",
+                "distance": 1,
+                "rate": 20,
+                "potential": 0,
+                "to": [
+                    "AA",
+                    "CC",
+                    "EE"
+                ],
+                "path": [
+                    "CC",
+                    "DD"
+                ]
+            },
+            {
+                "name": "EE",
+                "distance": 2,
+                "rate": 3,
+                "potential": 0,
+                "to": [
+                    "DD",
+                    "FF"
+                ],
+                "path": [
+                    "CC",
+                    "DD",
+                    "EE"
+                ]
+            },
+            {
+                "name": "HH",
+                "distance": 5,
+                "rate": 22,
+                "potential": 0,
+                "to": [
+                    "GG"
+                ],
+                "path": [
+                    "CC",
+                    "DD",
+                    "EE",
+                    "FF",
+                    "GG",
+                    "HH"
+                ]
+            },
+            {
+                "name": "JJ",
+                "distance": 4,
+                "rate": 21,
+                "potential": 0,
+                "to": [
+                    "II"
                 ],
                 "path": [
                     "CC",
                     "BB",
                     "AA",
-                    "II"
+                    "II",
+                    "JJ"
                 ]
             }
         ]
@@ -503,94 +357,6 @@
         ],
         "pathmap": [
             {
-                "name": "DD",
-                "distance": 0,
-                "rate": 20,
-                "potential": 600,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "DD"
-                ]
-            },
-            {
-                "name": "HH",
-                "distance": 4,
-                "rate": 22,
-                "potential": 572,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "JJ",
-                "distance": 3,
-                "rate": 21,
-                "potential": 567,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "DD",
-                    "AA",
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 2,
-                "rate": 13,
-                "potential": 364,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "DD",
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 1,
-                "rate": 3,
-                "potential": 87,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "DD",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 1,
-                "rate": 2,
-                "potential": 58,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "DD",
-                    "CC"
-                ]
-            },
-            {
                 "name": "AA",
                 "distance": 1,
                 "rate": 0,
@@ -606,49 +372,91 @@
                 ]
             },
             {
-                "name": "FF",
+                "name": "BB",
                 "distance": 2,
-                "rate": 0,
+                "rate": 13,
                 "potential": 0,
                 "to": [
-                    "EE",
-                    "GG"
+                    "AA",
+                    "CC"
                 ],
                 "path": [
                     "DD",
-                    "EE",
+                    "AA",
+                    "BB"
+                ]
+            },
+            {
+                "name": "CC",
+                "distance": 1,
+                "rate": 2,
+                "potential": 0,
+                "to": [
+                    "BB",
+                    "DD"
+                ],
+                "path": [
+                    "DD",
+                    "CC"
+                ]
+            },
+            {
+                "name": "DD",
+                "distance": 0,
+                "rate": 20,
+                "potential": 0,
+                "to": [
+                    "AA",
+                    "CC",
+                    "EE"
+                ],
+                "path": [
+                    "DD"
+                ]
+            },
+            {
+                "name": "EE",
+                "distance": 1,
+                "rate": 3,
+                "potential": 0,
+                "to": [
+                    "DD",
                     "FF"
+                ],
+                "path": [
+                    "DD",
+                    "EE"
                 ]
             },
             {
-                "name": "GG",
-                "distance": 3,
-                "rate": 0,
+                "name": "HH",
+                "distance": 4,
+                "rate": 22,
                 "potential": 0,
                 "to": [
-                    "FF",
-                    "HH"
+                    "GG"
                 ],
                 "path": [
                     "DD",
                     "EE",
                     "FF",
-                    "GG"
+                    "GG",
+                    "HH"
                 ]
             },
             {
-                "name": "II",
-                "distance": 2,
-                "rate": 0,
+                "name": "JJ",
+                "distance": 3,
+                "rate": 21,
                 "potential": 0,
                 "to": [
-                    "AA",
-                    "JJ"
+                    "II"
                 ],
                 "path": [
                     "DD",
                     "AA",
-                    "II"
+                    "II",
+                    "JJ"
                 ]
             }
         ]
@@ -662,96 +470,6 @@
         ],
         "pathmap": [
             {
-                "name": "HH",
-                "distance": 3,
-                "rate": 22,
-                "potential": 594,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "DD",
-                "distance": 1,
-                "rate": 20,
-                "potential": 580,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "EE",
-                    "DD"
-                ]
-            },
-            {
-                "name": "JJ",
-                "distance": 4,
-                "rate": 21,
-                "potential": 546,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "EE",
-                    "DD",
-                    "AA",
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 3,
-                "rate": 13,
-                "potential": 351,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "EE",
-                    "DD",
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 0,
-                "rate": 3,
-                "potential": 90,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 2,
-                "rate": 2,
-                "potential": 56,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "EE",
-                    "DD",
-                    "CC"
-                ]
-            },
-            {
                 "name": "AA",
                 "distance": 2,
                 "rate": 0,
@@ -768,118 +486,15 @@
                 ]
             },
             {
-                "name": "FF",
-                "distance": 1,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "EE",
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 2,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "EE",
-                    "FF",
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
-                "distance": 3,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "AA",
-                    "JJ"
-                ],
-                "path": [
-                    "EE",
-                    "DD",
-                    "AA",
-                    "II"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "FF",
-        "rate": 0,
-        "to": [
-            "EE",
-            "GG"
-        ],
-        "pathmap": [
-            {
-                "name": "HH",
-                "distance": 2,
-                "rate": 22,
-                "potential": 616,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "DD",
-                "distance": 2,
-                "rate": 20,
-                "potential": 560,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "FF",
-                    "EE",
-                    "DD"
-                ]
-            },
-            {
-                "name": "JJ",
-                "distance": 5,
-                "rate": 21,
-                "potential": 525,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA",
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
                 "name": "BB",
-                "distance": 4,
+                "distance": 3,
                 "rate": 13,
-                "potential": 338,
+                "potential": 0,
                 "to": [
                     "AA",
                     "CC"
                 ],
                 "path": [
-                    "FF",
                     "EE",
                     "DD",
                     "AA",
@@ -887,265 +502,77 @@
                 ]
             },
             {
-                "name": "EE",
-                "distance": 1,
-                "rate": 3,
-                "potential": 87,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "FF",
-                    "EE"
-                ]
-            },
-            {
                 "name": "CC",
-                "distance": 3,
+                "distance": 2,
                 "rate": 2,
-                "potential": 54,
+                "potential": 0,
                 "to": [
                     "BB",
                     "DD"
                 ],
                 "path": [
-                    "FF",
                     "EE",
                     "DD",
                     "CC"
                 ]
             },
             {
-                "name": "AA",
-                "distance": 3,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "BB",
-                    "DD",
-                    "II"
-                ],
-                "path": [
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA"
-                ]
-            },
-            {
-                "name": "FF",
-                "distance": 0,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 1,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "FF",
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
-                "distance": 4,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "AA",
-                    "JJ"
-                ],
-                "path": [
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA",
-                    "II"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "GG",
-        "rate": 0,
-        "to": [
-            "FF",
-            "HH"
-        ],
-        "pathmap": [
-            {
-                "name": "HH",
-                "distance": 1,
-                "rate": 22,
-                "potential": 638,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
                 "name": "DD",
-                "distance": 3,
+                "distance": 1,
                 "rate": 20,
-                "potential": 540,
+                "potential": 0,
                 "to": [
                     "AA",
                     "CC",
                     "EE"
                 ],
                 "path": [
-                    "GG",
-                    "FF",
                     "EE",
                     "DD"
                 ]
             },
             {
+                "name": "EE",
+                "distance": 0,
+                "rate": 3,
+                "potential": 0,
+                "to": [
+                    "DD",
+                    "FF"
+                ],
+                "path": [
+                    "EE"
+                ]
+            },
+            {
+                "name": "HH",
+                "distance": 3,
+                "rate": 22,
+                "potential": 0,
+                "to": [
+                    "GG"
+                ],
+                "path": [
+                    "EE",
+                    "FF",
+                    "GG",
+                    "HH"
+                ]
+            },
+            {
                 "name": "JJ",
-                "distance": 6,
+                "distance": 4,
                 "rate": 21,
-                "potential": 504,
+                "potential": 0,
                 "to": [
                     "II"
                 ],
                 "path": [
-                    "GG",
-                    "FF",
                     "EE",
                     "DD",
                     "AA",
                     "II",
                     "JJ"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 5,
-                "rate": 13,
-                "potential": 325,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 2,
-                "rate": 3,
-                "potential": 84,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "GG",
-                    "FF",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 4,
-                "rate": 2,
-                "potential": 52,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "CC"
-                ]
-            },
-            {
-                "name": "AA",
-                "distance": 4,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "BB",
-                    "DD",
-                    "II"
-                ],
-                "path": [
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA"
-                ]
-            },
-            {
-                "name": "FF",
-                "distance": 1,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "GG",
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 0,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
-                "distance": 5,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "AA",
-                    "JJ"
-                ],
-                "path": [
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA",
-                    "II"
                 ]
             }
         ]
@@ -1158,22 +585,66 @@
         ],
         "pathmap": [
             {
-                "name": "HH",
-                "distance": 0,
-                "rate": 22,
-                "potential": 660,
+                "name": "AA",
+                "distance": 5,
+                "rate": 0,
+                "potential": 0,
                 "to": [
-                    "GG"
+                    "BB",
+                    "DD",
+                    "II"
                 ],
                 "path": [
-                    "HH"
+                    "HH",
+                    "GG",
+                    "FF",
+                    "EE",
+                    "DD",
+                    "AA"
+                ]
+            },
+            {
+                "name": "BB",
+                "distance": 6,
+                "rate": 13,
+                "potential": 0,
+                "to": [
+                    "AA",
+                    "CC"
+                ],
+                "path": [
+                    "HH",
+                    "GG",
+                    "FF",
+                    "EE",
+                    "DD",
+                    "AA",
+                    "BB"
+                ]
+            },
+            {
+                "name": "CC",
+                "distance": 5,
+                "rate": 2,
+                "potential": 0,
+                "to": [
+                    "BB",
+                    "DD"
+                ],
+                "path": [
+                    "HH",
+                    "GG",
+                    "FF",
+                    "EE",
+                    "DD",
+                    "CC"
                 ]
             },
             {
                 "name": "DD",
                 "distance": 4,
                 "rate": 20,
-                "potential": 520,
+                "potential": 0,
                 "to": [
                     "AA",
                     "CC",
@@ -1185,13 +656,41 @@
                     "FF",
                     "EE",
                     "DD"
+                ]
+            },
+            {
+                "name": "EE",
+                "distance": 3,
+                "rate": 3,
+                "potential": 0,
+                "to": [
+                    "DD",
+                    "FF"
+                ],
+                "path": [
+                    "HH",
+                    "GG",
+                    "FF",
+                    "EE"
+                ]
+            },
+            {
+                "name": "HH",
+                "distance": 0,
+                "rate": 22,
+                "potential": 0,
+                "to": [
+                    "GG"
+                ],
+                "path": [
+                    "HH"
                 ]
             },
             {
                 "name": "JJ",
                 "distance": 7,
                 "rate": 21,
-                "potential": 483,
+                "potential": 0,
                 "to": [
                     "II"
                 ],
@@ -1204,293 +703,6 @@
                     "AA",
                     "II",
                     "JJ"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 6,
-                "rate": 13,
-                "potential": 312,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "HH",
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 3,
-                "rate": 3,
-                "potential": 81,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "HH",
-                    "GG",
-                    "FF",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 5,
-                "rate": 2,
-                "potential": 50,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "HH",
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "CC"
-                ]
-            },
-            {
-                "name": "AA",
-                "distance": 5,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "BB",
-                    "DD",
-                    "II"
-                ],
-                "path": [
-                    "HH",
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA"
-                ]
-            },
-            {
-                "name": "FF",
-                "distance": 2,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "HH",
-                    "GG",
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 1,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "HH",
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
-                "distance": 6,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "AA",
-                    "JJ"
-                ],
-                "path": [
-                    "HH",
-                    "GG",
-                    "FF",
-                    "EE",
-                    "DD",
-                    "AA",
-                    "II"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "II",
-        "rate": 0,
-        "to": [
-            "AA",
-            "JJ"
-        ],
-        "pathmap": [
-            {
-                "name": "JJ",
-                "distance": 1,
-                "rate": 21,
-                "potential": 609,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "II",
-                    "JJ"
-                ]
-            },
-            {
-                "name": "DD",
-                "distance": 2,
-                "rate": 20,
-                "potential": 560,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "DD"
-                ]
-            },
-            {
-                "name": "HH",
-                "distance": 6,
-                "rate": 22,
-                "potential": 528,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 2,
-                "rate": 13,
-                "potential": 364,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 3,
-                "rate": 3,
-                "potential": 81,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "DD",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 3,
-                "rate": 2,
-                "potential": 54,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "BB",
-                    "CC"
-                ]
-            },
-            {
-                "name": "AA",
-                "distance": 1,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "BB",
-                    "DD",
-                    "II"
-                ],
-                "path": [
-                    "II",
-                    "AA"
-                ]
-            },
-            {
-                "name": "FF",
-                "distance": 4,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "EE",
-                    "GG"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF"
-                ]
-            },
-            {
-                "name": "GG",
-                "distance": 5,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "FF",
-                    "HH"
-                ],
-                "path": [
-                    "II",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG"
-                ]
-            },
-            {
-                "name": "II",
-                "distance": 0,
-                "rate": 0,
-                "potential": 0,
-                "to": [
-                    "AA",
-                    "JJ"
-                ],
-                "path": [
-                    "II"
                 ]
             }
         ]
@@ -1503,104 +715,6 @@
         ],
         "pathmap": [
             {
-                "name": "JJ",
-                "distance": 0,
-                "rate": 21,
-                "potential": 630,
-                "to": [
-                    "II"
-                ],
-                "path": [
-                    "JJ"
-                ]
-            },
-            {
-                "name": "DD",
-                "distance": 3,
-                "rate": 20,
-                "potential": 540,
-                "to": [
-                    "AA",
-                    "CC",
-                    "EE"
-                ],
-                "path": [
-                    "JJ",
-                    "II",
-                    "AA",
-                    "DD"
-                ]
-            },
-            {
-                "name": "HH",
-                "distance": 7,
-                "rate": 22,
-                "potential": 506,
-                "to": [
-                    "GG"
-                ],
-                "path": [
-                    "JJ",
-                    "II",
-                    "AA",
-                    "DD",
-                    "EE",
-                    "FF",
-                    "GG",
-                    "HH"
-                ]
-            },
-            {
-                "name": "BB",
-                "distance": 3,
-                "rate": 13,
-                "potential": 351,
-                "to": [
-                    "AA",
-                    "CC"
-                ],
-                "path": [
-                    "JJ",
-                    "II",
-                    "AA",
-                    "BB"
-                ]
-            },
-            {
-                "name": "EE",
-                "distance": 4,
-                "rate": 3,
-                "potential": 78,
-                "to": [
-                    "DD",
-                    "FF"
-                ],
-                "path": [
-                    "JJ",
-                    "II",
-                    "AA",
-                    "DD",
-                    "EE"
-                ]
-            },
-            {
-                "name": "CC",
-                "distance": 4,
-                "rate": 2,
-                "potential": 52,
-                "to": [
-                    "BB",
-                    "DD"
-                ],
-                "path": [
-                    "JJ",
-                    "II",
-                    "AA",
-                    "BB",
-                    "CC"
-                ]
-            },
-            {
                 "name": "AA",
                 "distance": 2,
                 "rate": 0,
@@ -1617,31 +731,79 @@
                 ]
             },
             {
-                "name": "FF",
-                "distance": 5,
-                "rate": 0,
+                "name": "BB",
+                "distance": 3,
+                "rate": 13,
                 "potential": 0,
                 "to": [
-                    "EE",
-                    "GG"
+                    "AA",
+                    "CC"
                 ],
                 "path": [
                     "JJ",
                     "II",
                     "AA",
+                    "BB"
+                ]
+            },
+            {
+                "name": "CC",
+                "distance": 4,
+                "rate": 2,
+                "potential": 0,
+                "to": [
+                    "BB",
+                    "DD"
+                ],
+                "path": [
+                    "JJ",
+                    "II",
+                    "AA",
+                    "BB",
+                    "CC"
+                ]
+            },
+            {
+                "name": "DD",
+                "distance": 3,
+                "rate": 20,
+                "potential": 0,
+                "to": [
+                    "AA",
+                    "CC",
+                    "EE"
+                ],
+                "path": [
+                    "JJ",
+                    "II",
+                    "AA",
+                    "DD"
+                ]
+            },
+            {
+                "name": "EE",
+                "distance": 4,
+                "rate": 3,
+                "potential": 0,
+                "to": [
                     "DD",
-                    "EE",
                     "FF"
+                ],
+                "path": [
+                    "JJ",
+                    "II",
+                    "AA",
+                    "DD",
+                    "EE"
                 ]
             },
             {
-                "name": "GG",
-                "distance": 6,
-                "rate": 0,
+                "name": "HH",
+                "distance": 7,
+                "rate": 22,
                 "potential": 0,
                 "to": [
-                    "FF",
-                    "HH"
+                    "GG"
                 ],
                 "path": [
                     "JJ",
@@ -1650,21 +812,20 @@
                     "DD",
                     "EE",
                     "FF",
-                    "GG"
+                    "GG",
+                    "HH"
                 ]
             },
             {
-                "name": "II",
-                "distance": 1,
-                "rate": 0,
+                "name": "JJ",
+                "distance": 0,
+                "rate": 21,
                 "potential": 0,
                 "to": [
-                    "AA",
-                    "JJ"
+                    "II"
                 ],
                 "path": [
-                    "JJ",
-                    "II"
+                    "JJ"
                 ]
             }
         ]
