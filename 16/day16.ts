@@ -34,12 +34,6 @@ function writeFile(filename:string,content:string) {
 function getValve(valve:string) : Valve {
     return valves.filter(v=>v.name===valve)[0];
 }
-// function unvisited(valves:string[],visited:string[]) : string[] {
-//     return valves.filter(v=> !visited.includes(v));
-// }
-// function isOpen(valve:string) : boolean {
-//     return flow.map(f=>f.name).includes(valve);
-// }
 function getValveIndex(valve:string) : number {
     return valves.map((v,index)=> v.name==valve ? index : -1).filter(i=>i>=0)[0];
 }
