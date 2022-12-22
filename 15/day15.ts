@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import { json } from "stream/consumers";
 function stringify(object: any) : string {
     return JSON.stringify(object, null, 4);
 }
