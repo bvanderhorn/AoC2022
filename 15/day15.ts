@@ -85,5 +85,5 @@ for (let i=yMin;i<yMax;i++) {
         console.log(" tuning frequency: " + ((stretches[0][1] + 1)*multiplier + i) );
         break;
     }
-    if (i%Math.floor((yMax-yMin+1)/100) == 0) console.log ("" + (i/(yMax-yMin+1)*100).toPrecision(2) + "% done");
+    if (i%Math.floor((yMax-yMin+1)/20) == 0) console.log ("" + (i/(yMax-yMin+1)*100).toPrecision(2) + "% done");
 }
