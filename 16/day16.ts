@@ -11,6 +11,12 @@ type Flow = {
     rate: number,
     flow: number
 }
+type Distance = {
+    name:string,
+    distance:number,
+    to: string[],
+    path:string[]
+}
 function stringify(object: any) : string {
     return JSON.stringify(object, null, 4);
 }
@@ -19,6 +25,47 @@ function getValve(valve:string) : Valve {
 }
 function unvisited(valves:string[],visited:string[]) : string[] {
     return valves.filter(v=> !visited.includes(v));
+}
+
+function shortestPathMap(valve:string): Distance[] {
+    // returns a list of shortest paths from given valve to valves on matching 'valves' indices
+    function getNearestUnvisited() : Distance {
+        return dist.filter(d=> !vstd.includes(d.name)).sort((a,b)=> a.distance < b.distance ? -1 : 1)[0];
+    }
+    function getDist(valve:string) : Distance {
+        return dist.filter(d=>d.name===valve)[0];
+    }
+    function getIndex(valve:string): number {
+        return dist.map((d,index)=> d.name===valve ? index : -1).filter(i=> i>=0)[0];
+    }
+
+    const inf: number = 10000000000;
+    var vstd : string[] = [];
+    var dist: Distance[] = valves.map(v=>{
+        return {
+            name: v.name,
+            distance: v.name === valve ? 0 : inf,
+            to: v.to,
+            path: []
+        }
+    });
+    for (let i=0;i<dist.length;i++) {
+        let current: Distance = getNearestUnvisited();
+        for (const n of current.to) {
+            let curDist = getDist(n).distance;
+            let newDist = current.distance +1;
+            if(curDist > newDist) {
+                var dIndex = getIndex(n);
+                dist[dIndex].distance = newDist;
+                dist[dIndex].path = [];
+                current.path.forEach(p => dist[dIndex].path.push(p));
+                dist[dIndex].path.push(current.name);
+            }
+        }
+        vstd.push(current.name);
+    }
+
+    return dist;
 }
 function nextValve(current:Valve, visited:string[]) : Valve {
     // if not all tunnel valves (TV) visited: sort unvisited TV on rate desc, return first
@@ -61,8 +108,6 @@ for (let m=1;m<=minutes;m++) {
     console.log(" minute " + m + ", at " + cur.name + " (r " + cur.rate + "): ");
     if (cur.rate === 0 || flow.map(f=>f.name).includes(cur.name)) {
         // if rate is 0 or valve already opened: move to next valve
-        if (cur.rate === 0) console.log("   rate is 0");
-        if (flow.map(f=>f.name).includes(cur.name)) console.log("   already opened");
         cur = nextValve(cur,visited);
         if (!visited.includes(cur.name)) visited.push(cur.name);
         console.log("   move to " + cur.name);
@@ -80,3 +125,4 @@ for (let m=1;m<=minutes;m++) {
 }
 console.log("total flow: " + flow.map(f=>f.flow).reduce((a,b)=> a+b,0));
 fs.writeFileSync("flow.txt",stringify(flow));
+fs.writeFileSync("shortest_path_map_AA.txt",stringify(shortestPathMap("AA")));
