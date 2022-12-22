@@ -6,6 +6,13 @@ function stringify(object) {
 }
 // parse
 const input = fs.readFileSync('valves.txt', 'utf8');
-const valves = input.split('\r\n');
-console.log(valves.slice(0, 5));
+const valves = input.split('\r\n').map(v => {
+    var vMatch = v.match(/Valve\s+(\w+)\s+has flow rate=(\d+); tunnels? leads? to valves?\s+([\s\S]+)$/);
+    return {
+        name: vMatch[1],
+        rate: +vMatch[2],
+        to: vMatch[3].split(',').map(n => n.trim())
+    };
+});
+console.log(stringify(valves));
 //# sourceMappingURL=day16.js.map
