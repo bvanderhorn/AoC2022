@@ -1,0 +1,44 @@
+[
+    {
+        "name": "VD",
+        "minute": 4,
+        "rate": 17,
+        "flow": 442
+    },
+    {
+        "name": "QO",
+        "minute": 8,
+        "rate": 24,
+        "flow": 528
+    },
+    {
+        "name": "FR",
+        "minute": 12,
+        "rate": 22,
+        "flow": 396
+    },
+    {
+        "name": "KU",
+        "minute": 15,
+        "rate": 9,
+        "flow": 135
+    },
+    {
+        "name": "CG",
+        "minute": 22,
+        "rate": 10,
+        "flow": 80
+    },
+    {
+        "name": "WI",
+        "minute": 26,
+        "rate": 13,
+        "flow": 52
+    },
+    {
+        "name": "ZR",
+        "minute": 29,
+        "rate": 11,
+        "flow": 11
+    }
+]
