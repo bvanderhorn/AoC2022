@@ -1,0 +1,38 @@
+[
+    {
+        "name": "JJ",
+        "minute": 3,
+        "rate": 21,
+        "flow": 567
+    },
+    {
+        "name": "DD",
+        "minute": 7,
+        "rate": 20,
+        "flow": 460
+    },
+    {
+        "name": "EE",
+        "minute": 9,
+        "rate": 3,
+        "flow": 63
+    },
+    {
+        "name": "HH",
+        "minute": 13,
+        "rate": 22,
+        "flow": 374
+    },
+    {
+        "name": "BB",
+        "minute": 20,
+        "rate": 13,
+        "flow": 130
+    },
+    {
+        "name": "CC",
+        "minute": 22,
+        "rate": 2,
+        "flow": 16
+    }
+]

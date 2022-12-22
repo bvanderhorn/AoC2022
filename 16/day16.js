@@ -4,6 +4,10 @@ const fs = require("fs");
 function stringify(object) {
     return JSON.stringify(object, null, 4);
 }
+function writeFile(filename, content) {
+    const exampleString = 'example';
+    fs.writeFileSync((inputFile.includes(exampleString) ? exampleString + '_' : '') + filename, content);
+}
 function getValve(valve) {
     return valves.filter(v => v.name === valve)[0];
 }
@@ -64,10 +68,11 @@ function highestPotential(valve, minute) {
     return distances.sort((a, b) => a.potential > b.potential ? -1 : 1)[0];
 }
 // params
+const inputFile = 'example_valves.txt';
 const start = "AA";
 const minutes = 30;
 // parse
-const input = fs.readFileSync('valves.txt', 'utf8');
+const input = fs.readFileSync(inputFile, 'utf8');
 const valves = input.split('\r\n').map(v => {
     var vMatch = v.match(/Valve\s+(\w+)\s+has flow rate=(\d+); tunnels? leads? to valves?\s+([\s\S]+)$/);
     return {
@@ -79,8 +84,8 @@ const valves = input.split('\r\n').map(v => {
 }).sort((a, b) => a.name < b.name ? -1 : 1);
 // add shortest path maps
 valves.forEach(v => v.pathmap = shortestPathMap(v.name));
-fs.writeFileSync('valves_sorted.json', stringify(valves));
-fs.writeFileSync("valve_AA.json", stringify(valves[0]));
+writeFile('valves_sorted.json', stringify(valves));
+writeFile("valve_AA.json", stringify(valves[0]));
 var longestDistance = valves.map(v => v.pathmap.sort((a, b) => a.distance > b.distance ? -1 : 1)[0]).sort((a, b) => a.distance > b.distance ? -1 : 1)[0];
 // console.log(" longest distance: " + stringify(longestDistance));
 var visited = [start];
@@ -95,6 +100,10 @@ for (let m = 1; m < minutes; m++) {
     //     c. add (a) and (b) 
     //     d. if higher than (1.): open valve and continue
     //        else: move to next valve on path from (1.) and continue
+    if (flow.length == valves.filter(v => v.rate > 0).length) {
+        console.log(" --> all valves have been opened -> end");
+        break;
+    }
     var comment = "minute " + m + ", at " + cur.name + " (r " + cur.rate + "): ";
     var hp = highestPotential(cur.name, m);
     var hpPot = hp.potential;
@@ -122,5 +131,5 @@ for (let m = 1; m < minutes; m++) {
     }
 }
 console.log("total flow: " + flow.map(f => f.flow).reduce((a, b) => a + b, 0));
-fs.writeFileSync("flow.json", stringify(flow));
+writeFile("flow.json", stringify(flow));
 //# sourceMappingURL=day16.js.map

@@ -23,6 +23,10 @@ type Distance = {
 function stringify(object: any) : string {
     return JSON.stringify(object, null, 4);
 }
+function writeFile(filename:string,content:string) {
+    const exampleString = 'example';
+    fs.writeFileSync((inputFile.includes(exampleString) ? exampleString + '_' : '') + filename,content);
+}
 function getValve(valve:string) : Valve {
     return valves.filter(v=>v.name===valve)[0];
 }
@@ -85,11 +89,12 @@ function highestPotential(valve:string,minute:number) : Distance {
 }
 
 // params
+const inputFile = 'example_valves.txt';
 const start = "AA";
 const minutes = 30;
 
 // parse
-const input: string = fs.readFileSync('valves.txt', 'utf8');
+const input: string = fs.readFileSync(inputFile, 'utf8');
 const valves: Valve[] = input.split('\r\n').map(v => {
     var vMatch = v.match(/Valve\s+(\w+)\s+has flow rate=(\d+); tunnels? leads? to valves?\s+([\s\S]+)$/);
     return {
@@ -102,8 +107,8 @@ const valves: Valve[] = input.split('\r\n').map(v => {
 
 // add shortest path maps
 valves.forEach(v=> v.pathmap = shortestPathMap(v.name));
-fs.writeFileSync('valves_sorted.json',stringify(valves));
-fs.writeFileSync("valve_AA.json",stringify(valves[0]));
+writeFile('valves_sorted.json',stringify(valves));
+writeFile("valve_AA.json",stringify(valves[0]));
 var longestDistance = valves.map(v=> v.pathmap.sort((a,b)=>a.distance > b.distance ? -1 : 1)[0]).sort((a,b)=>a.distance > b.distance ? -1 : 1)[0];
 // console.log(" longest distance: " + stringify(longestDistance));
 
@@ -119,6 +124,12 @@ for (let m=1;m<minutes;m++) {
     //     c. add (a) and (b) 
     //     d. if higher than (1.): open valve and continue
     //        else: move to next valve on path from (1.) and continue
+
+    if (flow.length == valves.filter(v=>v.rate >0).length) {
+        console.log(" --> all valves have been opened -> end");
+        break;
+    }
+
     var comment = "minute " + m + ", at " + cur.name + " (r " + cur.rate + "): ";
     var hp = highestPotential(cur.name, m);
     var hpPot = hp.potential;
@@ -136,7 +147,7 @@ for (let m=1;m<minutes;m++) {
             flow: fl
         });
         console.log(comment +"open and count flow " + (minutes-m) + "*"+cur.rate+" = " + fl );
-    } else {
+    } else  {
         // if rate is 0 or valve already opened or not worth opening valve: move to next valve on the highest-potential track
         cur = getValve(hp.path[1]);
         if (!visited.includes(cur.name)) visited.push(cur.name);
@@ -144,5 +155,5 @@ for (let m=1;m<minutes;m++) {
     }
 }
 console.log("total flow: " + flow.map(f=>f.flow).reduce((a,b)=> a+b,0));
-fs.writeFileSync("flow.json",stringify(flow));
+writeFile("flow.json",stringify(flow));
 
