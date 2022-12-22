@@ -121,7 +121,7 @@ function getMaxWithRemaining(curValve:string,rem:string[],remMin:number,prevPath
 }
 
 // params
-const inputFile = 'example_valves.txt';
+const inputFile = 'valves.txt';
 const start = "AA";
 const minutes = 30;
 

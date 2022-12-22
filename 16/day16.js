@@ -96,7 +96,7 @@ function getMaxWithRemaining(curValve, rem, remMin, prevPath) {
     return scores.sort((a, b) => a.flow > b.flow ? -1 : 1);
 }
 // params
-const inputFile = 'example_valves.txt';
+const inputFile = 'valves.txt';
 const start = "AA";
 const minutes = 30;
 // parse
