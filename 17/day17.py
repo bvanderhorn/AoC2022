@@ -122,6 +122,7 @@ for r in range(0,nofRocks):
         lefties = [i for i in solid if i[0]==xMin]
         righties = [i for i in solid if i[0]==xMax]
         if (len(lefties) > 0) & (len(righties) > 0):
+            # calculate highest unbroken chain
             hLeft = sorted(lefties, key=lambda s: s[1], reverse=True)[0]
             hRight = sorted(righties, key=lambda s: s[1], reverse=True)[0]
             sp = shortestPath(hLeft, hRight,solid)
@@ -129,11 +130,16 @@ for r in range(0,nofRocks):
             yHighest = max([hLeft[1],hRight[1]])
             yUnderLowest = round((sp-(xMax - xMin)-(yHighest-yLowest))/2)+1
             newYMin = yLowest - yUnderLowest
-            solid = [s for s in solid if s[1] >= newYMin]
+            
+            # chop
+            solid = [[s[0],s[1]-newYMin] for s in solid if s[1] >= newYMin]
+            choppedHeight += newYMin
+            height -= newYMin
+            
             print('highest left: ' + str(hLeft) + ", highest right: " + str(hRight) + ", shortest path: " + str(sp) + ", yDown: " + str(yUnderLowest) + ", newYMin: " + str(newYMin))
 
 # draw solid to check
 print('')
-print("height: " + str(height))
+print("height: " + str(height) + ", chopped height: " + str(choppedHeight) + ", total: " + str(height + choppedHeight))
 picture = paint(solid,True)
 writeFile('solid.txt',picture)
