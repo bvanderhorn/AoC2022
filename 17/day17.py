@@ -41,8 +41,6 @@ def paint(rock,walls=False):
 inStream = open('gas.txt','r')
 gas = inStream.read()
 inStream.close()
-
-# print(gas[0:1])
 rocks = [
     [[0,0],[1,0],[2,0],[3,0] ],
     [[1,0],[0,1],[1,1],[2,1],[1,2]],
@@ -50,7 +48,6 @@ rocks = [
     [[0,0],[0,1],[0,2],[0,3]],
     [[0,0],[1,0],[0,1],[1,1]]
 ]
-
 for rock in rocks:
     print(paint(rock,False))
     print('')
@@ -63,12 +60,10 @@ l = '<'
 r = '>'
 startHeight = 3
 
-
 # run
 height = 0
 jetIndex = 0
 solid = []
-
 for r in range(0,nofRocks):
     # appear
     rock = rocks[r % len(rocks)]
@@ -93,10 +88,11 @@ for r in range(0,nofRocks):
     height = ymax(solid) + 1
     if r % round(nofRocks/100) == 0:
         print(str(round(r/nofRocks*100,1)) + '% done')
+
 # draw solid to check
 print('')
-picture = paint(solid,True)
 print("height: " + str(height))
+picture = paint(solid,True)
 outStream = open('solid.txt','w')
 outStream.write(picture)
 outStream.close()
