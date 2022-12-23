@@ -37,6 +37,7 @@ def shortestPath(fr,to,fieldArray):
     inf = 10000000000
     dist = [[index,(inf,0)[el==fr]] for index, el in enumerate(fieldArray)]
     visited = []
+    
     def getNearestUnvisited():
         unvisited = [i for i in dist if i[0] not in visited]
         return sorted(unvisited, key=lambda u: u[1])[0]
@@ -63,7 +64,7 @@ def shortestPath(fr,to,fieldArray):
             nDist = [i for i in dist if i[0] == nIndex][0]
             newDist = curDist[1]+1
             if nDist[1] > newDist:
-                dist[dist.index(nDist)] = newDist
+                dist[dist.index(nDist)][1] = newDist
         visited.append(curDist[0])
      
 # parse
@@ -89,6 +90,7 @@ startHeight = 3
 
 # run
 height = 0
+choppedHeight = 0
 jetIndex = 0
 solid = []
 for r in range(0,nofRocks):
@@ -123,8 +125,12 @@ for r in range(0,nofRocks):
             hLeft = sorted(lefties, key=lambda s: s[1], reverse=True)[0]
             hRight = sorted(righties, key=lambda s: s[1], reverse=True)[0]
             sp = shortestPath(hLeft, hRight,solid)
-            newYMin = min([hLeft[1],hRight[1]]) - round((sp-xMax)/2)+1
+            yLowest = min([hLeft[1],hRight[1]])
+            yHighest = max([hLeft[1],hRight[1]])
+            yUnderLowest = round((sp-(xMax - xMin)-(yHighest-yLowest))/2)+1
+            newYMin = yLowest - yUnderLowest
             solid = [s for s in solid if s[1] >= newYMin]
+            print('highest left: ' + str(hLeft) + ", highest right: " + str(hRight) + ", shortest path: " + str(sp) + ", yDown: " + str(yUnderLowest) + ", newYMin: " + str(newYMin))
 
 # draw solid to check
 print('')
