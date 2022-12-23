@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import { cursorTo } from "readline";
 type Valve = {
     name: string,
     rate: number,
@@ -26,9 +25,6 @@ function writeFile(filename:string,content:string) {
 }
 function getValve(valve:string) : Valve {
     return valves.filter(v=>v.name===valve)[0];
-}
-function getValveIndex(valve:string) : number {
-    return valves.map((v,index)=> v.name==valve ? index : -1).filter(i=>i>=0)[0];
 }
 function shortestPathMap(valve:string): Distance[] {
     // returns a list of shortest paths from given valve to all other valves using Dijkstra
@@ -76,37 +72,52 @@ function shortestPathMap(valve:string): Distance[] {
     return dist;
 }
 
-function getMaxWithRemaining(curValve:string,rem:string[],remMin:number, depth:number) : Score[] {
+function getMaxWithRemaining(curValve:string,rem:string[],remMin:number, depth:number, main:boolean) : Score[] {
     // recursive function trying each remaining valve as next to see which one will return the highest total flow
     var scores : Score[] = [];
     var cur = getValve(curValve);
-    for (let i=0;i<rem.length;i++) {
+    for(let i=0;i<rem.length;i++) {
         let vi = getValve(rem[i]);
         let dist = cur.pathmap.filter(p=>p.name===vi.name)[0].distance;
-        if (remMin-dist-1 <= 0) continue;
-        else {
-            let sc = getMaxWithRemaining(rem[i], rem.filter(v=>v!=vi.name), remMin - dist-1,depth+1);
+        if (remMin-dist-1 <= 0) {
+            if (main) {
+                let elephant = getMaxWithRemaining(start, rem, minutes,0,false);
+                if (elephant.length > 0) {
+                    scores.push({
+                        flow : elephant[0].flow,
+                        path: []
+                    });
+                }
+            }
+        } else {
+            let sc = getMaxWithRemaining(rem[i], rem.filter(v=>v!=vi.name), remMin - dist-1,depth+1,main);
+            if (sc.length === 0 && main) sc = getMaxWithRemaining(start, rem.filter(v=>v!=vi.name), minutes,0,false); // elephant
             let fl = (remMin - dist-1)*vi.rate;
             let path = [];
             if (sc.length >0) {
                 fl += sc[0].flow;
                 path = sc[0].path;
-            }
+            } 
             path.unshift(vi.name);
             scores.push({
                 flow: fl,
                 path: path
             });
         }
-        if (depth===0) console.log(" " + Math.round((i+1)/rem.length*100) + "% done");
-    }
+        
+        if (depth===2 && main) {
+            iteration++;
+            console.log(" " + (iteration/(valves.length-1)/(valves.length-2)/(valves.length-3)*100).toPrecision(4) + "% done");
+        }
+    };
     return scores.sort((a,b)=> a.flow > b.flow ? -1 : 1);
 }
 
 // params
 const inputFile = 'valves.txt';
 const start = "AA";
-const minutes = 30;
+const part : number = 2;
+const minutes = (part === 2) ? 26 : 30;
 
 // parse
 const input: string = fs.readFileSync(inputFile, 'utf8');
@@ -127,9 +138,8 @@ valves = valves.filter(v=>v.name===start || v.rate>0);
 
 // save some stuff to look at
 writeFile('valves_sorted.json',stringify(valves));
-var longestDistance = valves.map(v=> v.pathmap.sort((a,b)=>a.distance > b.distance ? -1 : 1)[0]).sort((a,b)=>a.distance > b.distance ? -1 : 1)[0];
-console.log(" longest distance: " + stringify(longestDistance));
 
 // permutator
-var maxScore = getMaxWithRemaining(start, valves.map(v=>v.name).filter(v=>v!=start),minutes,0)[0];
+var iteration = 0;
+var maxScore = getMaxWithRemaining(start, valves.map(v=>v.name).filter(v=>v!=start),minutes,0, part === 2)[0];
 console.log(stringify(maxScore));
