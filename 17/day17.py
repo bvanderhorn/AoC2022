@@ -89,7 +89,7 @@ for rock in rocks:
     print('')
 
 # params
-part = 2
+part = 1
 nofRocks1 = 2022
 nofRocks2 = 10000
 nofRocks2Real = 1000000000000
@@ -167,18 +167,16 @@ for r in range(0,nofRocks):
             solid = [[s[0],s[1]-newYMin] for s in solid if s[1] >= newYMin]
             choppedHeight += newYMin
             height -= newYMin
-            
-            # print('highest left: ' + str(hLeft) + ", highest right: " + str(hRight) + ", shortest path: " + str(sp) + ", yDown: " + str(yUnderLowest) + ", newYMin: " + str(newYMin))
 
 # draw solid to check
 print('')
-print("height: " + str(height) + ", chopped height: " + str(choppedHeight) + ", total: " + str(height + choppedHeight))
-picture = paint(solid,True)
-writeFile('solid.txt',picture)
+if part == 1: 
+    print("height: " + str(height) + ", chopped height: " + str(choppedHeight) + ", total: " + str(height + choppedHeight))
+    picture = paint(solid,True)
+    writeFile('solid.txt',picture)
+    exit(0)
 
 # part 2 analysis
-if part == 1: exit(0)
-
 deltaRocks = deltas(jet0rocks)
 deltaHeights = deltas(jet0heights)
 heightAfterFirstCycle = jet0heights[0]
@@ -196,4 +194,6 @@ print(" delta rocks: "+ str(deltaRocks))
 print("Part 2 end rock: ("+ str(nofRocks2Real) + " - "+ str(deltaRocks[0]) + ") % "+ str(deltaRocks[1]) + " = " + str(rocksAfterLastCycle))
 print("jet0 heights: " + str(jet0heights))
 print(" delta heights: "+ str(deltaHeights))
+print('')
 print(' total height:' + str(totalHeight))
+print('')
