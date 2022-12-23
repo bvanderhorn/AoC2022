@@ -9,14 +9,6 @@ def left(rock): return mapp(lambda r:[r[0]-1,r[1]],rock)
 def right(rock): return mapp(lambda r:[r[0]+1,r[1]],rock)
 def overlapsWithSolid(rock): return len([i for i in rock if i in solid]) > 0
 def outOfBounds(rock): return (xmin(rock) < 0) | (xmax(rock) > 6) | (ymin(rock) < 0) | overlapsWithSolid(rock)
-def combine(array1,array2):
-    if len(array1) == 0:
-        return array2
-    elif len(array2) == 0:
-        return array1
-    else: 
-        array1.extend(array2)
-        return array1
 
 def paint(rock,walls=False):
     canvas = ''
@@ -73,7 +65,7 @@ for r in range(0,nofRocks):
         newRock = down(rock)
         if (outOfBounds(newRock)):
             # solidify and continue
-            solid = combine(solid,rock)
+            solid += rock
             break
         else:
             rock = newRock        
