@@ -81,7 +81,10 @@ for rock in rocks:
     print('')
 
 # params
-nofRocks = 2022
+part = 1
+nofRocks1 = 10000
+nofRocks2 = 1000000000000
+nofRocks2a = 100000000
 xMin = 0
 xMax = 6
 l = '<'
@@ -89,22 +92,28 @@ r = '>'
 startHeight = 3
 
 # run
+nofRocks = (nofRocks1,nofRocks2a)[part == 2]
 height = 0
 choppedHeight = 0
 jetIndex = 0
 solid = []
 for r in range(0,nofRocks):
     # appear
-    rock = rocks[r % len(rocks)]
+    rockIndex = r % len(rocks)
+    rock = rocks[rockIndex]
     rock = mapp(lambda i: [i[0]+2,i[1]+height+startHeight],rock)
     
     # fall
+    fallsteps = 0
     while(True):
         # jet
         jet = gas[jetIndex:jetIndex+1]
         jetIndex = (jetIndex+1,0)[jetIndex==(len(gas)-1)]
         newRock = (right(rock),left(rock))[jet==l]
         rock = (newRock, rock)[outOfBounds(newRock)]
+        
+        if jetIndex == 0: print("jet reset, rock " + str(r) + " with index "+ str(rockIndex) +", steps after appearance: "+ str(fallsteps))
+        fallsteps +=1
         
         # drop
         newRock = down(rock)
@@ -115,7 +124,7 @@ for r in range(0,nofRocks):
         else:
             rock = newRock        
     height = ymax(solid) + 1
-    if r % round(nofRocks/100) == 0: print(str(round(r/nofRocks*100,1)) + '% done')
+    if (r % round(nofRocks/100) ) == 0: print(str(round(r/nofRocks*100,2)) + '% done')
     
     # every 100 drops: find highest solid chain, drop all solid coordinates below
     if (r % 100 == 0) & (len(solid) > 0):
@@ -136,7 +145,7 @@ for r in range(0,nofRocks):
             choppedHeight += newYMin
             height -= newYMin
             
-            print('highest left: ' + str(hLeft) + ", highest right: " + str(hRight) + ", shortest path: " + str(sp) + ", yDown: " + str(yUnderLowest) + ", newYMin: " + str(newYMin))
+            # print('highest left: ' + str(hLeft) + ", highest right: " + str(hRight) + ", shortest path: " + str(sp) + ", yDown: " + str(yUnderLowest) + ", newYMin: " + str(newYMin))
 
 # draw solid to check
 print('')
