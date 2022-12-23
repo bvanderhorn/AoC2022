@@ -10,6 +10,17 @@ def right(rock): return mapp(lambda r:[r[0]+1,r[1]],rock)
 def overlapsWithSolid(rock): return len([i for i in rock if i in solid]) > 0
 def outOfBounds(rock): return (xmin(rock) < 0) | (xmax(rock) > 6) | (ymin(rock) < 0) | overlapsWithSolid(rock)
 
+def readFile(fName):
+    inStream = open(fName,'r')
+    out = inStream.read()
+    inStream.close()
+    return out
+
+def writeFile(fName,outString):
+    outStream = open(fName,'w')
+    outStream.write(outString)
+    outStream.close()
+
 def paint(rock,walls=False):
     canvas = ''
     for y in range(ymax(rock),-1, -1):
@@ -22,9 +33,7 @@ def paint(rock,walls=False):
     return canvas
      
 # parse
-inStream = open('gas.txt','r')
-gas = inStream.read()
-inStream.close()
+gas = readFile('gas.txt')
 rocks = [
     [[0,0],[1,0],[2,0],[3,0] ],
     [[1,0],[0,1],[1,1],[2,1],[1,2]],
@@ -76,6 +85,4 @@ for r in range(0,nofRocks):
 print('')
 print("height: " + str(height))
 picture = paint(solid,True)
-outStream = open('solid.txt','w')
-outStream.write(picture)
-outStream.close()
+writeFile('solid.txt',picture)
