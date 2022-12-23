@@ -123,4 +123,5 @@ writeFile('valves_sorted.json', stringify(valves));
 var iteration = 0;
 var maxScore = getMaxWithRemaining(start, valves.map(v => v.name).filter(v => v != start), minutes, 0, part === 2)[0];
 console.log(stringify(maxScore));
+writeFile('score.json', stringify(maxScore));
 //# sourceMappingURL=day16.js.map
