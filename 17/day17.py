@@ -10,6 +10,14 @@ def right(rock): return mapp(lambda r:[r[0]+1,r[1]],rock)
 def overlapsWithSolid(rock): return len([i for i in rock if i in solid]) > 0
 def outOfBounds(rock): return (xmin(rock) < xMin) | (xmax(rock) > xMax) | (ymin(rock) < 0) | overlapsWithSolid(rock)
 
+def deltas(array1):
+    deltas = []
+    i0 = 0
+    for i in array1: 
+        deltas.append(i-i0)
+        i0=i
+    return deltas
+
 def readFile(fName):
     inStream = open(fName,'r')
     out = inStream.read()
@@ -81,10 +89,10 @@ for rock in rocks:
     print('')
 
 # params
-part = 1
-nofRocks1 = 10000
-nofRocks2 = 1000000000000
-nofRocks2a = 100000000
+part = 2
+nofRocks1 = 2022
+nofRocks2 = 10000
+nofRocks2Real = 1000000000000
 xMin = 0
 xMax = 6
 l = '<'
@@ -92,11 +100,13 @@ r = '>'
 startHeight = 3
 
 # run
-nofRocks = (nofRocks1,nofRocks2a)[part == 2]
+nofRocks = (nofRocks1,nofRocks2)[part == 2]
 height = 0
 choppedHeight = 0
 jetIndex = 0
 solid = []
+jet0rocks = []
+jet0heights = []
 for r in range(0,nofRocks):
     # appear
     rockIndex = r % len(rocks)
@@ -112,7 +122,10 @@ for r in range(0,nofRocks):
         newRock = (right(rock),left(rock))[jet==l]
         rock = (newRock, rock)[outOfBounds(newRock)]
         
-        if jetIndex == 0: print("jet reset, rock " + str(r) + " with index "+ str(rockIndex) +", steps after appearance: "+ str(fallsteps))
+        if jetIndex == 0: 
+            jet0rocks.append(r)
+            jet0heights.append(height + choppedHeight)
+            print("jet reset, rock " + str(r) + " with index "+ str(rockIndex) +", steps after appearance: "+ str(fallsteps))
         fallsteps +=1
         
         # drop
@@ -152,3 +165,13 @@ print('')
 print("height: " + str(height) + ", chopped height: " + str(choppedHeight) + ", total: " + str(height + choppedHeight))
 picture = paint(solid,True)
 writeFile('solid.txt',picture)
+
+print("jet0 rocks: " + str(jet0rocks))
+deltaRocks = deltas(jet0rocks)
+print(" delta rocks: "+ str(deltaRocks))
+print("Part 2 end rock: ("+ str(nofRocks2Real) + " - "+ str(deltaRocks[0]) + ") % "+ str(deltaRocks[1]) + " = " + str((nofRocks2Real - deltaRocks[0]) % deltaRocks[1]))
+
+print("jet0 heights: " + str(jet0heights))
+deltaHeights = deltas(jet0heights)
+print(" delta heights: "+ str(deltaHeights))
+print('')
