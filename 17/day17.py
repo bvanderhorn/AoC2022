@@ -31,6 +31,40 @@ def paint(rock,walls=False):
         canvas += line
     canvas += ('','+-------+')[walls]
     return canvas
+
+def shortestPath(fr,to,fieldArray):
+    # applies Dijkstra to find a shortest path between two points in the solid
+    inf = 10000000000
+    dist = [[index,(inf,0)[el==fr]] for index, el in enumerate(fieldArray)]
+    visited = []
+    def getNearestUnvisited():
+        unvisited = [i for i in dist if i[0] not in visited]
+        return sorted(unvisited, key=lambda u: u[1])[0]
+    
+    def neighbours(slab) :
+        nb = []
+        potentialNb = [
+            [slab[0]-1,slab[1]],
+            [slab[0]+1,slab[1]],
+            [slab[0],slab[1]-1],
+            [slab[0],slab[1]+1]
+        ]
+        for pn in potentialNb:
+            if pn in fieldArray: nb.append(pn)
+        return nb
+    
+    for dummy in range(0,len(dist)):
+        curDist = getNearestUnvisited()
+        curSolid = fieldArray[curDist[0]]
+        if curSolid == to:
+            return curDist[1]
+        for n in neighbours(curSolid):
+            nIndex = fieldArray.index(n)
+            nDist = [i for i in dist if i[0] == nIndex][0]
+            newDist = curDist[1]+1
+            if nDist[1] > newDist:
+                dist[dist.index(nDist)] = newDist
+        visited.append(curDist[0])
      
 # parse
 gas = readFile('gas.txt')
@@ -80,6 +114,17 @@ for r in range(0,nofRocks):
             rock = newRock        
     height = ymax(solid) + 1
     if r % round(nofRocks/100) == 0: print(str(round(r/nofRocks*100,1)) + '% done')
+    
+    # every 100 drops: find highest solid chain, drop all solid coordinates below
+    if (r % 100 == 0) & (len(solid) > 0):
+        lefties = [i for i in solid if i[0]==xMin]
+        righties = [i for i in solid if i[0]==xMax]
+        if (len(lefties) > 0) & (len(righties) > 0):
+            hLeft = sorted(lefties, key=lambda s: s[1], reverse=True)[0]
+            hRight = sorted(righties, key=lambda s: s[1], reverse=True)[0]
+            sp = shortestPath(hLeft, hRight,solid)
+            newYMin = min([hLeft[1],hRight[1]]) - round((sp-xMax)/2)+1
+            solid = [s for s in solid if s[1] >= newYMin]
 
 # draw solid to check
 print('')
