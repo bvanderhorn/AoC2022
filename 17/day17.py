@@ -107,6 +107,8 @@ jetIndex = 0
 solid = []
 jet0rocks = []
 jet0heights = []
+heightAfterRock = []
+registerRocks = False
 for r in range(0,nofRocks):
     # appear
     rockIndex = r % len(rocks)
@@ -122,10 +124,16 @@ for r in range(0,nofRocks):
         newRock = (right(rock),left(rock))[jet==l]
         rock = (newRock, rock)[outOfBounds(newRock)]
         
-        if jetIndex == 0: 
+        if (jetIndex == 0): 
             jet0rocks.append(r)
             jet0heights.append(height + choppedHeight)
             print("jet reset, rock " + str(r) + " with index "+ str(rockIndex) +", steps after appearance: "+ str(fallsteps))
+            
+            if (len(heightAfterRock) == 0) & (r > 0): 
+                registerRocks = True
+                heightAfterRock.append(height + choppedHeight)
+            else: registerRock = False
+            
         fallsteps +=1
         
         # drop
@@ -137,6 +145,8 @@ for r in range(0,nofRocks):
         else:
             rock = newRock        
     height = ymax(solid) + 1
+    if registerRocks: heightAfterRock.append(height + choppedHeight)
+    
     if (r % round(nofRocks/100) ) == 0: print(str(round(r/nofRocks*100,2)) + '% done')
     
     # every 100 drops: find highest solid chain, drop all solid coordinates below
@@ -166,12 +176,24 @@ print("height: " + str(height) + ", chopped height: " + str(choppedHeight) + ", 
 picture = paint(solid,True)
 writeFile('solid.txt',picture)
 
-print("jet0 rocks: " + str(jet0rocks))
-deltaRocks = deltas(jet0rocks)
-print(" delta rocks: "+ str(deltaRocks))
-print("Part 2 end rock: ("+ str(nofRocks2Real) + " - "+ str(deltaRocks[0]) + ") % "+ str(deltaRocks[1]) + " = " + str((nofRocks2Real - deltaRocks[0]) % deltaRocks[1]))
+# part 2 analysis
+if part == 1: exit(0)
 
-print("jet0 heights: " + str(jet0heights))
+deltaRocks = deltas(jet0rocks)
 deltaHeights = deltas(jet0heights)
+heightAfterFirstCycle = jet0heights[0]
+rocksAfterFirstCycle = jet0rocks[0]
+rocksPerCycle = deltaRocks[1]
+heightPerCycle = deltaHeights[1]
+
+rocksAfterLastCycle = (nofRocks2Real - rocksAfterFirstCycle) % rocksPerCycle
+heightAfterLastCycle = heightAfterRock[rocksAfterLastCycle] - heightAfterRock[0]
+nofFullCycles = (nofRocks2Real - rocksAfterFirstCycle - rocksAfterLastCycle)/rocksPerCycle
+totalHeight = heightAfterFirstCycle + heightPerCycle*nofFullCycles + heightAfterLastCycle
+
+print("jet0 rocks: " + str(jet0rocks))
+print(" delta rocks: "+ str(deltaRocks))
+print("Part 2 end rock: ("+ str(nofRocks2Real) + " - "+ str(deltaRocks[0]) + ") % "+ str(deltaRocks[1]) + " = " + str(rocksAfterLastCycle))
+print("jet0 heights: " + str(jet0heights))
 print(" delta heights: "+ str(deltaHeights))
-print('')
+print(' total height:' + str(totalHeight))
