@@ -81,6 +81,7 @@ while (len(upcoming)>0):
 print(" free outside: " + str(len(visited)))
 print(" trapped pockets: " + str((xMax-xMin+1)*(yMax-yMin+1)*(zMax-zMin+1) - len(cubes) - len(visited)))
 
+# trapped empty pockets are all spaces minus occurpied by cubes minus free on the outside
 all = []
 for i in range(xMin,xMax+1):
     for j in range(xMin,xMax+1):
@@ -88,12 +89,12 @@ for i in range(xMin,xMax+1):
 
 trapped = [i for i in all if i not in (visited + cubes)]
 print(" trapped pockets located: " + str(len(trapped)))
-print(trapped[0:10])
 
+# count all cube adjacencies to trapped pockets (i.e., free inside sides)
 nofInsideSides = 0
 for t in range(0,len(trapped)):
     nofInsideSides += len([i for i in cubes if touch(i,trapped[t])])
 
-print(" nof inside sides: "+ str(nofInsideSides))
+print(" free inside sides: "+ str(nofInsideSides))
 print(' total free outside sides: ' + str(len(cubes)*6 - nofTouches*2 - nofInsideSides))
     
