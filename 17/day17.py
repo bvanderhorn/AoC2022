@@ -8,7 +8,7 @@ def down(rock): return mapp(lambda r:[r[0],r[1]-1],rock)
 def left(rock): return mapp(lambda r:[r[0]-1,r[1]],rock)
 def right(rock): return mapp(lambda r:[r[0]+1,r[1]],rock)
 def overlapsWithSolid(rock): return len([i for i in rock if i in solid]) > 0
-def outOfBounds(rock): return (xmin(rock) < 0) | (xmax(rock) > 6) | (ymin(rock) < 0) | overlapsWithSolid(rock)
+def outOfBounds(rock): return (xmin(rock) < xMin) | (xmax(rock) > xMax) | (ymin(rock) < 0) | overlapsWithSolid(rock)
 
 def readFile(fName):
     inStream = open(fName,'r')
