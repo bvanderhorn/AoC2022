@@ -1,22 +1,14 @@
 # functions
-def xmin(rock):
-    return min(list(map(lambda r: r[0],rock)))
-def ymin(rock):
-    return min(list(map(lambda r: r[1],rock)))
-def xmax(rock):
-    return max(list(map(lambda r: r[0],rock)))
-def ymax(rock):
-    return max(list(map(lambda r: r[1],rock)))
-def down(rock):
-    return list(map(lambda r:[r[0],r[1]-1],rock))
-def left(rock):
-    return list(map(lambda r:[r[0]-1,r[1]],rock))
-def right(rock):
-    return list(map(lambda r:[r[0]+1,r[1]],rock))
-def overlapsWithSolid(rock):
-    return len([i for i in rock if i in solid]) > 0
-def outOfBounds(rock):
-    return (xmin(rock) < 0) | (xmax(rock) > 6) | (ymin(rock) < 0) | overlapsWithSolid(rock)
+def mapp(predicate, iterable): return list(map(predicate,iterable))
+def xmin(rock): return min(mapp(lambda r: r[0],rock))
+def ymin(rock): return min(mapp(lambda r: r[1],rock))
+def xmax(rock): return max(mapp(lambda r: r[0],rock))
+def ymax(rock): return max(mapp(lambda r: r[1],rock))
+def down(rock): return mapp(lambda r:[r[0],r[1]-1],rock)
+def left(rock): return mapp(lambda r:[r[0]-1,r[1]],rock)
+def right(rock): return mapp(lambda r:[r[0]+1,r[1]],rock)
+def overlapsWithSolid(rock): return len([i for i in rock if i in solid]) > 0
+def outOfBounds(rock): return (xmin(rock) < 0) | (xmax(rock) > 6) | (ymin(rock) < 0) | overlapsWithSolid(rock)
 def combine(array1,array2):
     if len(array1) == 0:
         return array2
@@ -67,7 +59,7 @@ solid = []
 for r in range(0,nofRocks):
     # appear
     rock = rocks[r % len(rocks)]
-    rock = list(map(lambda i: [i[0]+2,i[1]+height+startHeight],rock))
+    rock = mapp(lambda i: [i[0]+2,i[1]+height+startHeight],rock)
     
     # fall
     while(True):
@@ -86,8 +78,7 @@ for r in range(0,nofRocks):
         else:
             rock = newRock        
     height = ymax(solid) + 1
-    if r % round(nofRocks/100) == 0:
-        print(str(round(r/nofRocks*100,1)) + '% done')
+    if r % round(nofRocks/100) == 0: print(str(round(r/nofRocks*100,1)) + '% done')
 
 # draw solid to check
 print('')
