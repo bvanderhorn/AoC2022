@@ -24,15 +24,28 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
     # blueprint, robots and assets are 4x1 arrays in format [ore, clay, obsidian, geode]
     global iterations
     global maxAssets
+    global earliestFirstGeodeRobotAtMinute
+    
     newRemaining = remaining - 1
     scores = []
     iterations += 1
     mins = (minutes - remaining + 1)
     depth = mins*2
-    # print2(" "*(depth+1) + "blueprint: "+ str(blueprint))
+    
     print2(" "*(depth+1) + "assets: "+ str(assets))
     print2(" "*(depth+1) + "robots: "+ str(robots))
     print2(" "*(depth) + "min "+ str(mins) + " (remaining after this: "+ str(newRemaining) + "):")
+    
+    # if it's been more than the current global earliest minute at which you could have finished a first geode 
+    # robot, and you haven't: just forget about this branch
+    if (mins > earliestFirstGeodeRobotAtMinute+ 1) & (assets[3] == 0):
+        return scores
+    
+    # if it is impossible to build enough geode robots in the remaining time to pass the current max, 
+    # just forget about this branch
+    if (maxAssets[3] > assets[3] + robots[3]*remaining + sum(range(0,remaining))) :
+        return scores
+    
     # build one of the 4 robots or build nothing
     for r in range(len(blueprint),-1,-1):
         tempNewAssets = []
@@ -57,6 +70,12 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
             newRobots = [i for i in robots]
             tempNewAssets = [i for i in assets]
         if len(newRobots) > 0:
+            if (r == len(blueprint)) & (mins < earliestFirstGeodeRobotAtMinute):
+                # if you have the assets to make a geode robot:
+                # save this minute if it is smaller than the previous earliest minute
+                print(" could create first geode robot already at minute "+str(mins) + "!")
+                earliestFirstGeodeRobotAtMinute = mins
+            
             # add assets
             newAssets = list(np.add(tempNewAssets, robots)) 
             print2(" "*(depth+1) + "new assets: " + str(newAssets))
@@ -74,17 +93,18 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
                 print2(" "*(depth+1) + "end: return last score: " + str(finalAssets[3]))
                 scores.append(finalAssets[3])
                 if finalAssets[3] > maxAssets[3]:
-                    maxAssets = finalAssets
+                    maxAssets = [i for i in finalAssets]
                     print(" new max assets: "+ str(maxAssets))
-            break
+            
+            if r == len(blueprint):
+                # if you have the assets to make a geode robot: forget about alternatives for this strain
+                break
         else:
+            # if you tried to build a geode robot but couldn't but can build one with one more round of 
+            # assets, forget about the alternatives and wait one round and build the geode robot
             if (r== len(blueprint)) & all(i >=0 for i in np.subtract(np.add(assets, robots),robotCost)):
+                # skip everything, go straigt to gathering to build a geode robot next minute
                 r = 0
-                continue
-    
-    # print counter
-    if mins == 3:
-        print(" " + str(round(iterations/(minutes*(minutes-1)*(minutes-2))*100,2)) + "% done")
     
     # sort and return
     return sorted(scores, reverse=True) 
@@ -110,7 +130,7 @@ blueprints = [
 
 # params
 minutes = 24
-test = True
+test = False
 iterations = 0
 
 # cycle over all blueprints and get max score
@@ -118,11 +138,12 @@ mainScores = []
 mainRobots = [1,0,0,0]
 mainAssets = [0,0,0,0]
 
-for bpi in range(0, 1):
+for bpi in range(1, 2):
+    print("blueprint: " + str(bpi+1))
     bplog = []
     bp = blueprints[bpi]
-    print("blueprint: " + str(bpi+1))
     maxAssets = [0,0,0,0]
+    earliestFirstGeodeRobotAtMinute = minutes+1
     sc = getMaxWithRemaining(bp, mainRobots, mainAssets, minutes)
     if len(sc) > 0:
         mainScores.append(sc[0])
