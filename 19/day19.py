@@ -24,16 +24,15 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
     # blueprint, robots and assets are 4x1 arrays in format [ore, clay, obsidian, geode]
     global iterations
     global maxAssets
-    
+    newRemaining = remaining - 1
     scores = []
     iterations += 1
     mins = (minutes - remaining + 1)
     depth = mins*2
-    print2(" "*(depth) + "min "+ str(mins) + " (remaining "+ str(remaining) + "):")
     # print2(" "*(depth+1) + "blueprint: "+ str(blueprint))
     print2(" "*(depth+1) + "assets: "+ str(assets))
     print2(" "*(depth+1) + "robots: "+ str(robots))
-        
+    print2(" "*(depth) + "min "+ str(mins) + " (remaining after this: "+ str(newRemaining) + "):")
     # build one of the 4 robots or build nothing
     for r in range(len(blueprint),-1,-1):
         tempNewAssets = []
@@ -63,9 +62,9 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
             print2(" "*(depth+1) + "new assets: " + str(newAssets))
             print2(" "*(depth+1) + "new robots: " + str(newRobots))
             # recurse
-            if remaining > 0:
+            if newRemaining > 0:
                 print2(" "*(depth+1) + "recurse")
-                sc = getMaxWithRemaining(blueprint, newRobots, newAssets, remaining-1)
+                sc = getMaxWithRemaining(blueprint, newRobots, newAssets, newRemaining)
                 # add obsidian to score if building the robot helped
                 if len(sc) > 0:
                     scores.append(sc[0])
