@@ -42,7 +42,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
             robotCost = blueprint[r-1]
             lessAssets = list(np.subtract(assets, robotCost))
             if all(i >= 0 for i in lessAssets):
-                print2(" "*(depth+1) + "build robot " + str(r))
+                print2(" "*(depth+1) + "build robot " + str(r) + " at cost " + str(robotCost))
                 print2(" "*(depth+2) + "with remaining: " + str(remaining))
                 print2(" "*(depth+2) + "with assets: "+ str(assets))
                 # build robot
@@ -76,16 +76,20 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
                     maxAssets = finalAssets
                     print(" new max assets: "+ str(maxAssets))
             break
+        else:
+            if (r== len(blueprint)) & all(i >=0 for i in np.subtract(np.add(assets, robots),robotCost)):
+                r = 0
+                continue
     
     # print counter
-    # if mins == 3:
-    #     print(" " + str(round(iterations/(minutes*(minutes-1)*(minutes-2))*100,2)) + "% done")
+    if mins == 3:
+        print(" " + str(round(iterations/(minutes*(minutes-1)*(minutes-2))*100,2)) + "% done")
     
     # sort and return
     return sorted(scores, reverse=True) 
     
 # parse
-input = readFile('blueprints.txt')
+input = readFile('example_blueprints.txt')
 blueprintStrings = input.split('\n')
 blueprints = []
 for bs in blueprintStrings:
