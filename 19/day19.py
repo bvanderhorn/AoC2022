@@ -18,7 +18,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
     # blueprint, robots and assets are 4x1 arrays in format [ore, clay, obsidian, geode]
     scores = []
     depth = minutes - remaining + 1
-    print(" "*depth + "min "+ str(depth) + ":")
+    print(" "*depth + "min "+ str(depth) + " (remaining "+ str(remaining) + "):")
     print(" "*(depth+1) + "assets: "+ str(assets))
     if remaining == 0:
         print(" "*(depth+1) + "-END-")
@@ -32,8 +32,10 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining):
             lessAssets = list(np.subtract(assets, rob))
             if all(i >= 0 for i in lessAssets):
                 print(" "*(depth+1) + "build robot " + str(r))
+                print(" "*(depth+2) + "with remaining: " + str(remaining))
+                print(" "*(depth+2) + "with assets: "+ str(assets))
                 # build robot
-                moreRobots = robots
+                moreRobots = [i for i in robots]
                 moreRobots[r] += 1
                 # add assets
                 newAssets = list(np.add(lessAssets, robots)) 
@@ -85,13 +87,13 @@ blueprints = [
 minutes = 24
 
 # cycle over all blueprints and get max score
-scores = []
-robots = [1,0,0,0]
-assets = [0,0,0,0]
+mainScores = []
+mainRobots = [1,0,0,0]
+mainAssets = [0,0,0,0]
 for bp in [blueprints[0]]:
-    sc = getMaxWithRemaining(bp, robots, assets, minutes)
+    sc = getMaxWithRemaining(bp, mainRobots, mainAssets, minutes)
     if len(sc) > 0:
-        scores.append(sc[0])
-scores = sorted(scores, reverse=True)
+        mainScores.append(sc[0])
+mainScores = sorted(mainScores, reverse=True)
 
-print(scores)
+print(mainScores)
