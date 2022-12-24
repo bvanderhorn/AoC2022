@@ -13,54 +13,74 @@ def writeFile(fName,outString):
     outStream = open(fName,'w')
     outStream.write(outString)
     outStream.close()
+
+def print2(inString): 
+    if test: print(inString)
     
 def getMaxWithRemaining(blueprint, robots, assets, remaining):
     # blueprint, robots and assets are 4x1 arrays in format [ore, clay, obsidian, geode]
     scores = []
-    depth = minutes - remaining + 1
-    print(" "*depth + "min "+ str(depth) + " (remaining "+ str(remaining) + "):")
-    print(" "*(depth+1) + "assets: "+ str(assets))
+    global iterations
+    global maxAssets
+    iterations += 1
+    mins = (minutes - remaining + 1)
+    depth = mins*2
+    print2(" "*(depth) + "min "+ str(mins) + " (remaining "+ str(remaining) + "):")
+    # print2(" "*(depth+1) + "blueprint: "+ str(blueprint))
+    print2(" "*(depth+1) + "assets: "+ str(assets))
+    print2(" "*(depth+1) + "robots: "+ str(robots))
     if remaining == 0:
-        print(" "*(depth+1) + "-END-")
+        print2(" "*(depth+1) + "-END-")
         return scores
-
-    # build one of the 4 robots or skip and just gather
-    for r in range(0,len(blueprint)+1):
-        if (r < len(blueprint)) :
+        
+    # build one of the 4 robots or build nothing
+    for r in range(len(blueprint),-1,-1):
+        tempNewAssets = []
+        newRobots = []
+        if (r > 0) :
             # try to build a robot
-            rob = blueprint[r]
-            lessAssets = list(np.subtract(assets, rob))
+            robotCost = blueprint[r-1]
+            lessAssets = list(np.subtract(assets, robotCost))
             if all(i >= 0 for i in lessAssets):
-                print(" "*(depth+1) + "build robot " + str(r))
-                print(" "*(depth+2) + "with remaining: " + str(remaining))
-                print(" "*(depth+2) + "with assets: "+ str(assets))
+                print2(" "*(depth+1) + "build robot " + str(r))
+                print2(" "*(depth+2) + "with remaining: " + str(remaining))
+                print2(" "*(depth+2) + "with assets: "+ str(assets))
                 # build robot
-                moreRobots = [i for i in robots]
-                moreRobots[r] += 1
-                # add assets
-                newAssets = list(np.add(lessAssets, robots)) 
-                # recurse
-                sc = getMaxWithRemaining(blueprint, moreRobots, newAssets, remaining-1)
+                newRobots = [i for i in robots]
+                newRobots[r-1] += 1
+                tempNewAssets = [i for i in lessAssets]
+            else:
+                print2(" "*(depth+1) + "could not build robot " + str(r))
+        else:           
+            # don't build any robot, just gather assets
+            print2(" "*(depth+1) + "don't build robot")
+            newRobots = [i for i in robots]
+            tempNewAssets = [i for i in assets]
+        
+        if len(newRobots) > 0:
+            # add assets
+            newAssets = list(np.add(tempNewAssets, robots)) 
+            # recurse
+            if remaining > 1:
+                print2(" "*(depth+1) + "recurse")
+                sc = getMaxWithRemaining(blueprint, newRobots, newAssets, remaining-1)
                 # add obsidian to score if building the robot helped
                 if len(sc) > 0:
                     scores.append(sc[0])
-                    print(" "*(depth+1) + "add score "+ str(sc[0]))
-                
-        else:           
-            # don't build any robot, just gather assets
-            newAssets = list(np.add(assets, robots))   
-            print(" "*(depth+1) + "don't build robot")
-            print(" "*(depth+1) + "new assets: "+ str(newAssets))         
-            # recurse
-            sc = getMaxWithRemaining(blueprint, robots, newAssets, remaining -1)
-            # add obsidian to score
-            if len(sc) > 0:
-                print(" "*(depth+1) + "add new score "+ str(sc[0]))
-                scores.append(sc[0]) 
-            else :
-                print(" "*(depth+1) + "add current score "+ str(assets[3]))
-                scores.append(assets[3])
-                
+                    print2(" "*(depth+1) + "add score "+ str(sc[0]))
+            else:
+                finalAssets = list(np.add(assets ,robots))
+                print2(" "*(depth+1) + "end: return last score: " + str(finalAssets[3]))
+                scores.append(finalAssets[3])
+                if finalAssets[3] > maxAssets[3]:
+                    maxAssets = finalAssets
+                    print(" new max assets: "+ str(maxAssets))
+            break
+    
+    # print counter
+    # if mins == 3:
+    #     print(" " + str(round(iterations/(minutes*(minutes-1)*(minutes-2))*100,2)) + "% done")
+    
     # sort and return
     return sorted(scores, reverse=True) 
     
@@ -81,19 +101,29 @@ blueprints = [
         [bp[5],0,bp[6],0]
     ] for bp in blueprints
 ]
-# print(json.dumps(blueprints, indent=4))
+# print2(json.dumps(blueprints, indent=4))
 
 # params
 minutes = 24
+test = False
+iterations = 0
 
 # cycle over all blueprints and get max score
 mainScores = []
 mainRobots = [1,0,0,0]
 mainAssets = [0,0,0,0]
-for bp in [blueprints[0]]:
+
+for bpi in range(0, len(blueprints)):
+    bp = blueprints[bpi]
+    print("blueprint: " + str(bpi+1))
+    maxAssets = [0,0,0,0]
     sc = getMaxWithRemaining(bp, mainRobots, mainAssets, minutes)
     if len(sc) > 0:
         mainScores.append(sc[0])
-mainScores = sorted(mainScores, reverse=True)
 
-print(mainScores)
+qualityLevels = list(np.multiply(mainScores,[i+1 for i in range(0, len(mainScores))]))
+
+print(" scores: " + str(mainScores))
+print(" quality levels: " + str(qualityLevels))
+print(" sum: " + str(sum(qualityLevels)))
+
