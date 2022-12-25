@@ -15,21 +15,22 @@ def writeFile(fName,outString):
     outStream.close()
 
 def getRobot(blueprint, robots, assets, remaining, robot):
-    robotCost = blueprint[robot]
-    newAssets = list(np.subtract(assets, robotCost))
-    # find out how many rounds we need to afford the robot
-    i=0
-    while(True):
-        if all(j>=0 for j in newAssets): break
-        newAssets = list(np.add(newAssets, robots))
-        i += 1
+    # substract robot costs from current assets
+    newAssets = list(np.subtract(assets, blueprint[robot]))
+    
+    # find out how many rounds we need to afford the robot (and add a round to build the robot)
+    if all(j>=0 for j in newAssets):
+        rounds = 1
+    else:
+        robotsCheck = [i for i in robots if i > 0]
+        newAssetsCheck = newAssets[0:len(robotsCheck)]
+        rounds = -int(min(np.floor(np.divide(newAssetsCheck,robotsCheck)))) + 1
         
-    # take another round to build the robot
-    newAssets = list(np.add(newAssets, robots))
-    i+=1 
+    # add gathered assets in those rounds
+    newAssets = list(np.add(newAssets, np.multiply(robots,rounds)))
     
     # return result
-    newRemaining = remaining - i
+    newRemaining = remaining - rounds
     newRobots = [n for n in robots]
     newRobots[robot] += 1
     return [newRobots, newAssets, newRemaining]
@@ -64,6 +65,9 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
             sc = getMaxWithRemaining(blueprint, next[0],next[1],next[2], depth + 1, [i for i in path] + [[r, next[2]]])
             if len(sc) > 0:
                 scores.append(sc[0])
+                if (r==len(blueprint)-1) & (next[2]== (remaining-1)):
+                    # if it is possible to build a geode robot this very minute: don't consider alternatives, build the geode robot!
+                    break
     if len(scores) == 0:
         newAssets = list(np.add(assets, np.multiply(robots, remaining)))
         if newAssets[3] > maxAssets[3]:
@@ -102,7 +106,7 @@ mainScores = []
 mainRobots = [1,0,0,0]
 mainAssets = [0,0,0,0]
 
-for bpi in range(0, 1):
+for bpi in range(0, len(blueprints)):
     print("blueprint " + str(bpi+1) + ": " + str(blueprints[bpi]))
     bplog = []
     bp = blueprints[bpi]
@@ -112,8 +116,9 @@ for bpi in range(0, 1):
     mainScores.append(sc[0])
     
 qualityLevels = list(np.multiply(mainScores,[i+1 for i in range(0, len(mainScores))]))
-
+print('')
 print(" scores: " + str(mainScores))
 print(" quality levels: " + str(qualityLevels))
 print(" sum: " + str(sum(qualityLevels)))
+print('')
 
