@@ -17,12 +17,18 @@ def writeFile(fName,outString):
 def getRobot(blueprint, robots, assets, remaining, robot):
     robotCost = blueprint[robot]
     newAssets = list(np.subtract(assets, robotCost))
+    # find out how many rounds we need to afford the robot
     i=0
     while(True):
+        if all(j>=0 for j in newAssets): break
         newAssets = list(np.add(newAssets, robots))
         i += 1
-        if all(j>=0 for j in newAssets): break
-
+        
+    # take another round to build the robot
+    newAssets = list(np.add(newAssets, robots))
+    i+=1 
+    
+    # return result
     newRemaining = remaining - i
     newRobots = [n for n in robots]
     newRobots[robot] += 1
@@ -36,7 +42,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
     scores = []
      # if it's been more than the current global earliest minute at which you could have finished a first geode 
     # robot, and you haven't: just forget about this branch
-    if (mins > earliestFirstGeodeRobotAtMinute+ 1) & (assets[3] == 0):
+    if (mins > earliestFirstGeodeRobotAtMinute+ 2) & (assets[3] == 0):
         return scores
     
     # if you have robots ore and clay (1,2), you can build robots ore, clay and obs (1,2,3)
@@ -49,13 +55,15 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
         # print(" "*(d+1) + " build robot " + str(r) )
         next = getRobot(blueprint, robots, assets, remaining, r)
         if next[2] > 0 :
+            if (r == (len(blueprint)-1)) & ((minutes-next[2]+1) < earliestFirstGeodeRobotAtMinute):
+                # if you have the assets to make a geode robot:
+                # save this minute if it is smaller than the previous earliest minute
+                print(" could create first geode robot already at minute "+str((minutes-next[2]+1)) + "!")
+                earliestFirstGeodeRobotAtMinute = (minutes-next[2]+1)
+                
             sc = getMaxWithRemaining(blueprint, next[0],next[1],next[2], depth + 1, [i for i in path] + [[r, next[2]]])
-            scores.append(sc[0])
-            if (r == len(blueprint)) & ((minutes-next[2]+1) < earliestFirstGeodeRobotAtMinute):
-                    # if you have the assets to make a geode robot:
-                    # save this minute if it is smaller than the previous earliest minute
-                    print(" could create first geode robot already at minute "+str((minutes-next[2]+1)) + "!")
-                    earliestFirstGeodeRobotAtMinute = (minutes-next[2]+1)
+            if len(sc) > 0:
+                scores.append(sc[0])
     if len(scores) == 0:
         newAssets = list(np.add(assets, np.multiply(robots, remaining)))
         if newAssets[3] > maxAssets[3]:
