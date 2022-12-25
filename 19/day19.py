@@ -1,6 +1,8 @@
 import numpy as np
 import re
 import json
+import timeit
+import time
 
 # functions
 def readFile(fName):
@@ -38,29 +40,33 @@ def getRobot(blueprint, robots, assets, remaining, robot):
 def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
     # blueprint, robots and assets are 4x1 arrays in format [ore, clay, obsidian, geode]
     global maxAssets
-    global earliestFirstGeodeRobotAtMinute
+    global earliestGeodeRobots
     mins = minutes-remaining+1
     scores = []
      # if it's been more than the current global earliest minute at which you could have finished a first geode 
     # robot, and you haven't: just forget about this branch
-    if (mins > earliestFirstGeodeRobotAtMinute+ 2) & (assets[3] == 0):
+    if robots[3] == len(earliestGeodeRobots):
+        print('forgot to update earliest geode robots: '+ str(earliestGeodeRobots) + ", but nof geode robots is "+ str(robots[3]))
+    if mins > (earliestGeodeRobots[robots[3]]+ 1):
         return scores
-    
-    # if you have robots ore and clay (1,2), you can build robots ore, clay and obs (1,2,3)
-    emptyRobots = [i for i, x in enumerate(robots) if x==0]
-    if len(emptyRobots) > 0:  firstEmptyRobot = emptyRobots[0]
-    else: firstEmptyRobot = 3
-    # print(" "*d + " min "+ str(minutes-remaining+1)+ ","+ " up to robot: "+ str(firstEmptyRobot+1))
-        
-    for r in range(firstEmptyRobot, -1,-1):
-        # print(" "*(d+1) + " build robot " + str(r) )
+            
+    for r in range(len(blueprint)-1, -1,-1):
+        if (r>0) & (robots[r-1] == 0):
+            # if you have robots ore and clay (1,2), you can build robots ore, clay and obs (1,2,3)
+            continue
+            
         next = getRobot(blueprint, robots, assets, remaining, r)
-        if next[2] > 0 :
-            if (r == (len(blueprint)-1)) & ((minutes-next[2]+1) < earliestFirstGeodeRobotAtMinute):
-                # if you have the assets to make a geode robot:
-                # save this minute if it is smaller than the previous earliest minute
-                print(" could create first geode robot already at minute "+str((minutes-next[2])) + "!")
-                earliestFirstGeodeRobotAtMinute = (minutes-next[2]+1)
+        if ((r == 3) & (next[2] > 0)) | (next[2] > 1) :
+            # only consider this alternative if building this robot actually leaves some harvest time after.
+            # building a non-geode robot only makes sense if you have at least the time left to build another geode robot after
+            creationMinute = minutes-next[2]
+            
+            if (r == 3) & ( earliestGeodeRobots[robots[3]] > creationMinute):
+                # if you have the assets to make a geode robot, and it is quicker than you could before: save this minute
+                earliestGeodeRobots[robots[3]] = creationMinute
+                if robots[3] == (len(earliestGeodeRobots) -1):
+                    earliestGeodeRobots.append(minutes+1)
+                print(" updated geode robot " + str(robots[3]) + " creation minimum: "+str(earliestGeodeRobots))
                 
             sc = getMaxWithRemaining(blueprint, next[0],next[1],next[2], depth + 1, [i for i in path] + [[r, next[2]]])
             if len(sc) > 0:
@@ -78,7 +84,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
     return sorted(scores, reverse = True)
     
 # parse
-input = readFile('blueprints.txt')
+input = readFile('example_blueprints.txt')
 blueprintStrings = input.split('\n')
 blueprints = []
 for bs in blueprintStrings:
@@ -106,19 +112,26 @@ mainScores = []
 mainRobots = [1,0,0,0]
 mainAssets = [0,0,0,0]
 
-for bpi in range(0, len(blueprints)):
+for bpi in range(0,2):
+    start = timeit.default_timer()
+    
     print("blueprint " + str(bpi+1) + ": " + str(blueprints[bpi]))
     bplog = []
     bp = blueprints[bpi]
     maxAssets = [0,0,0,0]
-    earliestFirstGeodeRobotAtMinute = minutes+1
+    earliestGeodeRobots = [minutes+1]
     sc = getMaxWithRemaining(bp, mainRobots, mainAssets, minutes, 0, [])
     mainScores.append(sc[0])
+    
+    stop = timeit.default_timer()
+    runTime = time.strftime('%H:%M:%S', time.gmtime(stop - start))
+    print("runtime blueprint " + str(bpi+1) + ": " + runTime)
+    
     
 qualityLevels = list(np.multiply(mainScores,[i+1 for i in range(0, len(mainScores))]))
 print('')
 print(" scores: " + str(mainScores))
 print(" quality levels: " + str(qualityLevels))
 print(" sum: " + str(sum(qualityLevels)))
-print('')
+print(' product of scores: ' + str(np.prod(mainScores)))
 
