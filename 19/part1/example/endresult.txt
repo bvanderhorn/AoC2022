@@ -1,0 +1,5 @@
+
+ scores: [9, 12]
+ quality levels: [9, 24]
+ sum: 33
+ product of scores: 108

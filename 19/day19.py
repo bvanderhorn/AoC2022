@@ -3,6 +3,7 @@ import re
 import json
 import timeit
 import time
+from pathlib import Path
 
 # functions
 def readFile(fName):
@@ -16,8 +17,14 @@ def writeFile(fName,outString):
     outStream.write(outString)
     outStream.close()
 
+def print2(inString): 
+    global bplog
+    print(inString)
+    if test: 
+        bplog.append(inString)
+        
 def getRobot(blueprint, robots, assets, remaining, robot):
-    # substract robot costs from current assets
+    # subtract robot costs from current assets
     newAssets = list(np.subtract(assets, blueprint[robot]))
     
     # find out how many rounds we need to afford the robot (and add a round to build the robot)
@@ -43,10 +50,8 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
     global earliestGeodeRobots
     mins = minutes-remaining+1
     scores = []
-     # if it's been more than the current global earliest minute at which you could have finished a first geode 
-    # robot, and you haven't: just forget about this branch
-    if robots[3] == len(earliestGeodeRobots):
-        print('forgot to update earliest geode robots: '+ str(earliestGeodeRobots) + ", but nof geode robots is "+ str(robots[3]))
+    # if it's been more than the current global earliest minute at which you could have finished a first geode 
+    # robot, and you haven't: just forget about this branch        
     if mins > (earliestGeodeRobots[robots[3]]+ 1):
         return scores
             
@@ -66,7 +71,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
                 earliestGeodeRobots[robots[3]] = creationMinute
                 if robots[3] == (len(earliestGeodeRobots) -1):
                     earliestGeodeRobots.append(minutes+1)
-                print(" updated geode robot " + str(robots[3]) + " creation minimum: "+str(earliestGeodeRobots))
+                print2(" updated geode robot " + str(robots[3]) + " creation minimum: "+str(earliestGeodeRobots))
                 
             sc = getMaxWithRemaining(blueprint, next[0],next[1],next[2], depth + 1, [i for i in path] + [[r, next[2]]])
             if len(sc) > 0:
@@ -78,13 +83,18 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
         newAssets = list(np.add(assets, np.multiply(robots, remaining)))
         if newAssets[3] > maxAssets[3]:
             maxAssets = [i for i in newAssets]
-            print(" new max assets: " + str(maxAssets))
-            print("  path: "+ str(path))
+            print2(" new max assets: " + str(maxAssets) + " with path: "+ str(path))
         scores.append(assets[3] + robots[3]*remaining)
     return sorted(scores, reverse = True)
-    
+
+# params
+part : int = 2
+test = True         # save output to file
+useExample = False   # use example
+minutes = (24,32)[part==2]
+
 # parse
-input = readFile('example_blueprints.txt')
+input = readFile(('','example_')[useExample] + 'blueprints.txt')
 blueprintStrings = input.split('\n')
 blueprints = []
 for bs in blueprintStrings:
@@ -102,21 +112,17 @@ blueprints = [
 ]
 # print2(json.dumps(blueprints, indent=4))
 
-# params
-minutes = 24
-test = False
-iterations = 0
-
 # cycle over all blueprints and get max score
 mainScores = []
 mainRobots = [1,0,0,0]
 mainAssets = [0,0,0,0]
-
-for bpi in range(0,2):
-    start = timeit.default_timer()
-    
-    print("blueprint " + str(bpi+1) + ": " + str(blueprints[bpi]))
+divider = "-"*90
+saveDir = ('part1','part2')[part==2] + ('','/example')[useExample] + '/'
+Path('./' + saveDir).mkdir(parents=True, exist_ok=True)
+for bpi in range(0,(len(blueprints),3)[(not useExample) & (part == 2)]):
     bplog = []
+    start = timeit.default_timer()
+    print2(divider + "\nblueprint " + str(bpi+1) + ": " + str(blueprints[bpi]) + "\n" + divider)
     bp = blueprints[bpi]
     maxAssets = [0,0,0,0]
     earliestGeodeRobots = [minutes+1]
@@ -125,13 +131,16 @@ for bpi in range(0,2):
     
     stop = timeit.default_timer()
     runTime = time.strftime('%H:%M:%S', time.gmtime(stop - start))
-    print("runtime blueprint " + str(bpi+1) + ": " + runTime)
+    print2(divider + "\nmax number of geodes: "+ str(sc[0]) +"\nruntime blueprint " + str(bpi+1) + ": " + runTime + "\n" + divider)
+    if test: 
+        writeFile(saveDir + 'blueprint_'+str(bpi+1)+".txt",'\n'.join(bplog))
     
-    
+# calculate end result
 qualityLevels = list(np.multiply(mainScores,[i+1 for i in range(0, len(mainScores))]))
-print('')
-print(" scores: " + str(mainScores))
-print(" quality levels: " + str(qualityLevels))
-print(" sum: " + str(sum(qualityLevels)))
-print(' product of scores: ' + str(np.prod(mainScores)))
-
+bplog = []
+print2("\n scores: " + str(mainScores))
+print2(" quality levels: " + str(qualityLevels))
+print2(" sum: " + str(sum(qualityLevels)))
+print2(' product of scores: ' + str(np.prod(mainScores)))
+if test: 
+    writeFile(saveDir + "endresult.txt",'\n'.join(bplog))
