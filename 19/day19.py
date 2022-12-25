@@ -59,7 +59,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
             if (r == (len(blueprint)-1)) & ((minutes-next[2]+1) < earliestFirstGeodeRobotAtMinute):
                 # if you have the assets to make a geode robot:
                 # save this minute if it is smaller than the previous earliest minute
-                print(" could create first geode robot already at minute "+str((minutes-next[2]+1)) + "!")
+                print(" could create first geode robot already at minute "+str((minutes-next[2])) + "!")
                 earliestFirstGeodeRobotAtMinute = (minutes-next[2]+1)
                 
             sc = getMaxWithRemaining(blueprint, next[0],next[1],next[2], depth + 1, [i for i in path] + [[r, next[2]]])
@@ -78,7 +78,7 @@ def getMaxWithRemaining(blueprint, robots, assets, remaining, depth, path ):
     return sorted(scores, reverse = True)
     
 # parse
-input = readFile('example_blueprints.txt')
+input = readFile('blueprints.txt')
 blueprintStrings = input.split('\n')
 blueprints = []
 for bs in blueprintStrings:
