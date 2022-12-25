@@ -1,0 +1,5 @@
+
+ scores: [30, 21, 31]
+ quality levels: [30, 42, 93]
+ sum: 165
+ product of scores: 19530
