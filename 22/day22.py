@@ -79,15 +79,36 @@ def endPos(slice, startPos, maxSteps):
     
     # we did not run into a wall: we can run until the end of our remaining steps!
     return firstNonEmpty + remSteps
-    
-        
+
 
 def newPosDir(oldPosDir, instruction):
     # oldPosDir and output are 3x1 list in format [Y, X, Dir]
     # instruction is a trace element
-    newDir = turn(oldPosDir[3], instruction[0])
+    newDir = turn(oldPosDir[2], instruction[0])
     sliceLine = (oldPosDir[1],oldPosDir[0])[newDir in 'RL']
+    startIndex = (oldPosDir[0],oldPosDir[1])[newDir in 'RL']
+    mapLength = (len(map),len(map[0]))[newDir in 'RL']
+    
+    # slice is left-to-right or up-to-down
     ms = mapSlice(newDir, sliceLine)
+    
+    # if direction is UP or LEFT, we need to revert the slice and index
+    if newDir in 'LU':
+        ms = list(reversed(ms))
+        startIndex = (mapLength -1) - startIndex
+        
+    # find 1-D end position
+    endIndex = endPos(ms,startIndex,int(instruction[1]))
+    
+    # if direction is UP or LEFT, we need to revert the result back
+    if newDir in 'LU':
+        endIndex = (mapLength -1) - endIndex
+        
+    # ... and we can return!
+    if newDir in 'RL':
+        return [oldPosDir[0], endIndex, newDir]
+    else:
+        return [endIndex, oldPosDir[1], newDir]
 
 
 # params
@@ -96,7 +117,8 @@ test1 = False
 test2 = True
 part: int = 1
 directions = 'RDLU'
-initialDirection = 0
+firstDir = 'U'
+firstTurn = 'R'
 startRow = 0
 
 # parse
@@ -113,5 +135,14 @@ print(' total instructions: '+ str(len(trace)))
 
 # part 1
 startCol = map[0].find('.')
-for tr in trace[0:2]:
-    0
+posDir = [startRow, startCol,firstDir]
+print('initial posDir: ' + str(posDir))
+for trIndex in range(0,2):
+    tr = (trace[trIndex], [firstTurn,trace[0][1]])[trIndex == 0]
+    
+    print('trace ' + str(trIndex+1) + ": " + str(tr))
+    posDir = newPosDir(posDir, tr)
+    print(' new posDir: ' + str(posDir))
+    
+    
+print('final position and direction: ' + str(posDir))
