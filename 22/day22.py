@@ -1,3 +1,5 @@
+import re
+
 # functions
 def readFile(fName):
     inStream = open(fName,'r')
@@ -25,16 +27,17 @@ def printmap(mapIn, fromRow, toRow, fromCol, toCol):
 
 # params
 fileName = 'mapandtrace.txt'
-human = 'humn'
-root = 'root'
 test1 = False
 test2 = True
 part: int = 1
+initialDirection = 'R'
 
 # parse
 input = readFile(fileName).split('\n\n')
 map = input[0].split('\n')
-trace = input[1]
+trace = re.findall("(^|\D)(\d+)",input[1])
 printmap(map,1,2,1,len(map[0]))
 printmap(map,90,110,40,60)
-print(trace)
+print(trace[0:10])
+print(trace[0:10][0][1])
+print(' total instructions: '+ str(len(trace)))
