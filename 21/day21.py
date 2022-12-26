@@ -125,6 +125,7 @@ for i in range(0,len(input)):
 # part 1
 if part == 1:
     print(evaluate(root))
+    exit(0)
 
 # part 2
 # update root equation
