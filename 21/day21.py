@@ -12,8 +12,15 @@ def writeFile(fName,outString):
     outStream.write(outString)
     outStream.close()
 
+def print1(inString): 
+    if test1: print(inString)
+    
 def print2(inString):
-    if test: print(inString)
+    global runlog
+    if test2:
+        print(inString)
+        runlog.append(inString)
+        
 
 def equationComponents(equation):
     return list(re.match("(\w+) (\W) (\w+)",equation).group(1,2,3))
@@ -56,13 +63,14 @@ def getIndex(monkeyName):
 
 def evaluate(monkeyName, extend = False, depth = 0):
     monkey = getMonkey(monkeyName)
-    print2(" "*depth + " evaluate " + monkeyName + ": " + monkey[1])
+    print1(" "*depth + " evaluate " + monkeyName + ": " + monkey[1])
     name = monkey[0]
     equate = monkey[1]
     equationMatch = re.match("(\w+) \W (\w+)",equate)
     intMatch = re.match("^\d+$",equate)
+    
     if (monkeyName == human) & (part == 2): 
-        print2(" "*depth + "  --> return " + human)
+        print1(" "*depth + "  --> return " + human)
         return human
     elif (intMatch != None):
         return equate
@@ -70,21 +78,21 @@ def evaluate(monkeyName, extend = False, depth = 0):
         m1 = equationMatch.group(1)
         m2 = equationMatch.group(2)
         equate = equate.replace(m1,evaluate(m1,extend,depth+1)).replace(m2,evaluate(m2,extend,depth+1))
-        print2(" "*depth + " returning " + monkeyName + ": " + equate)
+        print1(" "*depth + " returning " + monkeyName + ": " + equate)
         if extend:
             return "("+ equate +")"
         else:
             return str(eval(equate))
 
 def rewriteAndEvaluate(monkeyName, depth = 0):
-    print(" "*depth*2 + "rewrite monkey "+ monkeyName+": ")
+    print2(" "*depth*2 + "rewrite monkey "+ monkeyName+": ")
     usedInMonkey = getUsedInMonkey(monkeyName)
-    print(" "*depth*2 + " used in : " + usedInMonkey[0] + " = " + usedInMonkey[1])
+    print2(" "*depth*2 + " used in : " + usedInMonkey[0] + " = " + usedInMonkey[1])
     if monkeyName == humanHalf:
-        print(" "*depth*2 + monkeyName + " is human half, return notHumanHalf: " + notHumanHalfValue)
-        return notHumanHalf
+        print2(" "*depth*2 + monkeyName + " is human half, return notHumanHalf: " + notHumanHalfValue)
+        return notHumanHalfValue
     newEquation = rewrite(monkeyName, usedInMonkey)
-    print(" "*depth*2 + " becomes : " + monkeyName + " = " + newEquation)
+    print2(" "*depth*2 + " becomes : " + monkeyName + " = " + newEquation)
     components = equationComponents(newEquation)
     leftMonkey = components[0]
     rightMonkey = components[2]
@@ -94,8 +102,8 @@ def rewriteAndEvaluate(monkeyName, depth = 0):
         else:
             value = evaluate(sub)
         newEquation = newEquation.replace(sub, value)
-    print(" "*depth*2 + " filled in : " + monkeyName + " = " + newEquation)
-    print(" "*depth*2 + "return " + monkeyName + " = " + str(eval(newEquation)))
+    print2(" "*depth*2 + " filled in : " + monkeyName + " = " + newEquation)
+    print2(" "*depth*2 + "return " + monkeyName + " = " + str(eval(newEquation)))
     return str(eval(newEquation))
     
     
@@ -103,7 +111,8 @@ def rewriteAndEvaluate(monkeyName, depth = 0):
 fileName = 'monkeys.txt'
 human = 'humn'
 root = 'root'
-test = False
+test1 = False
+test2 = True
 part: int = 2
 
 # parse
@@ -119,6 +128,7 @@ if part == 1:
 
 # part 2
 # update root equation
+runlog = []
 rootMonkey = getMonkey(root)
 rootIndex = getIndex(root)
 rootComponents = getComponents(rootMonkey)
@@ -132,21 +142,33 @@ writeFile('rootEval.txt',rootEvaluation)
 
 # evaluate left, right
 rootHalfs = [rootComponents[0],rootComponents[2]]
-print(" left: " + rootHalfs[0])
-print(" right: " + rootHalfs[1])
+print2(" left: " + rootHalfs[0])
+print2(" right: " + rootHalfs[1])
 for h in rootHalfs:
     try:
         notHumanHalfValue = evaluate(h)
         notHumanHalf = h
-        print(' not-human half: ' + notHumanHalf + " = " + notHumanHalfValue)
+        print2(' not-human half: ' + notHumanHalf + " = " + notHumanHalfValue)
     except:
         humanHalf = h
-        print(' human half: ' + humanHalf)
+        print2(' human half: ' + humanHalf)
 
 # check if there are doubles ('abcd * abcd', 'defg / defg' etc.)
 doubles = [m for m in [m0 for m0 in monkeys if re.match("\d+",m0[1]) is None] if getComponents(m)[0] == getComponents(m)[2]]
-print(doubles)
+print2(" doubles ('abcd * abcd', 'defg - defg' etc.): " + str(doubles))
 # --> no doubles!
 
-print(rewriteAndEvaluate(human))
+# evaluate
+humanValue = rewriteAndEvaluate(human)
+print2('\n found human value: ' + humanValue)
 
+# check with previous found equation
+rootEvalComponents = rootEvaluation.split('=')
+leftComponent = rootEvalComponents[0][1:]
+rc = rootEvalComponents[1]
+rightComponent = rc[0:len(rc)-1]
+leftEval = str(eval(leftComponent.replace(human, humanValue)))
+rightEval = str(eval(rightComponent.replace(human, humanValue)))
+print2(' check root Evaluation (see also rootEval.txt) : '+leftEval + ' = ' + rightEval)
+
+if test2: writeFile('runlog_part_2.txt','\n'.join(runlog))

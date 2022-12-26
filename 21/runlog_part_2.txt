@@ -1,0 +1,356 @@
+ left: vpmn
+ right: pqtt
+ human half: vpmn
+ not-human half: pqtt = 40962717833337.0
+ doubles ('abcd * abcd', 'defg - defg' etc.): []
+rewrite monkey humn: 
+ used in : tsnw = humn + sslh
+ becomes : humn = tsnw - sslh
+  rewrite monkey tsnw: 
+   used in : vqtr = tsnw / fvbf
+   becomes : tsnw = vqtr * fvbf
+    rewrite monkey vqtr: 
+     used in : wwwn = vqtr - cftg
+     becomes : vqtr = wwwn + cftg
+      rewrite monkey wwwn: 
+       used in : hsrh = cqlb * wwwn
+       becomes : wwwn = hsrh / cqlb
+        rewrite monkey hsrh: 
+         used in : nvhq = hsrh + qnpj
+         becomes : hsrh = nvhq - qnpj
+          rewrite monkey nvhq: 
+           used in : psbd = wgzh * nvhq
+           becomes : nvhq = psbd / wgzh
+            rewrite monkey psbd: 
+             used in : mdlq = psbd - svpl
+             becomes : psbd = mdlq + svpl
+              rewrite monkey mdlq: 
+               used in : mjwn = mdlq + pssd
+               becomes : mdlq = mjwn - pssd
+                rewrite monkey mjwn: 
+                 used in : hjsb = wvmt + mjwn
+                 becomes : mjwn = hjsb - wvmt
+                  rewrite monkey hjsb: 
+                   used in : fbwz = hjsb / tjdj
+                   becomes : hjsb = fbwz * tjdj
+                    rewrite monkey fbwz: 
+                     used in : jpqm = fbwz + dljv
+                     becomes : fbwz = jpqm - dljv
+                      rewrite monkey jpqm: 
+                       used in : ltvr = zmmr * jpqm
+                       becomes : jpqm = ltvr / zmmr
+                        rewrite monkey ltvr: 
+                         used in : rmhc = ltvr - snwl
+                         becomes : ltvr = rmhc + snwl
+                          rewrite monkey rmhc: 
+                           used in : mjbr = rmhc / wchb
+                           becomes : rmhc = mjbr * wchb
+                            rewrite monkey mjbr: 
+                             used in : pddh = fzvb + mjbr
+                             becomes : mjbr = pddh - fzvb
+                              rewrite monkey pddh: 
+                               used in : bghj = pddh / fqtj
+                               becomes : pddh = bghj * fqtj
+                                rewrite monkey bghj: 
+                                 used in : dzgc = bghj - fpgn
+                                 becomes : bghj = dzgc + fpgn
+                                  rewrite monkey dzgc: 
+                                   used in : dbcf = dzgc * npbn
+                                   becomes : dzgc = dbcf / npbn
+                                    rewrite monkey dbcf: 
+                                     used in : djbr = dbcf - msjg
+                                     becomes : dbcf = djbr + msjg
+                                      rewrite monkey djbr: 
+                                       used in : tdgm = djbr * zqbv
+                                       becomes : djbr = tdgm / zqbv
+                                        rewrite monkey tdgm: 
+                                         used in : fjdr = tdgm + gnjn
+                                         becomes : tdgm = fjdr - gnjn
+                                          rewrite monkey fjdr: 
+                                           used in : jcrv = fjdr / nwph
+                                           becomes : fjdr = jcrv * nwph
+                                            rewrite monkey jcrv: 
+                                             used in : lrjl = jcrv + fdll
+                                             becomes : jcrv = lrjl - fdll
+                                              rewrite monkey lrjl: 
+                                               used in : wbfs = tvhr + lrjl
+                                               becomes : lrjl = wbfs - tvhr
+                                                rewrite monkey wbfs: 
+                                                 used in : mfhj = wbfs / clpv
+                                                 becomes : wbfs = mfhj * clpv
+                                                  rewrite monkey mfhj: 
+                                                   used in : cbtg = mfhj - czsg
+                                                   becomes : mfhj = cbtg + czsg
+                                                    rewrite monkey cbtg: 
+                                                     used in : bjjn = cbtg * lczq
+                                                     becomes : cbtg = bjjn / lczq
+                                                      rewrite monkey bjjn: 
+                                                       used in : rznp = bjjn - fhwg
+                                                       becomes : bjjn = rznp + fhwg
+                                                        rewrite monkey rznp: 
+                                                         used in : qjgz = rznp / wdqs
+                                                         becomes : rznp = qjgz * wdqs
+                                                          rewrite monkey qjgz: 
+                                                           used in : bpmg = jqnq + qjgz
+                                                           becomes : qjgz = bpmg - jqnq
+                                                            rewrite monkey bpmg: 
+                                                             used in : wlng = jbwt * bpmg
+                                                             becomes : bpmg = wlng / jbwt
+                                                              rewrite monkey wlng: 
+                                                               used in : mvqc = rcmp + wlng
+                                                               becomes : wlng = mvqc - rcmp
+                                                                rewrite monkey mvqc: 
+                                                                 used in : gwzh = mvqc / cmwc
+                                                                 becomes : mvqc = gwzh * cmwc
+                                                                  rewrite monkey gwzh: 
+                                                                   used in : jttq = gwzh - wtvd
+                                                                   becomes : gwzh = jttq + wtvd
+                                                                    rewrite monkey jttq: 
+                                                                     used in : fbnd = jttq * fvrn
+                                                                     becomes : jttq = fbnd / fvrn
+                                                                      rewrite monkey fbnd: 
+                                                                       used in : wgmz = fbnd + swvs
+                                                                       becomes : fbnd = wgmz - swvs
+                                                                        rewrite monkey wgmz: 
+                                                                         used in : mwvf = wgmz * gnmm
+                                                                         becomes : wgmz = mwvf / gnmm
+                                                                          rewrite monkey mwvf: 
+                                                                           used in : mfwq = mwvf - wqns
+                                                                           becomes : mwvf = mfwq + wqns
+                                                                            rewrite monkey mfwq: 
+                                                                             used in : wpzr = mfwq / rdlj
+                                                                             becomes : mfwq = wpzr * rdlj
+                                                                              rewrite monkey wpzr: 
+                                                                               used in : lszm = hgzg + wpzr
+                                                                               becomes : wpzr = lszm - hgzg
+                                                                                rewrite monkey lszm: 
+                                                                                 used in : jqhf = lszm * gwrs
+                                                                                 becomes : lszm = jqhf / gwrs
+                                                                                  rewrite monkey jqhf: 
+                                                                                   used in : qffj = jqhf - pmbc
+                                                                                   becomes : jqhf = qffj + pmbc
+                                                                                    rewrite monkey qffj: 
+                                                                                     used in : swlb = rjzp + qffj
+                                                                                     becomes : qffj = swlb - rjzp
+                                                                                      rewrite monkey swlb: 
+                                                                                       used in : sjbd = swlb / msqv
+                                                                                       becomes : swlb = sjbd * msqv
+                                                                                        rewrite monkey sjbd: 
+                                                                                         used in : tvct = sjbd + vsnq
+                                                                                         becomes : sjbd = tvct - vsnq
+                                                                                          rewrite monkey tvct: 
+                                                                                           used in : gzsr = tvct / vstc
+                                                                                           becomes : tvct = gzsr * vstc
+                                                                                            rewrite monkey gzsr: 
+                                                                                             used in : fqbt = gzsr - zwcl
+                                                                                             becomes : gzsr = fqbt + zwcl
+                                                                                              rewrite monkey fqbt: 
+                                                                                               used in : flwd = rmsw * fqbt
+                                                                                               becomes : fqbt = flwd / rmsw
+                                                                                                rewrite monkey flwd: 
+                                                                                                 used in : mtlb = flwd - tmwh
+                                                                                                 becomes : flwd = mtlb + tmwh
+                                                                                                  rewrite monkey mtlb: 
+                                                                                                   used in : vclb = dclb * mtlb
+                                                                                                   becomes : mtlb = vclb / dclb
+                                                                                                    rewrite monkey vclb: 
+                                                                                                     used in : rcsc = vclb + thpp
+                                                                                                     becomes : vclb = rcsc - thpp
+                                                                                                      rewrite monkey rcsc: 
+                                                                                                       used in : wsnr = rcsc / zdjf
+                                                                                                       becomes : rcsc = wsnr * zdjf
+                                                                                                        rewrite monkey wsnr: 
+                                                                                                         used in : zqrp = nbgv + wsnr
+                                                                                                         becomes : wsnr = zqrp - nbgv
+                                                                                                          rewrite monkey zqrp: 
+                                                                                                           used in : tlfr = blgm + zqrp
+                                                                                                           becomes : zqrp = tlfr - blgm
+                                                                                                            rewrite monkey tlfr: 
+                                                                                                             used in : rcrf = tlfr / bllg
+                                                                                                             becomes : tlfr = rcrf * bllg
+                                                                                                              rewrite monkey rcrf: 
+                                                                                                               used in : hfbp = rcrf - hnpn
+                                                                                                               becomes : rcrf = hfbp + hnpn
+                                                                                                                rewrite monkey hfbp: 
+                                                                                                                 used in : vpjc = hfbp * fscw
+                                                                                                                 becomes : hfbp = vpjc / fscw
+                                                                                                                  rewrite monkey vpjc: 
+                                                                                                                   used in : rgfz = vpjc - gdvj
+                                                                                                                   becomes : vpjc = rgfz + gdvj
+                                                                                                                    rewrite monkey rgfz: 
+                                                                                                                     used in : tcff = rgfz / qlgr
+                                                                                                                     becomes : rgfz = tcff * qlgr
+                                                                                                                      rewrite monkey tcff: 
+                                                                                                                       used in : mdwb = tcff + ttws
+                                                                                                                       becomes : tcff = mdwb - ttws
+                                                                                                                        rewrite monkey mdwb: 
+                                                                                                                         used in : bbph = mdwb * jftc
+                                                                                                                         becomes : mdwb = bbph / jftc
+                                                                                                                          rewrite monkey bbph: 
+                                                                                                                           used in : jlvw = bbph + hwvl
+                                                                                                                           becomes : bbph = jlvw - hwvl
+                                                                                                                            rewrite monkey jlvw: 
+                                                                                                                             used in : tspd = jlvw * nprf
+                                                                                                                             becomes : jlvw = tspd / nprf
+                                                                                                                              rewrite monkey tspd: 
+                                                                                                                               used in : gmdt = tspd - vllv
+                                                                                                                               becomes : tspd = gmdt + vllv
+                                                                                                                                rewrite monkey gmdt: 
+                                                                                                                                 used in : dpzm = gmdt / mqfc
+                                                                                                                                 becomes : gmdt = dpzm * mqfc
+                                                                                                                                  rewrite monkey dpzm: 
+                                                                                                                                   used in : rfmm = vgfs - dpzm
+                                                                                                                                   becomes : dpzm = vgfs - rfmm
+                                                                                                                                    rewrite monkey rfmm: 
+                                                                                                                                     used in : sqsp = rfmm / jwph
+                                                                                                                                     becomes : rfmm = sqsp * jwph
+                                                                                                                                      rewrite monkey sqsp: 
+                                                                                                                                       used in : fzmq = dlzs + sqsp
+                                                                                                                                       becomes : sqsp = fzmq - dlzs
+                                                                                                                                        rewrite monkey fzmq: 
+                                                                                                                                         used in : vpmn = mhjp * fzmq
+                                                                                                                                         becomes : fzmq = vpmn / mhjp
+                                                                                                                                          rewrite monkey vpmn: 
+                                                                                                                                           used in : root = vpmn = pqtt
+                                                                                                                                          vpmn is human half, return notHumanHalf: 40962717833337.0
+                                                                                                                                         filled in : fzmq = 40962717833337.0 / 27
+                                                                                                                                        return fzmq = 1517137697531.0
+                                                                                                                                       filled in : sqsp = 1517137697531.0 - 940.0
+                                                                                                                                      return sqsp = 1517137696591.0
+                                                                                                                                     filled in : rfmm = 1517137696591.0 * 3
+                                                                                                                                    return rfmm = 4551413089773.0
+                                                                                                                                   filled in : dpzm = 13085427083031.0 - 4551413089773.0
+                                                                                                                                  return dpzm = 8534013993258.0
+                                                                                                                                 filled in : gmdt = 8534013993258.0 * 11
+                                                                                                                                return gmdt = 93874153925838.0
+                                                                                                                               filled in : tspd = 93874153925838.0 + 618.0
+                                                                                                                              return tspd = 93874153926456.0
+                                                                                                                             filled in : jlvw = 93874153926456.0 / 2
+                                                                                                                            return jlvw = 46937076963228.0
+                                                                                                                           filled in : bbph = 46937076963228.0 - 914.0
+                                                                                                                          return bbph = 46937076962314.0
+                                                                                                                         filled in : mdwb = 46937076962314.0 / 2
+                                                                                                                        return mdwb = 23468538481157.0
+                                                                                                                       filled in : tcff = 23468538481157.0 - 393
+                                                                                                                      return tcff = 23468538480764.0
+                                                                                                                     filled in : rgfz = 23468538480764.0 * 5
+                                                                                                                    return rgfz = 117342692403820.0
+                                                                                                                   filled in : vpjc = 117342692403820.0 + 714
+                                                                                                                  return vpjc = 117342692404534.0
+                                                                                                                 filled in : hfbp = 117342692404534.0 / 38
+                                                                                                                return hfbp = 3087965589593.0
+                                                                                                               filled in : rcrf = 3087965589593.0 + 240
+                                                                                                              return rcrf = 3087965589833.0
+                                                                                                             filled in : tlfr = 3087965589833.0 * 7
+                                                                                                            return tlfr = 21615759128831.0
+                                                                                                           filled in : zqrp = 21615759128831.0 - 288.0
+                                                                                                          return zqrp = 21615759128543.0
+                                                                                                         filled in : wsnr = 21615759128543.0 - 738
+                                                                                                        return wsnr = 21615759127805.0
+                                                                                                       filled in : rcsc = 21615759127805.0 * 4
+                                                                                                      return rcsc = 86463036511220.0
+                                                                                                     filled in : vclb = 86463036511220.0 - 522.0
+                                                                                                    return vclb = 86463036510698.0
+                                                                                                   filled in : mtlb = 86463036510698.0 / 2
+                                                                                                  return mtlb = 43231518255349.0
+                                                                                                 filled in : flwd = 43231518255349.0 + 261
+                                                                                                return flwd = 43231518255610.0
+                                                                                               filled in : fqbt = 43231518255610.0 / 2
+                                                                                              return fqbt = 21615759127805.0
+                                                                                             filled in : gzsr = 21615759127805.0 + 257.0
+                                                                                            return gzsr = 21615759128062.0
+                                                                                           filled in : tvct = 21615759128062.0 * 2
+                                                                                          return tvct = 43231518256124.0
+                                                                                         filled in : sjbd = 43231518256124.0 - 291
+                                                                                        return sjbd = 43231518255833.0
+                                                                                       filled in : swlb = 43231518255833.0 * 4
+                                                                                      return swlb = 172926073023332.0
+                                                                                     filled in : qffj = 172926073023332.0 - 369.0
+                                                                                    return qffj = 172926073022963.0
+                                                                                   filled in : jqhf = 172926073022963.0 + 243
+                                                                                  return jqhf = 172926073023206.0
+                                                                                 filled in : lszm = 172926073023206.0 / 2
+                                                                                return lszm = 86463036511603.0
+                                                                               filled in : wpzr = 86463036511603.0 - 952
+                                                                              return wpzr = 86463036510651.0
+                                                                             filled in : mfwq = 86463036510651.0 * 3
+                                                                            return mfwq = 259389109531953.0
+                                                                           filled in : mwvf = 259389109531953.0 + 307
+                                                                          return mwvf = 259389109532260.0
+                                                                         filled in : wgmz = 259389109532260.0 / 2
+                                                                        return wgmz = 129694554766130.0
+                                                                       filled in : fbnd = 129694554766130.0 - 500
+                                                                      return fbnd = 129694554765630.0
+                                                                     filled in : jttq = 129694554765630.0 / 3
+                                                                    return jttq = 43231518255210.0
+                                                                   filled in : gwzh = 43231518255210.0 + 808.0
+                                                                  return gwzh = 43231518256018.0
+                                                                 filled in : mvqc = 43231518256018.0 * 2
+                                                                return mvqc = 86463036512036.0
+                                                               filled in : wlng = 86463036512036.0 - 956
+                                                              return wlng = 86463036511080.0
+                                                             filled in : bpmg = 86463036511080.0 / 102
+                                                            return bpmg = 847676828540.0
+                                                           filled in : qjgz = 847676828540.0 - 852
+                                                          return qjgz = 847676827688.0
+                                                         filled in : rznp = 847676827688.0 * 9
+                                                        return rznp = 7629091449192.0
+                                                       filled in : bjjn = 7629091449192.0 + 613
+                                                      return bjjn = 7629091449805.0
+                                                     filled in : cbtg = 7629091449805.0 / 5
+                                                    return cbtg = 1525818289961.0
+                                                   filled in : mfhj = 1525818289961.0 + 285.0
+                                                  return mfhj = 1525818290246.0
+                                                 filled in : wbfs = 1525818290246.0 * 7
+                                                return wbfs = 10680728031722.0
+                                               filled in : lrjl = 10680728031722.0 - 171
+                                              return lrjl = 10680728031551.0
+                                             filled in : jcrv = 10680728031551.0 - 872
+                                            return jcrv = 10680728030679.0
+                                           filled in : fjdr = 10680728030679.0 * 9
+                                          return fjdr = 96126552276111.0
+                                         filled in : tdgm = 96126552276111.0 - 525.0
+                                        return tdgm = 96126552275586.0
+                                       filled in : djbr = 96126552275586.0 / 2
+                                      return djbr = 48063276137793.0
+                                     filled in : dbcf = 48063276137793.0 + 438.0
+                                    return dbcf = 48063276138231.0
+                                   filled in : dzgc = 48063276138231.0 / 3
+                                  return dzgc = 16021092046077.0
+                                 filled in : bghj = 16021092046077.0 + 721.0
+                                return bghj = 16021092046798.0
+                               filled in : pddh = 16021092046798.0 * 2
+                              return pddh = 32042184093596.0
+                             filled in : mjbr = 32042184093596.0 - 865.0
+                            return mjbr = 32042184092731.0
+                           filled in : rmhc = 32042184092731.0 * 3
+                          return rmhc = 96126552278193.0
+                         filled in : ltvr = 96126552278193.0 + 361.0
+                        return ltvr = 96126552278554.0
+                       filled in : jpqm = 96126552278554.0 / 2
+                      return jpqm = 48063276139277.0
+                     filled in : fbwz = 48063276139277.0 - 945.0
+                    return fbwz = 48063276138332.0
+                   filled in : hjsb = 48063276138332.0 * 2
+                  return hjsb = 96126552276664.0
+                 filled in : mjwn = 96126552276664.0 - 495
+                return mjwn = 96126552276169.0
+               filled in : mdlq = 96126552276169.0 - 126
+              return mdlq = 96126552276043.0
+             filled in : psbd = 96126552276043.0 + 416
+            return psbd = 96126552276459.0
+           filled in : nvhq = 96126552276459.0 / 3
+          return nvhq = 32042184092153.0
+         filled in : hsrh = 32042184092153.0 - 135
+        return hsrh = 32042184092018.0
+       filled in : wwwn = 32042184092018.0 / 17
+      return wwwn = 1884834358354.0
+     filled in : vqtr = 1884834358354.0 + 366.0
+    return vqtr = 1884834358720.0
+   filled in : tsnw = 1884834358720.0 * 2
+  return tsnw = 3769668717440.0
+ filled in : humn = 3769668717440.0 - 731.0
+return humn = 3769668716709.0
+
+ found human value: 3769668716709.0
+ check root Evaluation (see also rootEval.txt) : 40962717833337.0 = 40962717833337.0
