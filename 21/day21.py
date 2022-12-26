@@ -76,20 +76,26 @@ def evaluate(monkeyName, extend = False, depth = 0):
         else:
             return str(eval(equate))
 
-def rewriteAndEvaluate(monkeyName):
+def rewriteAndEvaluate(monkeyName, depth = 0):
+    print(" "*depth*2 + "rewrite monkey "+ monkeyName+": ")
     usedInMonkey = getUsedInMonkey(monkeyName)
+    print(" "*depth*2 + " used in : " + usedInMonkey[0] + " = " + usedInMonkey[1])
+    if monkeyName == humanHalf:
+        print(" "*depth*2 + monkeyName + " is human half, return notHumanHalf: " + notHumanHalfValue)
+        return notHumanHalf
     newEquation = rewrite(monkeyName, usedInMonkey)
+    print(" "*depth*2 + " becomes : " + monkeyName + " = " + newEquation)
     components = equationComponents(newEquation)
     leftMonkey = components[0]
     rightMonkey = components[2]
     for sub in [leftMonkey, rightMonkey]:
-        if sub == notHumanHalf:
-            value = notHumanHalfValue
-        elif sub == usedInMonkey[1]:
-            value = rewriteAndEvaluate(sub)
+        if sub == usedInMonkey[0]:
+            value = rewriteAndEvaluate(sub, depth + 1)
         else:
             value = evaluate(sub)
         newEquation = newEquation.replace(sub, value)
+    print(" "*depth*2 + " filled in : " + monkeyName + " = " + newEquation)
+    print(" "*depth*2 + "return " + monkeyName + " = " + str(eval(newEquation)))
     return str(eval(newEquation))
     
     
