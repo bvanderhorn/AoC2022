@@ -29,9 +29,12 @@ def mapSlice(direction, line):
     # return a list of characters along given direction
     print('   mapSlice in direction '+ direction + " on line " + str(line))
     if direction in 'RL':
+        ml = len(map[0])
         print('    returning map row ' + str(line))
         print('   length of slice: '+ str(len(map[line])))
-        return map[line]
+        out = map[line]
+        out += (ml-len(out))*' '
+        return out
     else:
         ml = len(map)
         print('    returning map col ' + str(line))
@@ -96,7 +99,6 @@ def endPos(slice, startPos, maxSteps):
     # we did not run into a wall: we can run until the end of our remaining steps!
     return firstNonEmpty + remSteps
 
-
 def newPosDir(oldPosDir, instruction):
     # oldPosDir and output are 3x1 list in format [Y, X, Dir]
     # instruction is a trace element
@@ -131,6 +133,69 @@ def newPosDir(oldPosDir, instruction):
         return [oldPosDir[0], endIndex, newDir]
     else:
         return [endIndex, oldPosDir[1], newDir]
+    
+def getPath(posDirA, posDirB):
+    # return an array of coordinates from pos a to pos b in direction posDirB[2]
+    pos = [i for i in posDirA[0:2]]
+    print('   posDirA: '+ str(posDirA))
+    print('   posDirB: '+ str(posDirB))
+    coor = [[pos[0], pos[1]]]
+    dir = posDirB[2]
+    goalPos = posDirB[0:2]
+    
+    while(pos != goalPos):
+        if dir == 'R':
+            pos = [pos[0],pos[1] +1]
+            if pos == goalPos: continue
+            if pos[1] >= len(map[pos[0]]):
+                pos = [pos[0],re.search("\S+", map[pos[0]]).start()]
+        if dir == 'L':
+            pos = [pos[0],pos[1]-1]
+            if pos == goalPos: continue
+            if (pos[1]<0) :
+                pos = [pos[0],len(map[pos[0]])-1]
+            elif (map[pos[0]][pos[1]] == ' '):
+                pos = [pos[0],len(map[pos[0]])-1]
+        if dir=='D':
+            pos = [pos[0]+1,pos[1]]
+            if pos == goalPos: continue
+            lastLongEnough = [i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]
+            if (pos[0] >= lastLongEnough): 
+                firstNonEmpty = [i for (i,m) in enumerate(map[0:lastLongEnough]) if m[pos[1]] != ' '][0]
+                pos = [firstNonEmpty,pos[1]]
+            elif (pos[1] >= len(map[pos[0]])):
+                firstNonEmpty = [i for (i,m) in enumerate(map[0:lastLongEnough]) if m[pos[1]] != ' '][0]
+                pos = [firstNonEmpty,pos[1]]
+        if dir=='U':
+            pos = [pos[0]-1,pos[1]]
+            if pos == goalPos: continue
+            if (pos[0] < 0) :
+                lastLongEnough = [i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]
+                pos  = [lastLongEnough,pos[1]]
+            elif (map[pos[0]][pos[1]] == ' '):
+                print('  some weird off case: '+ str([i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]))
+                lle = [i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]
+                pos  = [lle,pos[1]]
+        coor.append([pos[0], pos[1]])
+        print('    pos: '+ str(pos))
+    return coor
+
+def drawOnMap(posDir1, posDir2):
+    global drawMap
+    di = posDir2[2]
+    sign = ''
+    if di == 'R': sign = '>'
+    if di == 'L': sign = '<'
+    if di == 'D': sign = 'v'
+    if di == 'U': sign = '^'
+    
+    drawPath = getPath(posDir1, posDir2)
+    for co in drawPath:
+        stringList = list([i for i in drawMap[co[0]]])
+        stringList[co[1]] = sign
+        drawMap[co[0]] = ''.join(stringList)
+    
+    
 
 # params
 fileName = 'mapandtrace.txt'
@@ -158,12 +223,17 @@ print(' total instructions: '+ str(len(trace)))
 startCol = map[0].find('.')
 posDir = [startRow, startCol,firstDir]
 print('initial posDir: ' + str(posDir))
+drawMap = [i for i in map]
 for trIndex in range(0,len(trace)):
     tr = (trace[trIndex], [firstTurn,trace[0][1]])[trIndex == 0]
     
     print('trace ' + str(trIndex+1) + ": " + str(tr))
-    posDir = newPosDir(posDir, tr)
+    nextPosDir = newPosDir(posDir, tr)
+    drawOnMap(posDir, nextPosDir)
+    posDir = nextPosDir
     print(' new posDir: ' + str(posDir)) 
-    
+
+writeFile('drawmap.txt', '\n'.join(drawMap))
 print('final position and direction: ' + str(posDir))
-print('final password: ' + str(1000*(posDir[0]+1) + 4*(posDir[1]+1) + directions.find(posDir[2])))
+finalPassword = 1000*(posDir[0]+1) + 4*(posDir[1]+1) + directions.find(posDir[2])
+print('final password: (1000*'+ str(posDir[0]+1) + ') + (4*' + str(posDir[1]+1) + ") + ("+ posDir[2] + " -> " +  str( directions.find(posDir[2])) + ') = ' + str(finalPassword))
