@@ -27,8 +27,18 @@ def printmap(mapIn, fromRow, toRow, fromCol, toCol):
         
 def mapSlice(direction, line):
     # return a list of characters along given direction
-    if direction in 'RL':  return list(map[line])
-    else:  return [i[line] for i in map]
+    print('   mapSlice in direction '+ direction + " on line " + str(line))
+    if direction in 'RL':
+        print('    returning map row ' + str(line))
+        print('   length of slice: '+ str(len(map[line])))
+        return map[line]
+    else:
+        ml = len(map)
+        print('    returning map col ' + str(line))
+        out = ''.join([i[line:line+1] for i in map])
+        out += (ml-len(out))*' '
+        print('   length of slice: '+ str(len(out)))
+        return out
     
 def turn(curDir, lr):
     curIndex = directions.find(curDir)
@@ -36,32 +46,36 @@ def turn(curDir, lr):
     return directions[newIndex % (len(directions))]
 
 def endPos(slice, startPos, maxSteps):
-    nonEmptySlice = [s for s in slice if s != ' ']
-    firstNonEmpty = [i for (i,s) in enumerate(slice) if s != ' '][0]
+    # print('   slice: ' + slice)
+    sliceMatch = re.search("\S+", slice)
+    nonEmptySlice = sliceMatch.group(0)
+    print('   non-Empty slice: ' + nonEmptySlice)
+    print('   start pos: '+ str(startPos))
+    firstNonEmpty = sliceMatch.start()
+    print('   first non-empty: '+ str(firstNonEmpty))
     
     # correct for instructions that suggest more steps than the non-empty slice length
     steps = maxSteps % len(nonEmptySlice)
     
     # take a subslice starting from startPos to the end of the slice to check where we're going
-    firstSlice = slice[startPos:startPos+steps+1]
+    firstSlice = nonEmptySlice[startPos - firstNonEmpty:]
+    print('   first slice: '+ firstSlice)
     
     # 1. check if we hit a wall
-    e = enumerate(firstSlice)
-    walls1 = [i for (i,s) in e if s == '#']
-    if len(walls1) > 0:
+    firstWall = firstSlice.find('#')
+    if (firstWall > 0) & (firstWall <= maxSteps):
         # we hit a wall: return last index before we hit the wall
-        return startPos + (walls1[0] -1)
+        return startPos + (firstWall -1)
     
-    # 2. check if we ran out of the map
-    ends1 = [i for (i,s) in e if s == ' ']
-    if len(ends1) == 0:
+    # 2. check if we will run out of the map
+    if maxSteps < len(firstSlice):
         # we did not run out of the map: return new position
         return startPos + steps
     
-    # still here means we ran out of the map: 
-    # record last position before end of map and continue
-    lastPos = startPos + (ends1[0] -1)
-    remSteps = steps - lastPos - 1 
+    # still here means we ran out of the map: record last position before end of map and continue
+    lastPos = startPos + (len(firstSlice) -1)
+    remSteps = steps - len(firstSlice)
+    print('   eol -> to start of slice, with remaining steps: '+ str(remSteps))
     # with the '-1', we are already circling towards the first non-empty character of the slice
     
     # if the first non-empty character of the slice is a wall: return lastPos
@@ -71,11 +85,13 @@ def endPos(slice, startPos, maxSteps):
     # we are now on the first non-empty character of the slice, which is NOT a wall
     # we can also not run into the empty anymore, thanks to the modulo at the start    
     # continue search with another sub slice
-    secondSlice = nonEmptySlice(0,remSteps + 1)
-    walls2 = [i for (i,s) in enumerate(secondSlice) if s == '#']
-    if len(walls2) > 0:
+    secondSlice = nonEmptySlice[0:remSteps + 1]
+    firstWall2 = secondSlice.find('#')
+    print('   second slice: ' + secondSlice)
+    print('   first wall on ' + str(firstWall2))
+    if firstWall2 > 0:
         # indeed we ran into a wall!
-        return firstNonEmpty + (walls2[0] -1)
+        return firstNonEmpty + (firstWall2 -1)
     
     # we did not run into a wall: we can run until the end of our remaining steps!
     return firstNonEmpty + remSteps
@@ -89,13 +105,19 @@ def newPosDir(oldPosDir, instruction):
     startIndex = (oldPosDir[0],oldPosDir[1])[newDir in 'RL']
     mapLength = (len(map),len(map[0]))[newDir in 'RL']
     
+    print('  new dir: ' + newDir)
+    print('  slice line: ' + str(sliceLine))
+    
     # slice is left-to-right or up-to-down
     ms = mapSlice(newDir, sliceLine)
+    print('   full map slice: [' + ms + ']')
     
     # if direction is UP or LEFT, we need to revert the slice and index
     if newDir in 'LU':
-        ms = list(reversed(ms))
+        ms = ms[::-1]
+        print('   reverting map slice: '+ ms)
         startIndex = (mapLength -1) - startIndex
+        print('   new startIndex: '+ str(startIndex) + ' (map length = '+ str(mapLength) + ')')
         
     # find 1-D end position
     endIndex = endPos(ms,startIndex,int(instruction[1]))
@@ -109,7 +131,6 @@ def newPosDir(oldPosDir, instruction):
         return [oldPosDir[0], endIndex, newDir]
     else:
         return [endIndex, oldPosDir[1], newDir]
-
 
 # params
 fileName = 'mapandtrace.txt'
@@ -137,12 +158,12 @@ print(' total instructions: '+ str(len(trace)))
 startCol = map[0].find('.')
 posDir = [startRow, startCol,firstDir]
 print('initial posDir: ' + str(posDir))
-for trIndex in range(0,2):
+for trIndex in range(0,len(trace)):
     tr = (trace[trIndex], [firstTurn,trace[0][1]])[trIndex == 0]
     
     print('trace ' + str(trIndex+1) + ": " + str(tr))
     posDir = newPosDir(posDir, tr)
-    print(' new posDir: ' + str(posDir))
-    
+    print(' new posDir: ' + str(posDir)) 
     
 print('final position and direction: ' + str(posDir))
+print('final password: ' + str(1000*(posDir[0]+1) + 4*(posDir[1]+1) + directions.find(posDir[2])))
