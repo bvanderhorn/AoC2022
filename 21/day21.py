@@ -22,7 +22,7 @@ def getMonkey(monkeyName):
 def getMonkeyIndex(monkeyName):
     return [i for (i,m) in enumerate(monkeys) if m[0] == monkeyName][0]
 
-def evaluate(monkeyName, extend, depth):
+def evaluate(monkeyName, extend = False, depth = 0):
     monkey = getMonkey(monkeyName)
     print2(" "*depth + " evaluate " + monkeyName + ": " + monkey[1])
     name = monkey[0]
@@ -44,7 +44,7 @@ def evaluate(monkeyName, extend, depth):
     if extend:
         return "("+ equate +")"
     else:
-        return(str(eval(out)))
+        return(str(eval(equate)))
 
 # params
 fileName = 'monkeys.txt'
@@ -60,7 +60,7 @@ for i in range(0,len(input)):
     monkeys.append(list(monkeyMatch.group(1,2)))
 
 # part 1
-# print(evaluate(root))
+print(evaluate(root))
 
 # part 2
 # update root equation
