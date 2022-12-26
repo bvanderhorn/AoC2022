@@ -38,4 +38,3 @@ print(' 0 on index: ' + str(zeroIndex))
 print(' get indices: '+str(getIndices))
 print(' values: '+ str(values))
 print(' sum:'+str(sum(values)))
-    
