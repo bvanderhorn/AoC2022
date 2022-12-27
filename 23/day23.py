@@ -75,6 +75,8 @@ def planPosition(curPos, round, allPositions):
 
 # params
 fileName = 'elves.txt'
+maxRounds = 10
+part:int = 2
 
 # parse
 input = readFile(fileName).split('\n')
@@ -85,13 +87,21 @@ print("number of elves: " + str(len(startPositions)))
 
 # run
 positions = [i for i in startPositions]
-for round in range(0,10):
-    print('round '+ str(round) + '...')
+round = 0
+while(True):
+    print('round '+ str(round+1) + '...')
+    prevPositions = [i for i in positions]
     pp = [planPosition(p,round,positions) for p in positions]
     
     # new positions: if planned occurs at least twice, stay where you are
     ppDoubles = [x for x in pp if pp.count(x) > 1]
     positions = [(pp[i],positions[i])[pp[i] in ppDoubles] for i in range(0,len(positions))]
+    
+    round += 1
+    if (part == 1) & (round == maxRounds): break
+    if (part == 2) & (prevPositions == positions):
+        print(' no elves moved at round ' + str(round))
+        break
 
 # draw and calculate
 xMin = min([i[1] for i in positions])
@@ -102,10 +112,12 @@ finalPositions = [[i[0]-yMin, i[1]-xMin] for i in positions]
 xMax = max([i[1] for i in finalPositions])
 yMax = max([i[0] for i in finalPositions])
 
+nofSpaces = (yMax+1)*(xMax+1) - len(startPositions)
+print(' number of spaces: '+ str(nofSpaces))
+
+finalPos = []
 for line in range(0,yMax+1):
     xPosInLine = [p[1] for p in finalPositions if p[0] == line]
     lineString = ''.join([('.','#')[i in xPosInLine] for i in range(0,xMax+1)])
-    print(lineString)
-
-nofSpaces = (yMax+1)*(xMax+1) - len(startPositions)
-print(' number of spaces: '+ str(nofSpaces))
+    finalPos.append(lineString)
+writeFile('final_positions_part_' + str(part) + '.txt', '\n'.join(finalPos))
