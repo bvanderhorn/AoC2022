@@ -116,15 +116,26 @@ def switchFace(edgePosDir):
     ]
     
     # list of edge touches in format [edgeAIndex, edgeBIndex, reverse (True/False)]
-    edgeLinks = [
-        [ 0,  9, False],
-        [ 1,  8, False],
-        [ 2,  5, True ],
-        [ 3,  4, False],
-        [ 6,  7, False],
-        [10, 13, True ],
-        [11, 12, False]
-    ]
+    if part == 2:
+        edgeLinks = [
+            [ 0,  9, False],
+            [ 1,  8, False],
+            [ 2,  5, True ],
+            [ 3,  4, False],
+            [ 6,  7, False],
+            [10, 13, True ],
+            [11, 12, False]
+        ]
+    else: # if part == 1
+        edgeLinks = [
+            [ 0,  6, False],
+            [ 1,  3, False],
+            [ 2, 13, False ],
+            [ 4, 12, False],
+            [ 5, 10, False],
+            [ 7,  9, False],
+            [ 8, 11, False]
+        ]
     
     # find the current edge, the associated link, the new edge and the new coordinates and direction
     # current edge
@@ -219,6 +230,8 @@ def getPath(posDirA, posDirB):
     return coor
 
 def drawOnMap(posDir1, posDir2):
+    # drawing the map with arrows is only supported for part 1,
+    # as getPath has not been updated to incorporate face switches
     global drawMap
     signDict = {'R':'>','L':'<','D':'v','U':'^'}
     sign = signDict[posDir2[2]]
