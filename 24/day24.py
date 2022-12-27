@@ -91,8 +91,10 @@ def getOneDeeper(posMinPath):
     
     # 1. check which neighbours are free on the next minute
     returnArray = []
+    newCycleMin = (min+1) % cycle
+    bliz = mergeSubLists(allPos[newCycleMin])
     for nb in  getNeighbours(pos):
-        if ((min+1) % cycle) in allFreeMinutes[nb[0]][nb[1]]:
+        if nb not in bliz:
             newPath = [i for i in path]
             newPath.append(nb)
             returnArray.append([nb, min+1,newPath])
@@ -116,7 +118,6 @@ initialMap = [i[1:-1] for i in input[1:-1]]
 Xlen = len(initialMap[0])
 Ylen = len(initialMap)
 goalPos = [Ylen-1,Xlen-1]
-# print('\n'.join(initialMap))
 
 # extract positions of up/down/left/right going blizzards
 uppies = getPositions(initialMap,'^')
@@ -124,17 +125,13 @@ downies = getPositions(initialMap,'v')
 lefties = getPositions(initialMap, '<')
 righties = getPositions(initialMap,'>')
 
-allFreeMinutes = []
-for y in range(0,Ylen):
-    print(' calculating fm for y = '+ str(y)+'...')
-    start = timeit.default_timer()
-    allFreeMinutes.append([getFreeMinutes([y,x]) for x in range(0,Xlen)])
-    stop = timeit.default_timer()
-    runTime = time.strftime('%H:%M:%S', time.gmtime(stop - start))
-    print('  -> ' + runTime)
+# calculate blizard locations on each cycle minute
+allPos0 = [uppies, downies, lefties, righties]
+allPos = [moveAllMinutes(allPos0, m) for m in range(1,cycle)]
+allPos.insert(0,allPos0)
 
 # loop over all free minutes and try to find the shortest path
-fm0 = allFreeMinutes[0][0]
+fm0 = getFreeMinutes(startPos)
 if fm0[0] == 0:
     fm0 = moveLeft(fm0,1)
     fm0[-1] = cycle
