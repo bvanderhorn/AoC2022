@@ -179,9 +179,10 @@ def newPosDir(oldPosDir, instruction):
         # if we are on the edge of a slice and there is a wall on the very
         # point on the next slice we're trying to go: return last posDir
         if len(newPosSteps) == 0:
+            print('   first pos on new face is a wall : return previous posDir: '+ str(prevPosDir))
             return prevPosDir
         
-        curPosDir = [newPosSteps[0], newPosSteps[1], curDir]
+        curPosDir = [newPosSteps[0], newPosSteps[1], curPosDir[2]]
         remSteps = newPosSteps[2]
         
         # else, if remSteps = 0: return new posdir
