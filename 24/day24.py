@@ -2,6 +2,7 @@ import re
 import numpy as np
 import timeit
 import time
+import json
 
 # functions
 def readFile(fName):
@@ -75,58 +76,39 @@ def getFreeMinutes(pos, verbose = False):
     if verbose: print('  free minutes: '+ str(freeMinutes))
     return freeMinutes
 
-def getMaxWithRemaining(pos, min, verbose=False, path=[], depth=0):
-    # get minimum minutes of all possible remaining paths of reaching goalPos (or return INF if impossible)
-    global minMinutes
-    global maxDepth
-    d2 = depth*2
-    d2a = d2+1
-    if verbose: print(' '*d2 + 'min '+str(min) + ', pos: '+str(pos))
-    if len(path) >= cycle:
-        if path[len(path)- cycle] == pos:
-           if verbose: print(' '*d2 + '=> LOOPING: return INF') 
-           return inf
+def getOneDeeper(posMinPath):
+    # instead of going recursive, just find the free neighbours, return, add to stack and repeat
+    # needs and returns in format [pos, min, path]
+    pos = posMinPath[0]
+    min = posMinPath[1]
+    path = posMinPath[2]
     
-    if depth > maxDepth:
-        maxDepth = depth
-        # print(' new max depth: '+str(depth))
-    
-    if minMinutes <= theoMin(pos,min): return inf
-    elif pos == goalPos:
-        minMinutes = min
-        print(' -> found new minimum: ' + str(min) + ' minutes')
-        return min
+    # 0. check for looping
+    lp = len(path)
+    if lp >= cycle:
+        if path[lp - cycle] == pos:
+           return []
     
     # 1. check which neighbours are free on the next minute
-    freeNb = []
+    returnArray = []
     for nb in  getNeighbours(pos):
         if ((min+1) % cycle) in allFreeMinutes[nb[0]][nb[1]]:
-            freeNb.append(nb)
-    if verbose: print(' '*d2a + 'free nb: '+ str(freeNb))
-    
-    if len(freeNb) == 0:
-        if verbose: print(' '*d2a + ' -> no neighbours: INF')
-        return inf
-    
-    # 2. loop and find minima for each option
-    minMins = []
-    for nb in freeNb:
-        newPath = [i for i in path]
-        newPath.append(pos)
-        nbMins = getMaxWithRemaining(nb,min+1,verbose,newPath,depth+1)
-        minMins.append(nbMins)
-        
-    # 4. return the minimum of the found minima
-    if verbose: 
-        print(' '*d2 + 'return : ' + str(minMins))
-    return sorted(minMins,reverse=True)[0]
+            newPath = [i for i in path]
+            newPath.append(nb)
+            returnArray.append([nb, min+1,newPath])
+    return returnArray
+
+def pathToString(path):
+    return '   '+'\n   '.join([ '['+str(i[0])+', '+str(i[1])+']'  for i in path])
 
 # params
+example = True
 fileName = 'blizzards.txt'
+if example:
+    fileName = 'example_' + fileName
 inf = 100000000000
 startPos = [0,0]
-cycle = 600
-# cycle = 12
+cycle = (600,12)[example]
 
 # parse
 input = readFile(fileName).split('\n')
@@ -141,7 +123,6 @@ uppies = getPositions(initialMap,'^')
 downies = getPositions(initialMap,'v')
 lefties = getPositions(initialMap, '<')
 righties = getPositions(initialMap,'>')
-# print(lefties[0:10])
 
 allFreeMinutes = []
 for y in range(0,Ylen):
@@ -156,7 +137,9 @@ for y in range(0,Ylen):
 fm0 = allFreeMinutes[0][0]
 if fm0[0] == 0:
     fm0 = moveLeft(fm0,1)
+    fm0[-1] = cycle
 print('\n possible start minutes: '+ str(fm0)+ '\n')
+
 minMinutes = inf
 for fm in fm0:
     maxDepth = 0
@@ -164,14 +147,29 @@ for fm in fm0:
     if minMinutes <= theoMin(startPos, fm):
         print(' theoretically not possible to find a quicker solution with this start minute or higher -> BREAK')
         break
-    # calculate start positions
-    bliz = moveAllMinutes([uppies, downies, lefties, righties],fm)
-    pos = startPos
     
-    curMin = getMaxWithRemaining(pos,fm)
-    if curMin < minMinutes:
-        minMinutes = curMin
-        
-print('\n'+'-'*30+'\n  minimal minutes: '+ str(minMinutes)+'\n'+'-'*30)
+    todo = [
+        [startPos,fm,[startPos]]
+    ]
 
-# getFreeMinutes([1,2],True)
+    while(len(todo) > 0):
+        curTodo = todo.pop(0)
+        print(' min: ' + str(curTodo[1]) + ', pos: '+ str(curTodo[0]))
+        newTodos = getOneDeeper(curTodo)
+        
+        # check if we found the goalPos
+        gp = [i for i in newTodos if i[0] == goalPos]
+        if len(gp) > 0:
+            goalPosMinPath = gp[0]
+            break
+        
+        # else: add to stack and continue
+        todo += newTodos
+        
+    thisMin = goalPosMinPath[1]
+    print(' reached goal in min:' + str(thisMin))
+    if thisMin < minMinutes:
+        minMinutes = thisMin
+        writeFile(('','example_')[example] + 'posMinPath.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(goalPosMinPath[1]) + '\n path: \n' + pathToString(goalPosMinPath[2]))
+        
+print('\n'+'-'*50+'\n  minimal minutes: '+ str(minMinutes)+'\n'+'-'*50)
