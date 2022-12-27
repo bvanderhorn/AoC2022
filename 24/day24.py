@@ -122,11 +122,11 @@ def getMaxWithRemaining(pos, min, verbose=False, path=[], depth=0):
     return sorted(minMins,reverse=True)[0]
 
 # params
-fileName = 'example_blizzards.txt'
+fileName = 'blizzards.txt'
 inf = 100000000000
 startPos = [0,0]
-# cycle = 600
-cycle = 12
+cycle = 600
+# cycle = 12
 
 # parse
 input = readFile(fileName).split('\n')
@@ -156,7 +156,7 @@ for y in range(0,Ylen):
 fm0 = allFreeMinutes[0][0]
 if fm0[0] == 0:
     fm0 = moveLeft(fm0,1)
-print(' free start minutes: '+ str(fm0))
+print('\n possible start minutes: '+ str(fm0)+ '\n')
 minMinutes = inf
 for fm in fm0:
     maxDepth = 0
@@ -174,4 +174,4 @@ for fm in fm0:
         
 print('\n'+'-'*30+'\n  minimal minutes: '+ str(minMinutes)+'\n'+'-'*30)
 
-getFreeMinutes([1,2],True)
+# getFreeMinutes([1,2],True)
