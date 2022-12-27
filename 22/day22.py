@@ -21,9 +21,9 @@ def print2(inString):
         print(inString)
         # runlog.append(inString)
         
-def mapSlice(direction, line):
+def mapSlice(direction, line, verbose = True):
     # return a list of characters along given direction
-    print('   mapSlice in direction '+ direction + " on line " + str(line))
+    if verbose: print('   mapSlice in direction '+ direction + " on line " + str(line))
     if direction in 'RL':  return map[line]
     else:                  return ''.join([i[line:line+1] for i in map])
     
@@ -35,10 +35,10 @@ def turn(curDir, lr):
 def endPos(slice, startPos, maxSteps):
     sliceMatch = re.search("\S+", slice)
     nonEmptySlice = sliceMatch.group(0)
-    print('   non-Empty slice: ' + nonEmptySlice)
-    print('   start pos: '+ str(startPos))
     firstNonEmpty = sliceMatch.start()
-    print('   first non-empty: '+ str(firstNonEmpty))
+    print('   non-Empty slice: ' + nonEmptySlice)
+    print('   from ' + str(firstNonEmpty) + ' to ' + str(sliceMatch.end()-1))
+    print('   start pos: '+ str(startPos))
     
     # correct for instructions that suggest more steps than the non-empty slice length
     steps = maxSteps % len(nonEmptySlice)
@@ -89,7 +89,6 @@ def newPosDir(oldPosDir, instruction):
     sliceLine = (oldPosDir[1],oldPosDir[0])[newDir in 'RL']
     startIndex = (oldPosDir[0],oldPosDir[1])[newDir in 'RL']
     mapLength = (len(map),len(map[0]))[newDir in 'RL']
-    print('  new dir: ' + newDir)
     
     # slice is left-to-right or up-to-down
     ms = mapSlice(newDir, sliceLine)
@@ -101,6 +100,7 @@ def newPosDir(oldPosDir, instruction):
         
     # find 1-D end position
     endIndex = endPos(ms,startIndex,int(instruction[1]))
+    print('   end pos: '+ str(endIndex))
     
     # if direction is UP or LEFT, we need to revert the result back
     if newDir in 'LU':
@@ -115,14 +115,12 @@ def newPosDir(oldPosDir, instruction):
 def getPath(posDirA, posDirB):
     # return an array of coordinates from pos a to pos b in direction posDirB[2]
     pos = [i for i in posDirA[0:2]]
-    print('   posDirA: '+ str(posDirA))
-    print('   posDirB: '+ str(posDirB))
     coor = [[pos[0], pos[1]]]
     dir = posDirB[2]
     goalPos = posDirB[0:2]
     
     sliceLine = (posDirA[1],posDirA[0])[dir in 'RL']
-    slice = mapSlice(dir, sliceLine)
+    slice = mapSlice(dir, sliceLine, False)
     sliceMatch = re.search("\S+", slice)
     nonEmptySlice = sliceMatch.group(0)
     first = sliceMatch.start()
@@ -135,7 +133,6 @@ def getPath(posDirA, posDirB):
         if dir == 'U':    pos = [(pos[0]-1,last)[pos[0] == first],pos[1]]
 
         coor.append([pos[0], pos[1]])
-        print('    pos: '+ str(pos))
     return coor
 
 def drawOnMap(posDir1, posDir2):
