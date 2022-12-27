@@ -87,6 +87,82 @@ def moveOnSlice(posDir,steps):
     else:
         return [endPosSteps[0], posDir[1], endPosSteps[1]]
 
+def switchFace(edgePosDir):
+    # given a current pos and dir on a face edge, return first 
+    # position and direction on the new face
+    # edgePosDir and return in format [Y, X, Dir]
+    print('    switch face from current posDir: '+ str(edgePosDir))
+    edgeLength = 50
+    Y = edgePosDir[0]
+    X = edgePosDir[1]
+    D = edgePosDir[2]
+    
+    # list of map edges in format [Along, line, minIndex, maxIndex]
+    edges = [
+        ['X',   0,  50,  99], # 0
+        ['X',   0, 100, 149], # 1
+        ['Y', 149,   0,  49], # 2
+        ['X',  49, 100, 149], # 3
+        ['Y',  99,  50,  99], # 4
+        ['Y',  99, 100, 149], # 5
+        ['X', 149,  50,  99], # 6
+        ['Y',  49, 150, 199], # 7
+        ['X', 199,   0,  49], # 8
+        ['Y',   0, 150, 199], # 9
+        ['Y',   0, 100, 149], # 10
+        ['X', 100,   0,  49], # 11
+        ['Y',  50,  50,  99], # 12
+        ['Y',  50,   0,  49]  # 13
+    ]
+    
+    # list of edge touches in format [edgeAIndex, edgeBIndex, reverse (True/False)]
+    edgeLinks = [
+        [ 0,  9, False],
+        [ 1,  8, False],
+        [ 2,  5, True ],
+        [ 3,  4, False],
+        [ 6,  7, False],
+        [10, 13, True ],
+        [11, 12, False]
+    ]
+    
+    # find the current edge, the associated link, the new edge and the new coordinates and direction
+    # current edge
+    curAlong = ('X','Y')[D in 'RL']
+    curAlongPos = (X,Y)[curAlong == 'Y']
+    curLine = (Y,X)[curAlong == 'Y']
+    curLineDir = ('X','Y')[curAlong == 'X']
+    print('    cur Along ' + curAlong + ' with along pos ' + curAlong + ' = ' + str(curAlongPos) + ' and line pos ' + curLineDir + ' = ' + str(curLine))
+    curEdgeIndex = [i for (i,e) in enumerate(edges) if (e[0] == curAlong) and (e[1] == curLine) and (e[2] <= curAlongPos) and (e[3] >= curAlongPos)][0]
+    curEdge = edges[curEdgeIndex]
+    curAlongIndex = curAlongPos - curEdge[2]
+    print('    current edge '+ str(curEdgeIndex) + ': '+ str(curEdge) + ' with rel position '+ str(curAlongIndex))
+    
+    # link
+    link = [l for l in edgeLinks if curEdgeIndex in l[0:2]][0]
+    print('   link: '+ str(link))
+    
+    # new edge
+    newEdgeIndex = [i for i in link[0:2] if i != curEdgeIndex][0]
+    newEdge = edges[newEdgeIndex]
+    newAlong = newEdge[0]
+    newAlongIndex = (curAlongIndex, (edgeLength - 1) - curAlongIndex)[link[2]]
+    newAlongPos = range(newEdge[2], newEdge[3]+1)[newAlongIndex]
+    print('    new edge '+ str(newEdgeIndex) + ': '+ str(newEdge) + ' with rel position '+ str(newAlongIndex) + ' -> ' + str(newAlongPos))
+    
+    # new pos
+    newPos = ([newEdge[1],newAlongPos],[newAlongPos,newEdge[1]])[newAlong == 'Y']
+    print('    new pos: '+ str(newPos))
+    
+    # new dir (always inward-facing)
+    if newAlong == 'X':
+        newDir = ('U','D')[(newEdge[1] % edgeLength) == 0]
+    else: # newAlong == 'Y'
+        newDir = ('L','R')[(newEdge[1] % edgeLength) == 0]
+    print('    new dir: ' + newDir)
+        
+    return [newPos[0], newPos[1], newDir]
+
 def newPosDir(oldPosDir, instruction):
     # oldPosDir and output are 3x1 list in format [Y, X, Dir]
     # instruction is a trace element in format [Dir, Steps]
@@ -115,7 +191,7 @@ def newPosDir(oldPosDir, instruction):
         # if there are still steps remaining: 
         # find position and direction on next face and repeat
         prevPosDir = [i for i in curPosDir]
-        curPosDir = switchFace(curPosDir[0:2])
+        curPosDir = switchFace(curPosDir)
         remSteps -= 1
     
 def getPath(posDirA, posDirB):
@@ -158,7 +234,7 @@ directions = 'RDLU'
 firstDir = 'U'
 firstTurn = 'R'
 startRow = 0
-part:int = 1
+part:int = 2
 
 # parse
 input = readFile(fileName).split('\n\n')
@@ -178,7 +254,7 @@ startCol = map[0].find('.')
 posDir = [startRow, startCol,firstDir]
 print('initial posDir: ' + str(posDir))
 drawMap = [i for i in map]
-for trIndex in range(0,3):
+for trIndex in range(0,len(trace)):
     tr = (trace[trIndex], [firstTurn,trace[0][1]])[trIndex == 0]
     
     print('trace ' + str(trIndex+1) + ": " + str(tr))
