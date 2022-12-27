@@ -11,15 +11,6 @@ def writeFile(fName,outString):
     outStream = open(fName,'w')
     outStream.write(outString)
     outStream.close()
-
-def print1(inString): 
-    if test1: print(inString)
-    
-def print2(inString):
-    # global runlog
-    if test2:
-        print(inString)
-        # runlog.append(inString)
         
 def mapSlice(direction, line, verbose = True):
     # return a list of characters along given direction
@@ -62,7 +53,7 @@ def endPos(slice, startPos, maxSteps):
     lastPos = startPos + (len(firstSlice) -1)
     remSteps = steps - len(firstSlice)
     print('   eol -> to start of slice, with remaining steps: '+ str(remSteps))
-    # with the '-1', we are already circling towards the first non-empty character of the slice
+    # with remSteps, we are already circling towards the first non-empty character of the slice
     
     # if the first non-empty character of the slice is a wall: return lastPos
     if nonEmptySlice[0] == '#':
@@ -148,9 +139,6 @@ def drawOnMap(posDir1, posDir2):
 
 # params
 fileName = 'mapandtrace.txt'
-test1 = False
-test2 = True
-part: int = 1
 directions = 'RDLU'
 firstDir = 'U'
 firstTurn = 'R'
