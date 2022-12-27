@@ -24,12 +24,8 @@ def print2(inString):
 def mapSlice(direction, line):
     # return a list of characters along given direction
     print('   mapSlice in direction '+ direction + " on line " + str(line))
-    if direction in 'RL':
-        print('    returning map row ' + str(line))
-        return map[line]
-    else:
-        print('    returning map col ' + str(line))
-        return ''.join([i[line:line+1] for i in map])
+    if direction in 'RL':  return map[line]
+    else:                  return ''.join([i[line:line+1] for i in map])
     
 def turn(curDir, lr):
     curIndex = directions.find(curDir)
@@ -37,7 +33,6 @@ def turn(curDir, lr):
     return directions[newIndex % (len(directions))]
 
 def endPos(slice, startPos, maxSteps):
-    # print('   slice: ' + slice)
     sliceMatch = re.search("\S+", slice)
     nonEmptySlice = sliceMatch.group(0)
     print('   non-Empty slice: ' + nonEmptySlice)
@@ -94,20 +89,15 @@ def newPosDir(oldPosDir, instruction):
     sliceLine = (oldPosDir[1],oldPosDir[0])[newDir in 'RL']
     startIndex = (oldPosDir[0],oldPosDir[1])[newDir in 'RL']
     mapLength = (len(map),len(map[0]))[newDir in 'RL']
-    
     print('  new dir: ' + newDir)
-    print('  slice line: ' + str(sliceLine))
     
     # slice is left-to-right or up-to-down
     ms = mapSlice(newDir, sliceLine)
-    print('   full map slice: [' + ms + ']')
     
     # if direction is UP or LEFT, we need to revert the slice and index
     if newDir in 'LU':
         ms = ms[::-1]
-        print('   reverting map slice: '+ ms)
         startIndex = (mapLength -1) - startIndex
-        print('   new startIndex: '+ str(startIndex) + ' (map length = '+ str(mapLength) + ')')
         
     # find 1-D end position
     endIndex = endPos(ms,startIndex,int(instruction[1]))
@@ -139,14 +129,10 @@ def getPath(posDirA, posDirB):
     last = first + len(nonEmptySlice) - 1
     
     while(pos != goalPos):
-        if dir == 'R':
-            pos = [pos[0],(pos[1] +1,first)[pos[1] == last]]
-        if dir == 'L':
-            pos = [pos[0],(pos[1]-1,last)[pos[1] == first]]
-        if dir=='D':
-            pos = [(pos[0]+1,first)[pos[0] == last],pos[1]]
-        if dir=='U':
-            pos = [(pos[0]-1,last)[pos[0] == first],pos[1]]
+        if dir == 'R':    pos = [pos[0],(pos[1] +1,first)[pos[1] == last]]
+        if dir == 'L':    pos = [pos[0],(pos[1]-1,last)[pos[1] == first]]
+        if dir == 'D':    pos = [(pos[0]+1,first)[pos[0] == last],pos[1]]
+        if dir == 'U':    pos = [(pos[0]-1,last)[pos[0] == first],pos[1]]
 
         coor.append([pos[0], pos[1]])
         print('    pos: '+ str(pos))
@@ -154,12 +140,8 @@ def getPath(posDirA, posDirB):
 
 def drawOnMap(posDir1, posDir2):
     global drawMap
-    di = posDir2[2]
-    sign = ''
-    if di == 'R': sign = '>'
-    if di == 'L': sign = '<'
-    if di == 'D': sign = 'v'
-    if di == 'U': sign = '^'
+    signDict = {'R':'>','L':'<','D':'v','U':'^'}
+    sign = signDict[posDir2[2]]
     
     drawPath = getPath(posDir1, posDir2)
     for co in drawPath:
@@ -182,7 +164,6 @@ input = readFile(fileName).split('\n\n')
 trace = re.findall("(^|\D)(\d+)",input[1])
 # fill map with spaces to make length and height uniform
 map = input[0].split('\n')
-Ylen = len(map)
 Xlen = max([len(l) for l in map])
 map = [l + (Xlen -len(l))*' ' for l in map]
 
