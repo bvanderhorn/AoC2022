@@ -207,20 +207,17 @@ def newPosDir(oldPosDir, instruction):
         remSteps -= 1
     
 def getPath(posDirA, posDirB):
-    # return an array of coordinates from pos a to pos b in direction posDirB[2]
+    # return an array of coordinates from pos a to pos b with direction per coordinate
+    # in format [Y, X, Dir]
     print('  posDirA: '+ str(posDirA))
     print('  posDirB: '+ str(posDirB))
     pos = [i for i in posDirA[0:2]]
-    coor = [[pos[0], pos[1]]]
     dir = posDirA[2]
+    coor = [[pos[0], pos[1], dir]]
     goalPos = posDirB[0:2]
     
     sliceLine = (posDirA[1],posDirA[0])[dir in 'RL']
     slice = mapSlice(dir, sliceLine, False)
-    sliceMatch = re.search("\S+", slice)
-    nonEmptySlice = sliceMatch.group(0)
-    first = sliceMatch.start()
-    last = first + len(nonEmptySlice) - 1
     
     while(pos != goalPos):
         posMatter = (pos[0],pos[1])[dir in 'RL']
@@ -228,26 +225,29 @@ def getPath(posDirA, posDirB):
                     ((dir in 'LU') & ((' ' + slice)[posMatter] == ' '))
                     
         if isEdgePos:
+            print('    - edgePosDir while drawing: ' + str([pos[0],pos[1],dir]) + ' with posMatter: '+ str(posMatter))
             newPosDir = switchFace([pos[0],pos[1],dir])
             pos = newPosDir[0:2]
             dir = newPosDir[2]
+            sliceLine = (pos[1],pos[0])[dir in 'RL']
+            slice = mapSlice(dir, sliceLine, False)
         else:
-            if dir == 'R':    pos = [pos[0],(pos[1] +1,first)[pos[1] == last]]
-            if dir == 'L':    pos = [pos[0],(pos[1]-1,last)[pos[1] == first]]
-            if dir == 'D':    pos = [(pos[0]+1,first)[pos[0] == last],pos[1]]
-            if dir == 'U':    pos = [(pos[0]-1,last)[pos[0] == first],pos[1]]
+            if dir == 'R':    pos = [pos[0],   pos[1]+1]
+            if dir == 'L':    pos = [pos[0],   pos[1]-1]
+            if dir == 'D':    pos = [pos[0]+1, pos[1]  ]
+            if dir == 'U':    pos = [pos[0]-1, pos[1]  ]
 
-        coor.append([pos[0], pos[1]])
+        coor.append([pos[0], pos[1], dir])
     return coor
 
 def drawOnMap(posDir1, posDir2):
     print(' ----- drawing logic ------')
     global drawMap
     signDict = {'R':'>','L':'<','D':'v','U':'^'}
-    sign = signDict[posDir2[2]]
     
     drawPath = getPath(posDir1, posDir2)
     for co in drawPath:
+        sign = signDict[co[2]]
         stringList = list([i for i in drawMap[co[0]]])
         stringList[co[1]] = sign
         drawMap[co[0]] = ''.join(stringList)
@@ -258,7 +258,7 @@ directions = 'RDLU'
 firstDir = 'U'
 firstTurn = 'R'
 startRow = 0
-part:int = 2
+part:int = 1
 
 # parse
 input = readFile(fileName).split('\n\n')
@@ -279,7 +279,7 @@ startCol = map[0].find('.')
 posDir = [startRow, startCol,firstDir]
 print('initial posDir: ' + str(posDir))
 drawMap = [i for i in map]
-for trIndex in range(0,8):
+for trIndex in range(0,len(trace)):
     tr = (trace[trIndex], [firstTurn,trace[0][1]])[trIndex == 0]
     
     print('trace ' + str(trIndex+1) + ": " + str(tr))
@@ -288,7 +288,7 @@ for trIndex in range(0,8):
     posDir = nextPosDir
     print(' new posDir: ' + str(posDir)) 
 
-writeFile('drawmap.txt', '\n'.join(drawMap))
+writeFile('drawmap_'+ str(part) +'.txt', '\n'.join(drawMap))
 print('final position and direction: ' + str(posDir))
 finalPassword = 1000*(posDir[0]+1) + 4*(posDir[1]+1) + directions.find(posDir[2])
 print('final password: (1000*'+ str(posDir[0]+1) + ') + (4*' + str(posDir[1]+1) + ") + ("+ posDir[2] + " -> " +  str( directions.find(posDir[2])) + ') = ' + str(finalPassword))
