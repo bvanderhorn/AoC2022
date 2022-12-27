@@ -21,27 +21,15 @@ def print2(inString):
         print(inString)
         # runlog.append(inString)
         
-def printmap(mapIn, fromRow, toRow, fromCol, toCol):
-    for row in mapIn[fromRow-1: toRow]:
-        print(row[fromCol-1: toCol])
-        
 def mapSlice(direction, line):
     # return a list of characters along given direction
     print('   mapSlice in direction '+ direction + " on line " + str(line))
     if direction in 'RL':
-        ml = len(map[0])
         print('    returning map row ' + str(line))
-        print('   length of slice: '+ str(len(map[line])))
-        out = map[line]
-        out += (ml-len(out))*' '
-        return out
+        return map[line]
     else:
-        ml = len(map)
         print('    returning map col ' + str(line))
-        out = ''.join([i[line:line+1] for i in map])
-        out += (ml-len(out))*' '
-        print('   length of slice: '+ str(len(out)))
-        return out
+        return ''.join([i[line:line+1] for i in map])
     
 def turn(curDir, lr):
     curIndex = directions.find(curDir)
@@ -143,39 +131,23 @@ def getPath(posDirA, posDirB):
     dir = posDirB[2]
     goalPos = posDirB[0:2]
     
+    sliceLine = (posDirA[1],posDirA[0])[dir in 'RL']
+    slice = mapSlice(dir, sliceLine)
+    sliceMatch = re.search("\S+", slice)
+    nonEmptySlice = sliceMatch.group(0)
+    first = sliceMatch.start()
+    last = first + len(nonEmptySlice) - 1
+    
     while(pos != goalPos):
         if dir == 'R':
-            pos = [pos[0],pos[1] +1]
-            if pos == goalPos: continue
-            if pos[1] >= len(map[pos[0]]):
-                pos = [pos[0],re.search("\S+", map[pos[0]]).start()]
+            pos = [pos[0],(pos[1] +1,first)[pos[1] == last]]
         if dir == 'L':
-            pos = [pos[0],pos[1]-1]
-            if pos == goalPos: continue
-            if (pos[1]<0) :
-                pos = [pos[0],len(map[pos[0]])-1]
-            elif (map[pos[0]][pos[1]] == ' '):
-                pos = [pos[0],len(map[pos[0]])-1]
+            pos = [pos[0],(pos[1]-1,last)[pos[1] == first]]
         if dir=='D':
-            pos = [pos[0]+1,pos[1]]
-            if pos == goalPos: continue
-            lastLongEnough = [i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]
-            if (pos[0] >= lastLongEnough): 
-                firstNonEmpty = [i for (i,m) in enumerate(map[0:lastLongEnough]) if m[pos[1]] != ' '][0]
-                pos = [firstNonEmpty,pos[1]]
-            elif (pos[1] >= len(map[pos[0]])):
-                firstNonEmpty = [i for (i,m) in enumerate(map[0:lastLongEnough]) if m[pos[1]] != ' '][0]
-                pos = [firstNonEmpty,pos[1]]
+            pos = [(pos[0]+1,first)[pos[0] == last],pos[1]]
         if dir=='U':
-            pos = [pos[0]-1,pos[1]]
-            if pos == goalPos: continue
-            if (pos[0] < 0) :
-                lastLongEnough = [i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]
-                pos  = [lastLongEnough,pos[1]]
-            elif (map[pos[0]][pos[1]] == ' '):
-                print('  some weird off case: '+ str([i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]))
-                lle = [i for (i,m) in enumerate(map) if len(m)>pos[1]][-1]
-                pos  = [lle,pos[1]]
+            pos = [(pos[0]-1,last)[pos[0] == first],pos[1]]
+
         coor.append([pos[0], pos[1]])
         print('    pos: '+ str(pos))
     return coor
@@ -194,8 +166,6 @@ def drawOnMap(posDir1, posDir2):
         stringList = list([i for i in drawMap[co[0]]])
         stringList[co[1]] = sign
         drawMap[co[0]] = ''.join(stringList)
-    
-    
 
 # params
 fileName = 'mapandtrace.txt'
@@ -209,12 +179,14 @@ startRow = 0
 
 # parse
 input = readFile(fileName).split('\n\n')
-map = input[0].split('\n')
 trace = re.findall("(^|\D)(\d+)",input[1])
+# fill map with spaces to make length and height uniform
+map = input[0].split('\n')
+Ylen = len(map)
+Xlen = max([len(l) for l in map])
+map = [l + (Xlen -len(l))*' ' for l in map]
 
 # some visual checking
-printmap(map,1,2,1,len(map[0]))
-printmap(map,90,110,40,60)
 print(trace[0:10])
 print(trace[0:10][0][1])
 print(' total instructions: '+ str(len(trace)))
