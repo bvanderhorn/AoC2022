@@ -23,7 +23,7 @@ def turn(curDir, lr):
     newIndex = curIndex + (-1,1)[lr=='R']
     return directions[newIndex % (len(directions))]
 
-def moveOnSlice1D(slice, startPos, steps):
+def move1D(slice, startPos, steps):
     # make a 1-D move forward on given slice, starting at given startPos, 
     # having to take a maximum op 'steps' steps
     # will return in format [endPos, remainingSteps] 
@@ -37,7 +37,7 @@ def moveOnSlice1D(slice, startPos, steps):
     
     # take a subslice starting from startPos to the end of the slice to check where we're going
     subSlice = nonEmptySlice[startPos - firstNonEmpty:]
-    print('   sub slice: '+ subSlice) 
+    print('   sub slice: '+ subSlice)
     
     # 1. check if we hit a wall
     firstWall = subSlice.find('#')
@@ -56,7 +56,7 @@ def moveOnSlice1D(slice, startPos, steps):
         # we did: return the end of the slice and remaining steps
         return [startPos + len(subSlice) -1, steps - len(subSlice) + 1]
     
-def nextMove(posDir,steps):
+def moveOnSlice(posDir,steps):
     # given a position, direction and number of steps: 
     # return position and number of steps after the next move on the same slice
     dir = posDir[2]
@@ -72,8 +72,8 @@ def nextMove(posDir,steps):
         startIndex = (mapLength -1) - startIndex
         
     # find next position and remaining steps on this slice
-    endPosSteps = moveOnSlice1D(ms,startIndex,steps)
-    print('   end pos and steps: '+ str(endPosSteps))
+    endPosSteps = move1D(ms,startIndex,steps)
+    print('   end pos and steps remaining: '+ str(endPosSteps))
     
     # if the very start position on the slice was a wall: return empty
     if len(endPosSteps) == 0:  return []
@@ -98,7 +98,7 @@ def newPosDir(oldPosDir, instruction):
     curPosDir = [oldPosDir[0],oldPosDir[1],curDir]
     prevPosDir = [i for i in curPosDir]
     while(True):
-        newPosSteps = nextMove(curPosDir, remSteps)
+        newPosSteps = moveOnSlice(curPosDir, remSteps)
         
         # if we are on the edge of a slice and there is a wall on the very
         # point on the next slice we're trying to go: return last posDir
@@ -116,7 +116,7 @@ def newPosDir(oldPosDir, instruction):
         # find position and direction on next face and repeat
         prevPosDir = [i for i in curPosDir]
         curPosDir = switchFace(curPosDir[0:2])
-    
+        remSteps -= 1
     
 def getPath(posDirA, posDirB):
     # return an array of coordinates from pos a to pos b in direction posDirB[2]
@@ -158,6 +158,7 @@ directions = 'RDLU'
 firstDir = 'U'
 firstTurn = 'R'
 startRow = 0
+part:int = 1
 
 # parse
 input = readFile(fileName).split('\n\n')
@@ -168,8 +169,6 @@ Xlen = max([len(l) for l in map])
 map = [l + (Xlen -len(l))*' ' for l in map]
 
 # some visual checking
-print(trace[0:10])
-print(trace[0:10][0][1])
 print(' total instructions: '+ str(len(trace)))
 maxTrace = max([int(i[1]) for i in trace])
 print(' max instruction length: ' + str(maxTrace))
@@ -179,16 +178,16 @@ startCol = map[0].find('.')
 posDir = [startRow, startCol,firstDir]
 print('initial posDir: ' + str(posDir))
 drawMap = [i for i in map]
-for trIndex in range(0,1):
+for trIndex in range(0,3):
     tr = (trace[trIndex], [firstTurn,trace[0][1]])[trIndex == 0]
     
     print('trace ' + str(trIndex+1) + ": " + str(tr))
     nextPosDir = newPosDir(posDir, tr)
-    drawOnMap(posDir, nextPosDir)
+    if part == 1: drawOnMap(posDir, nextPosDir)
     posDir = nextPosDir
     print(' new posDir: ' + str(posDir)) 
 
-writeFile('drawmap.txt', '\n'.join(drawMap))
+if part == 1: writeFile('drawmap.txt', '\n'.join(drawMap))
 print('final position and direction: ' + str(posDir))
 finalPassword = 1000*(posDir[0]+1) + 4*(posDir[1]+1) + directions.find(posDir[2])
 print('final password: (1000*'+ str(posDir[0]+1) + ') + (4*' + str(posDir[1]+1) + ") + ("+ posDir[2] + " -> " +  str( directions.find(posDir[2])) + ') = ' + str(finalPassword))
