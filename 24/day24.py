@@ -2,7 +2,6 @@ import re
 import numpy as np
 import timeit
 import time
-import json
 
 # functions
 def readFile(fName):
@@ -107,10 +106,9 @@ def pathToString(path):
 
 def runTime(sec):
     return time.strftime('%H:%M:%S', time.gmtime(sec))
-    
 
 # params
-example = True
+example = False
 fileName = 'blizzards.txt'
 if example:
     fileName = 'example_' + fileName
@@ -168,8 +166,8 @@ for round in range(0,3):
         # check if new minute and if so, report
         if curTodo[1] > curMinute:
             curMinute = curTodo[1]
-            # if (curMinute % 10) == 0:
-            print(' minute: '+ str(curMinute))
+            if ((curMinute % 10) == 0) | example:
+                print(' minute: '+ str(curMinute))
             
         # find free neighbours on next minute to add to stack
         newTodos = getOneDeeper(curTodo,False)
