@@ -103,8 +103,11 @@ def getOneDeeper(posMinPath):
 def pathToString(path):
     return '   '+'\n   '.join([ '['+str(i[0])+', '+str(i[1])+']'  for i in path])
 
+def runTime(sec):
+    return time.strftime('%H:%M:%S', time.gmtime(sec))
+
 # params
-example = True
+example = False
 fileName = 'blizzards.txt'
 if example:
     fileName = 'example_' + fileName
@@ -127,9 +130,12 @@ righties = getPositions(initialMap,'>')
 
 # calculate blizard locations on each cycle minute
 print('\n pre-calculating blizzard positions on all '+str(cycle)+ ' cycle minutes...')
+start = timeit.default_timer()
 allPos0 = [uppies, downies, lefties, righties]
 allPos = [moveAllMinutes(allPos0, m) for m in range(1,cycle)]
 allPos.insert(0,allPos0)
+stop = timeit.default_timer()
+print(' -> '+ runTime(stop-start))
 
 # loop over all free minutes and try to find the shortest path
 fm0 = getFreeMinutes(startPos)
@@ -144,6 +150,8 @@ print('start minute: ' + str(fm0[0]))
 todo = [
     [startPos,startMinute,[startPos]]
 ]
+
+start = timeit.default_timer()
 while(len(todo) > 0):
     # insert new start minute if appropriate
     todoMin = todo[0][1]
@@ -172,8 +180,11 @@ while(len(todo) > 0):
     # else: add new ones to stack and continue
     todoPosMin = [[i[0],i[1]] for i in todo]
     todo += [i for i in newTodos if [i[0],i[1]] not in todoPosMin]
-    
+
+stop = timeit.default_timer()
+print('\nrun time: '+ runTime(stop-start))
+
 # some after-analysis
 thisMin = goalPosMinPath[1]
-print('\n'+'-'*50+'\n  reached goal in minutes: '+ str(thisMin)+'\n'+'-'*50)
-writeFile(('','example_')[example] + 'posMinPath.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(goalPosMinPath[1]) + '\n path: \n' + pathToString(goalPosMinPath[2]))
+print('\n'+'-'*50+'\n  reached goal in minutes: '+ str(thisMin+1)+'\n'+'-'*50)
+writeFile(('','example_')[example] + 'posMinPath.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(goalPosMinPath[1]+1) + '\n path: \n' + pathToString(goalPosMinPath[2]))
