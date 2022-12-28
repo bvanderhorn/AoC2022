@@ -1,5 +1,4 @@
 import numpy as np
-import re
 
 # functions
 def readFile(fName):
@@ -79,4 +78,3 @@ printt(corrected)
 newSnafu = [((str(i),'=')[i==-2],'-')[i==-1] for i in [int(j) for j in corrected]]
 newSnafu = ''.join(newSnafu[::-1]).lstrip('0')
 printt(newSnafu)
-  
