@@ -26,23 +26,18 @@ prints(snafu[0:3])
 
 # replace -/= by -1/-2 and cast to int
 for s in range(0,len(snafu)):
-    snafu[s] = [((i,-2)[i=='='],-1)[i=='-'] for i in snafu[s]]
-    snafu[s] = [int(i) for i in snafu[s]]
+    snafu[s] = [int(j) for j in [((i,-2)[i=='='],-1)[i=='-'] for i in snafu[s]]]
 prints(snafu[0:3])
 
 # make all snafus same length
 maxLen = max([len(i) for i in snafu])
+snafu = [s + [0]*(maxLen-len(s)) for s in snafu]
+
 printt(' max length: '+ str(maxLen))
-for s in range(0,len(snafu)):
-    add = maxLen - len(snafu[s])
-    snafu[s] += [0]*add
 prints(snafu[0:3])
 
 # add all sublist elements together
-sumAll = snafu[0]
-for s in range(1,len(snafu)):
-    sumAll = np.add(sumAll,snafu[s])
-sumAll = list(sumAll)
+sumAll = list(np.array(snafu).sum(axis=0))
 printt(sumAll)
 
 # add some trailing zeros to allow the rewrite
