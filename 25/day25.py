@@ -70,11 +70,11 @@ for s in range(0,len(sumAll)):
         addToItem = np.floor(diff/5)
     
     # save to new list
-    corrected.append(q + 5*addToItem)
+    corrected.append(int(q + 5*addToItem))
     
 printt(corrected)
 
 # revert back to snafu
-newSnafu = [((str(i),'=')[i==-2],'-')[i==-1] for i in [int(j) for j in corrected]]
+newSnafu = [((str(i),'=')[i==-2],'-')[i==-1] for i in corrected]
 newSnafu = ''.join(newSnafu[::-1]).lstrip('0')
 printt(newSnafu)
