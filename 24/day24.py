@@ -126,6 +126,7 @@ lefties = getPositions(initialMap, '<')
 righties = getPositions(initialMap,'>')
 
 # calculate blizard locations on each cycle minute
+print('\n pre-calculating blizzard positions on all '+str(cycle)+ ' cycle minutes...')
 allPos0 = [uppies, downies, lefties, righties]
 allPos = [moveAllMinutes(allPos0, m) for m in range(1,cycle)]
 allPos.insert(0,allPos0)
@@ -137,36 +138,42 @@ if fm0[0] == 0:
     fm0[-1] = cycle
 print('\n possible start minutes: '+ str(fm0)+ '\n')
 
-minMinutes = inf
-for fm in fm0:
-    maxDepth = 0
-    print('start minute: ' + str(fm))
-    if minMinutes <= theoMin(startPos, fm):
-        print(' theoretically not possible to find a quicker solution with this start minute or higher -> BREAK')
+startMinute = fm0.pop(0)
+curMinute = startMinute
+print('start minute: ' + str(fm0[0]))
+todo = [
+    [startPos,startMinute,[startPos]]
+]
+while(len(todo) > 0):
+    # insert new start minute if appropriate
+    todoMin = todo[0][1]
+    if len(fm0) > 0:
+        if fm0[0] < todoMin:
+            insertMin = fm0.pop(0)
+            todo.insert(0,[startPos,insertMin,[startPos]])
+        
+    # get next from stack
+    curTodo = todo.pop(0)
+    
+    # check if new minute and if so, report
+    if curTodo[1] > curMinute:
+        curMinute = curTodo[1]
+        print(' minute: '+ str(curMinute))
+        
+    # find free neighbours on next minute to add to stack
+    newTodos = getOneDeeper(curTodo)
+    
+    # check if we found the goalPos
+    gp = [i for i in newTodos if i[0] == goalPos]
+    if len(gp) > 0:
+        goalPosMinPath = gp[0]
         break
     
-    todo = [
-        [startPos,fm,[startPos]]
-    ]
-
-    while(len(todo) > 0):
-        curTodo = todo.pop(0)
-        print(' min: ' + str(curTodo[1]) + ', pos: '+ str(curTodo[0]))
-        newTodos = getOneDeeper(curTodo)
-        
-        # check if we found the goalPos
-        gp = [i for i in newTodos if i[0] == goalPos]
-        if len(gp) > 0:
-            goalPosMinPath = gp[0]
-            break
-        
-        # else: add to stack and continue
-        todo += newTodos
-        
-    thisMin = goalPosMinPath[1]
-    print(' reached goal in min:' + str(thisMin))
-    if thisMin < minMinutes:
-        minMinutes = thisMin
-        writeFile(('','example_')[example] + 'posMinPath.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(goalPosMinPath[1]) + '\n path: \n' + pathToString(goalPosMinPath[2]))
-        
-print('\n'+'-'*50+'\n  minimal minutes: '+ str(minMinutes)+'\n'+'-'*50)
+    # else: add new ones to stack and continue
+    todoPosMin = [[i[0],i[1]] for i in todo]
+    todo += [i for i in newTodos if [i[0],i[1]] not in todoPosMin]
+    
+# some after-analysis
+thisMin = goalPosMinPath[1]
+print('\n'+'-'*50+'\n  reached goal in minutes: '+ str(thisMin)+'\n'+'-'*50)
+writeFile(('','example_')[example] + 'posMinPath.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(goalPosMinPath[1]) + '\n path: \n' + pathToString(goalPosMinPath[2]))
