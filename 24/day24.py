@@ -53,7 +53,7 @@ def theoMin(pos,min):
     # calculate theoretical minimum minutes of reaching the goalPos from current position
     return sum(np.subtract(goalPos,pos)) + min
 
-def getFreeMinutes(pos, verbose = False):
+def getFreeMinutes(pos, range = [],verbose = False):
     # for a given [Y,X] position, return list of cycle minutes (1-600) in which it is free
     if verbose: print(' free minutes calculation for '+ str(pos))
     u0 = [u for u in uppies if u[1] == pos[1]]
@@ -68,7 +68,9 @@ def getFreeMinutes(pos, verbose = False):
         print('  ri: ' + str(r0))
     
     freeMinutes = []
-    for m in range(0,cycle):
+    if len(range) == 0:
+        range = range(1,cycle+1)
+    for m in range:
         bliz = moveAllMinutes([u0,d0,l0,r0],m)
         if pos not in mergeSubLists(bliz):
             freeMinutes.append(m)
@@ -76,13 +78,13 @@ def getFreeMinutes(pos, verbose = False):
     if verbose: print('  free minutes: '+ str(freeMinutes))
     return freeMinutes
 
-def getOneDeeper(posMinPath):
+def getOneDeeper(posMinPath, verbose=False):
     # instead of going recursive, just find the free neighbours, return, add to stack and repeat
     # needs and returns in format [pos, min, path]
     pos = posMinPath[0]
     min = posMinPath[1]
     path = posMinPath[2]
-    
+    if verbose: print('  min: '+ str(min)+ ', pos: '+ str(pos))
     # 0. check for looping
     lp = len(path)
     if lp >= cycle:
@@ -105,9 +107,10 @@ def pathToString(path):
 
 def runTime(sec):
     return time.strftime('%H:%M:%S', time.gmtime(sec))
+    
 
 # params
-example = False
+example = True
 fileName = 'blizzards.txt'
 if example:
     fileName = 'example_' + fileName
@@ -137,54 +140,65 @@ allPos.insert(0,allPos0)
 stop = timeit.default_timer()
 print(' -> '+ runTime(stop-start))
 
-# loop over all free minutes and try to find the shortest path
-fm0 = getFreeMinutes(startPos)
-if fm0[0] == 0:
-    fm0 = moveLeft(fm0,1)
-    fm0[-1] = cycle
-print('\n possible start minutes: '+ str(fm0)+ '\n')
+curStartMin = 1
+for round in range(0,3):
+    # loop over all free minutes, start at the first and insert the other ones as you go
+    curGoalPos = [goalPos,startPos,goalPos][round]
+    curStartPos = (goalPos,startPos)[curGoalPos==goalPos]
+    fm0 = getFreeMinutes(curStartPos,range(curStartMin,curStartMin+cycle))    
+    
+    print(' round: '+ str(round+1))
+    print(' current minute: '+ str(curStartMin))
+    print(' start position: '+ str(curStartPos))
+    print(' goal position: '+ str(curGoalPos))
+    print('\n 50 first possible start minutes: '+ str(fm0[0:50])+ '\n')
 
-startMinute = fm0.pop(0)
-curMinute = startMinute
-print('start minute: ' + str(fm0[0]))
-todo = [
-    [startPos,startMinute,[startPos]]
-]
+    startMinute = fm0.pop(0)
+    curMinute = startMinute
+    print('start minute: ' + str(startMinute))
+    todo = [
+        [curStartPos,startMinute,[curStartPos]]
+    ]
 
-start = timeit.default_timer()
-while(len(todo) > 0):
-    # insert new start minute if appropriate
-    todoMin = todo[0][1]
-    if len(fm0) > 0:
-        if fm0[0] < todoMin:
-            insertMin = fm0.pop(0)
-            todo.insert(0,[startPos,insertMin,[startPos]])
+    start = timeit.default_timer()
+    while(len(todo) > 0):            
+        # get next from stack
+        curTodo = todo.pop(0)
         
-    # get next from stack
-    curTodo = todo.pop(0)
-    
-    # check if new minute and if so, report
-    if curTodo[1] > curMinute:
-        curMinute = curTodo[1]
-        print(' minute: '+ str(curMinute))
+        # check if new minute and if so, report
+        if curTodo[1] > curMinute:
+            curMinute = curTodo[1]
+            # if (curMinute % 10) == 0:
+            print(' minute: '+ str(curMinute))
+            
+        # find free neighbours on next minute to add to stack
+        newTodos = getOneDeeper(curTodo,False)
         
-    # find free neighbours on next minute to add to stack
-    newTodos = getOneDeeper(curTodo)
-    
-    # check if we found the goalPos
-    gp = [i for i in newTodos if i[0] == goalPos]
-    if len(gp) > 0:
-        goalPosMinPath = gp[0]
-        break
-    
-    # else: add new ones to stack and continue
-    todoPosMin = [[i[0],i[1]] for i in todo]
-    todo += [i for i in newTodos if [i[0],i[1]] not in todoPosMin]
+        # check if we found the goalPos
+        gp = [i for i in newTodos if i[0] == curGoalPos]
+        if len(gp) > 0:
+            goalPosMinPath = gp[0]
+            print(' reached the goal: '+ str(goalPosMinPath[0:2]))
+            break
+        
+        # else: add new ones to stack and continue
+        todoPosMin = [[i[0],i[1]] for i in todo]
+        todo += [i for i in newTodos if [i[0],i[1]] not in todoPosMin]
+        
+        # insert new start minute if appropriate
+        if (len(todo) == 0) & (len(fm0) > 0):
+            todo.insert(0,[curStartPos,fm0.pop(0),[curStartPos]])
+        elif (len(todo) > 0): 
+            todoMin = todo[0][1]
+            if len(fm0) > 0:
+                if fm0[0] < todoMin:
+                    todo.insert(0,[curStartPos,fm0.pop(0),[curStartPos]])
 
-stop = timeit.default_timer()
-print('\nrun time: '+ runTime(stop-start))
+    stop = timeit.default_timer()
+    print('\nrun time: '+ runTime(stop-start))
+    finalMin = goalPosMinPath[1] + 1
+    curStartMin = finalMin + 1
 
-# some after-analysis
-thisMin = goalPosMinPath[1]
-print('\n'+'-'*50+'\n  reached goal in minutes: '+ str(thisMin+1)+'\n'+'-'*50)
-writeFile(('','example_')[example] + 'posMinPath.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(goalPosMinPath[1]+1) + '\n path: \n' + pathToString(goalPosMinPath[2]))
+    # some after-analysis
+    print('\n'+'-'*50+'\n  reached round goal in minutes: '+ str(finalMin)+'\n'+'-'*50)
+    writeFile(('','example_')[example] + 'posMinPath_round_'+str(round+1) +'.txt',' pos: ' + str(goalPosMinPath[0]) + '\n min: '+str(finalMin) + '\n path: \n' + pathToString(goalPosMinPath[2]))
