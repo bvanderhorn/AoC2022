@@ -55,7 +55,7 @@ def fancySort(state):
 part : int = 2
 useExample = True   # use example
 minutes = (24,32)[part==2]
-N = 100              # number of highest potential branches to be evaluated every loop
+N = 10              # number of highest potential branches to be evaluated every loop
 
 # parse
 input = readFile(('','example_')[useExample] + 'blueprints.txt')
@@ -138,10 +138,6 @@ for bpi in range(0,len(blueprints)):
             
             print('  adding final state for max upcoming state: ',bestNextState)
             print('   -> final state: ',newFinalState)
-            
-            # print sorted list to terminal
-            # print2('\n top '+ str(N) +' new todos: ')
-            # printl(todo)
             
             # extract new todos from todoAfter list
             todoAfter = [t for t in todoAfter if t[3] != minMin]
