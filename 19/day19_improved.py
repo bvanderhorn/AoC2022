@@ -18,6 +18,10 @@ def writeFile(fName,outString):
 
 def print2(inString): 
     print(inString)
+    
+def printl(list1):
+    print('')
+    for l in list1: print(l)
 
         
 def getRobot(blueprint, robots, assets, remaining, robot):
@@ -43,14 +47,15 @@ def getRobot(blueprint, robots, assets, remaining, robot):
 
 def fancySort(state):
     # sort function to determine which state has the highest potential
-    # sort by: # geode (1), obsidian (2), clay (3), ore (3) assets available
-    return [-asset for asset in state[2][::-1]]
+    # sort by: # geode (1), obsidian (2), clay (3), ore (3) robots created,
+    # and then on (same order) assets available
+    return [-asset for asset in state[1][::-1] + state[2][::-1]]
 
 # params
 part : int = 2
-useExample = False   # use example
+useExample = True   # use example
 minutes = (24,32)[part==2]
-N = 10              # number of highest potential branches to be evaluated every loop
+N = 100              # number of highest potential branches to be evaluated every loop
 
 # parse
 input = readFile(('','example_')[useExample] + 'blueprints.txt')
@@ -73,7 +78,7 @@ blueprints = [
 # cycle over all blueprints and get max score
 divider = "-"*90
 maxStates = []
-for bpi in range(0,(len(blueprints),3)[(not useExample) & (part == 2)]):
+for bpi in range(0,len(blueprints)):
     # prep and alert
     start = timeit.default_timer()
     print2(divider + "\nblueprint " + str(bpi+1) + ": " + str(blueprints[bpi]) + "\n" + divider)
@@ -103,18 +108,15 @@ for bpi in range(0,(len(blueprints),3)[(not useExample) & (part == 2)]):
         robots = current[1]
         
         # get list of next robots that CAN be built 
-        nextRobots = range(0,max([i for i,r in enumerate(robots) if r>0])+2)
+        nextRobots = range(0,min([max([i for i,r in enumerate(robots) if r>0])+2, len(robots)]))
         
         # convert to list of next possible states
         nextStates = [[bp] + getRobot(bp, robots, current[2], current[3], r) for r in nextRobots]
         
+        
         # extract the states which may be added to the todoAfter list (all states with remaining > 0)
         toBeAddedStates = [s for s in nextStates if s[3] > 0]
-        todoAfter += toBeAddedStates        
-        
-        # if no toBeAddedStates: calculate finalState of current state and add to finalStates
-        if not toBeAddedStates:
-            finalStates.append([robots, np.add(current[2], np.multiply(robots, current[3]))])
+        todoAfter += toBeAddedStates           
         
         # if todo is depleted and todoAfter is not empty: 
         # extract the ones with the lowest minute remaining, do a fancy sort and add the N ones 
@@ -124,14 +126,28 @@ for bpi in range(0,(len(blueprints),3)[(not useExample) & (part == 2)]):
             # get the next set with highest remaining minutes
             todo = [t for t in todoAfter if t[3] == minMin]
             # apply fancy sort on assets
-            todo.sort(key=lambda x: x[2])
+            todo.sort(key=fancySort)
             
             # only take the N highest potentials
-            todo = todo[-N:]
+            todo = todo[0:N]
+            
+            # add calculated final value of top todo to finalStates
+            bestNextState = todo[0]
+            newFinalState = [bestNextState[1], np.add(bestNextState[2], np.multiply(bestNextState[1], bestNextState[3]))]
+            finalStates.append(newFinalState)
+            
+            print('  adding final state for max upcoming state: ',bestNextState)
+            print('   -> final state: ',newFinalState)
+            
+            # print sorted list to terminal
+            # print2('\n top '+ str(N) +' new todos: ')
+            # printl(todo)
             
             # extract new todos from todoAfter list
             todoAfter = [t for t in todoAfter if t[3] != minMin]
-            
+    
+    print('\nfinal states: ')
+    printl(finalStates)
     # return the final state with highest geode score in finalStates
     maxState = [s for s in finalStates if s[1][3] == max([fs[1][3] for fs in finalStates])][0]
     maxStates.append(maxState)
